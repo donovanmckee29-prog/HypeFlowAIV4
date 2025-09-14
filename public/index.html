@@ -28,17 +28,8 @@
         }
         
         .holographic-text {
-            background: linear-gradient(45deg, #00d4ff, #8b5cf6, #06ffa5, #ffd700, #ff0080);
-            background-size: 400% 400%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: gradient-shift 3s ease infinite;
-        }
-        
-        @keyframes gradient-shift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
+            color: #00d4ff;
+            font-weight: bold;
         }
         
         .glass-morphism {
@@ -49,30 +40,31 @@
         }
         
         .cyber-card {
-            background: linear-gradient(135deg, rgba(0, 100, 255, 0.1) 0%, rgba(124, 58, 237, 0.1) 50%, rgba(6, 182, 212, 0.1) 100%);
-            border: 1px solid rgba(0, 255, 255, 0.2);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(0, 100, 255, 0.1);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            transition: all 0.3s ease;
         }
         
         .cyber-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 20px 60px rgba(0, 255, 255, 0.3);
-            border-color: rgba(0, 255, 255, 0.6);
+            transform: translateY(-2px);
+            background: rgba(0, 100, 255, 0.15);
         }
         
         .quantum-btn {
-            background: linear-gradient(45deg, #00d4ff, #8b5cf6, #06ffa5);
-            border: 2px solid transparent;
+            background: #00d4ff;
+            border: 2px solid #00d4ff;
             color: white;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 1px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s ease;
+            cursor: pointer;
         }
         
         .quantum-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.4);
+            background: #0099cc;
+            border-color: #0099cc;
+            transform: translateY(-1px);
         }
         
         .orbitron {
@@ -177,19 +169,31 @@
                             
                             {/* Feature Buttons */}
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
-                                <button className="cyber-card p-6 rounded-2xl text-center hover:scale-105 transition-transform">
+                                <button 
+                                    onClick={() => setActiveTab('grader')}
+                                    className="cyber-card p-6 rounded-2xl text-center hover:scale-105 transition-transform cursor-pointer"
+                                >
                                     <div className="text-4xl mb-2">🧠</div>
                                     <div className="font-bold text-cyan-400">QUANTUM AI GRADER</div>
                                 </button>
-                                <button className="cyber-card p-6 rounded-2xl text-center hover:scale-105 transition-transform">
+                                <button 
+                                    onClick={() => setActiveTab('scanner')}
+                                    className="cyber-card p-6 rounded-2xl text-center hover:scale-105 transition-transform cursor-pointer"
+                                >
                                     <div className="text-4xl mb-2">🚀</div>
                                     <div className="font-bold text-cyan-400">EBAY QUANTUM SCANNER</div>
                                 </button>
-                                <button className="cyber-card p-6 rounded-2xl text-center hover:scale-105 transition-transform">
+                                <button 
+                                    onClick={() => setActiveTab('oracle')}
+                                    className="cyber-card p-6 rounded-2xl text-center hover:scale-105 transition-transform cursor-pointer"
+                                >
                                     <div className="text-4xl mb-2">🔮</div>
                                     <div className="font-bold text-cyan-400">AI ORACLE</div>
                                 </button>
-                                <button className="cyber-card p-6 rounded-2xl text-center hover:scale-105 transition-transform">
+                                <button 
+                                    onClick={() => setActiveTab('portfolio')}
+                                    className="cyber-card p-6 rounded-2xl text-center hover:scale-105 transition-transform cursor-pointer"
+                                >
                                     <div className="text-4xl mb-2">💼</div>
                                     <div className="font-bold text-cyan-400">PORTFOLIO CENTER</div>
                                 </button>
@@ -225,10 +229,13 @@
                                         </div>
                                         
                                         <div className="flex items-center justify-between">
-                                            <div className="bg-gradient-to-r from-cyan-500 to-purple-500 px-3 py-1 rounded-full text-xs font-bold">
+                                            <div className="bg-cyan-500 px-3 py-1 rounded-full text-xs font-bold text-white">
                                                 🧠 AI OPPORTUNITY
                                             </div>
-                                            <button className="quantum-btn px-4 py-2 rounded-lg text-sm">
+                                            <button 
+                                                onClick={() => alert(`Searching for ${card.player} ${card.year} ${card.grade} on eBay...`)}
+                                                className="quantum-btn px-4 py-2 rounded-lg text-sm cursor-pointer"
+                                            >
                                                 🔗 Find on eBay
                                             </button>
                                         </div>
@@ -281,7 +288,10 @@
                                 <div>
                                     <h3 className="text-2xl font-bold text-cyan-400 mb-4">🎯 Market Scanner</h3>
                                     <p className="text-gray-300 mb-6">Scan the market for profitable opportunities.</p>
-                                    <button className="quantum-btn px-8 py-4 rounded-2xl">
+                                    <button 
+                                        onClick={() => alert('Market scanning in progress... This would connect to eBay API!')}
+                                        className="quantum-btn px-8 py-4 rounded-2xl cursor-pointer"
+                                    >
                                         🔍 Scan Market Now
                                     </button>
                                 </div>
@@ -297,7 +307,10 @@
                                             placeholder="Ask me anything about sports cards..."
                                             className="w-full bg-gray-800 border border-cyan-500/50 rounded-xl px-6 py-4 text-white placeholder-gray-400"
                                         />
-                                        <button className="quantum-btn px-8 py-4 rounded-2xl">
+                                        <button 
+                                            onClick={() => alert('Oracle is analyzing your question... This would connect to AI!')}
+                                            className="quantum-btn px-8 py-4 rounded-2xl cursor-pointer"
+                                        >
                                             Ask Oracle
                                         </button>
                                     </div>
@@ -322,7 +335,10 @@
                                             <div className="text-sm text-gray-400">ROI</div>
                                         </div>
                                     </div>
-                                    <button className="quantum-btn px-8 py-4 rounded-2xl">
+                                    <button 
+                                        onClick={() => alert('Add Card feature coming soon! This would open a card upload form.')}
+                                        className="quantum-btn px-8 py-4 rounded-2xl cursor-pointer"
+                                    >
                                         ➕ Add Card
                                     </button>
                                 </div>
