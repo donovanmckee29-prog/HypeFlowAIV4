@@ -84,7 +84,7 @@
             const tabs = [
                 { id: 'home', name: '🏠 HOME', icon: '🏠' },
                 { id: 'grader', name: '🧠 AI Grader', icon: '🧠' },
-                { id: 'scanner', name: '🎯 Market', icon: '🎯' },
+                { id: 'scanner', name: '�� Market', icon: '🎯' },
                 { id: 'oracle', name: '🔮 Oracle', icon: '🔮' },
                 { id: 'portfolio', name: '💼 Portfolio', icon: '💼' }
             ];
@@ -428,7 +428,7 @@
                 
                 let response = '';
                 if (matchedPlayer) {
-                    const values = matchedPlayer.values.base || matchedPlayer.values.prizm || matchedPlayer.values.fleur;
+                    const values = matchedPlayer.values.base || matchedPlayer.values.prizm || matchedPlayer.values.fleur || matchedPlayer.values['base set'] || matchedPlayer.values.vintage;
                     if (questionLower.includes('grade')) {
                         response = `✅ YES - Grade your ${playerKey}! Raw: $${values.raw} → PSA 9: $${values.psa9}. Cost: $45. Profit: $${values.psa9 - values.raw - 45} (${Math.floor(((values.psa9 - values.raw - 45) / values.raw) * 100)}% margin). ${matchedPlayer.tier.toUpperCase()} tier - Worth it!`;
                     } else if (questionLower.includes('sell')) {
