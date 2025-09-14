@@ -6,8 +6,9 @@
   "scripts": {
     "start": "python3 -m http.server 8000",
     "dev": "python3 -m http.server 8000",
-    "build": "echo 'No build step required - static HTML file'",
-    "deploy": "echo 'Deploy index.html to your hosting service'"
+    "build": "./build.sh",
+    "vercel-build": "./build.sh",
+    "deploy": "echo 'Deploy public/ directory to your hosting service'"
   },
   "keywords": [
     "sports-cards",
