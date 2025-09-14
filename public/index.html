@@ -257,8 +257,8 @@
                         </div>
 
                         {/* Tab Content */}
-                        <div className="glass-morphism rounded-3xl p-8">
-                            {activeTab === 'home' && (
+                        {activeTab === 'home' && (
+                            <div className="glass-morphism rounded-3xl p-8">
                                 <div className="text-center">
                                     <h3 className="text-2xl font-bold text-cyan-400 mb-4">Welcome to HypeFlow AI Pro</h3>
                                     <p className="text-gray-300 mb-6">
@@ -282,12 +282,27 @@
                                         </div>
                                     </div>
                                 </div>
-                            )}
-                            
-                            {activeTab === 'grader' && (
-                                <div id="grader-section">
-                                    <h3 className="text-3xl font-bold text-cyan-400 mb-6">🤖 AI Card Grader</h3>
-                                    <p className="text-gray-300 mb-8 text-lg">Upload card images for AI-powered condition analysis and grading.</p>
+                            </div>
+                        )}
+                        
+                        {activeTab === 'grader' && (
+                            <div id="grader-section" className="space-y-8">
+                                {/* AI Grader Hero Section */}
+                                <div className="text-center mb-12">
+                                    <h2 className="text-6xl font-bold holographic-text orbitron mb-4">
+                                        🤖 AI CARD GRADER
+                                    </h2>
+                                    <p className="text-xl text-gray-300 mb-8">
+                                        AI-Powered Condition Analysis • PSA/BGS Grade Prediction • Professional Quality Assessment
+                                    </p>
+                                </div>
+
+                                {/* AI Grader Main Section */}
+                                <div className="glass-morphism rounded-3xl p-8">
+                                    <div className="text-center mb-8">
+                                        <h3 className="text-3xl font-bold text-cyan-400 mb-4">🧠 AI CARD GRADER</h3>
+                                        <p className="text-gray-300 text-lg">Upload card images for AI-powered condition analysis and grading.</p>
+                                    </div>
                                     
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                         <div className="border-2 border-dashed border-cyan-400/50 rounded-2xl p-8 text-center hover:border-cyan-400 transition-colors">
@@ -322,95 +337,177 @@
                                         </div>
                                     </div>
                                 </div>
-                            )}
-                            
-                            {activeTab === 'scanner' && (
-                                <div id="scanner-section">
-                                    <h3 className="text-3xl font-bold text-cyan-400 mb-6">🚀 eBay Quantum Scanner</h3>
-                                    <p className="text-gray-300 mb-8 text-lg">Scan eBay for profitable sports card opportunities using advanced AI algorithms.</p>
-                                    
-                                    <div className="space-y-6">
-                                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                            <div className="cyber-card p-4 rounded-xl text-center">
-                                                <div className="text-2xl mb-2">🔍</div>
-                                                <h4 className="font-bold text-cyan-400">Search Cards</h4>
-                                                <p className="text-sm text-gray-400">Find specific players or sets</p>
-                                            </div>
-                                            <div className="cyber-card p-4 rounded-xl text-center">
-                                                <div className="text-2xl mb-2">📊</div>
-                                                <h4 className="font-bold text-cyan-400">Analyze Prices</h4>
-                                                <p className="text-sm text-gray-400">Compare market values</p>
-                                            </div>
-                                            <div className="cyber-card p-4 rounded-xl text-center">
-                                                <div className="text-2xl mb-2">💰</div>
-                                                <h4 className="font-bold text-cyan-400">Find Deals</h4>
-                                                <p className="text-sm text-gray-400">Identify undervalued cards</p>
-                                            </div>
+                            </div>
+                        )}
+                        
+                        {activeTab === 'scanner' && (
+                            <div id="scanner-section" className="space-y-8">
+                                {/* Market Scanner Hero Section */}
+                                <div className="text-center mb-12">
+                                    <h2 className="text-6xl font-bold holographic-text orbitron mb-4">
+                                        🚀 EBAY QUANTUM SCANNER
+                                    </h2>
+                                    <p className="text-xl text-gray-300 mb-8">
+                                        AI-Powered Deal Hunter • Real-time eBay Analysis • Global Market Coverage
+                                    </p>
+                                </div>
+
+                                {/* eBay Deal Hunter Section */}
+                                <div className="glass-morphism rounded-3xl p-8 text-center">
+                                    <div className="flex items-center justify-center gap-4 mb-6">
+                                        <div className="text-4xl">🚀</div>
+                                        <h3 className="text-3xl font-bold text-cyan-400">EBAY DEAL HUNTER</h3>
+                                    </div>
+                                    <button 
+                                        onClick={() => alert('eBay Quantum Scanner activated! This would connect to eBay API and start scanning for opportunities...')}
+                                        className="quantum-btn px-8 py-4 rounded-2xl cursor-pointer text-lg"
+                                    >
+                                        🎯 HUNT DEALS NOW
+                                    </button>
+                                </div>
+
+                                {/* Opportunity Cards */}
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div className="cyber-card rounded-2xl p-6">
+                                        <div className="flex items-center gap-3 mb-4">
+                                            <div className="text-2xl">🎯</div>
+                                            <h4 className="text-xl font-bold text-cyan-400">UNDERPRICED OPPORTUNITIES</h4>
                                         </div>
-                                        
-                                        <div className="text-center">
-                                            <button 
-                                                onClick={() => alert('eBay Quantum Scanner activated! This would connect to eBay API and start scanning for opportunities...')}
-                                                className="quantum-btn px-8 py-4 rounded-2xl cursor-pointer text-lg"
-                                            >
-                                                🔍 Start Quantum Scan
-                                            </button>
+                                        <div className="space-y-4">
+                                            {opportunityCards.map((card, index) => (
+                                                <div key={index} className="cyber-card p-4 rounded-xl">
+                                                    <div className="flex items-center gap-4">
+                                                        <div className="text-3xl">🏀</div>
+                                                        <div className="flex-1">
+                                                            <div className="font-bold text-white">{card.player}</div>
+                                                            <div className="text-sm text-gray-400">{card.year} {card.grade}</div>
+                                                        </div>
+                                                        <div className="text-right">
+                                                            <div className="text-cyan-400 font-mono">${card.price.toLocaleString()}</div>
+                                                            <div className="text-green-400 font-bold">+{card.upside}%</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    <div className="cyber-card rounded-2xl p-6">
+                                        <div className="flex items-center gap-3 mb-4">
+                                            <div className="text-2xl">💎</div>
+                                            <h4 className="text-xl font-bold text-cyan-400">RAW GRADING OPPORTUNITIES</h4>
+                                        </div>
+                                        <div className="space-y-4">
+                                            <div className="cyber-card p-4 rounded-xl">
+                                                <div className="flex items-center gap-4">
+                                                    <div className="text-3xl">🏀</div>
+                                                    <div className="flex-1">
+                                                        <div className="font-bold text-white">Luka Dončić</div>
+                                                        <div className="text-sm text-gray-400">2020 Prizm</div>
+                                                    </div>
+                                                    <div className="text-right">
+                                                        <div className="text-cyan-400 font-mono">$450</div>
+                                                        <div className="text-green-400 font-bold">+$2,300</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="cyber-card p-4 rounded-xl">
+                                                <div className="flex items-center gap-4">
+                                                    <div className="text-3xl">🏈</div>
+                                                    <div className="flex-1">
+                                                        <div className="font-bold text-white">Patrick Mahomes</div>
+                                                        <div className="text-sm text-gray-400">2017 Prizm</div>
+                                                    </div>
+                                                    <div className="text-right">
+                                                        <div className="text-cyan-400 font-mono">$320</div>
+                                                        <div className="text-green-400 font-bold">+$1,480</div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            )}
-                            
-                            {activeTab === 'oracle' && (
-                                <div id="oracle-section">
-                                    <h3 className="text-3xl font-bold text-cyan-400 mb-6">🔮 AI Oracle</h3>
-                                    <p className="text-gray-300 mb-8 text-lg">Ask the AI Oracle anything about sports cards, market trends, and investment strategies.</p>
-                                    
-                                    <div className="space-y-6">
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                            <div>
-                                                <h4 className="text-xl font-bold text-cyan-400 mb-4">Ask Your Question:</h4>
-                                                <textarea 
-                                                    placeholder="What's the best investment strategy for rookie cards? Which players should I focus on? What are the current market trends?"
-                                                    className="w-full bg-gray-800 border border-cyan-500/50 rounded-xl px-6 py-4 text-white placeholder-gray-400 h-32 resize-none"
-                                                />
-                                                <button 
-                                                    onClick={() => alert('Oracle is analyzing your question... This would connect to advanced AI and provide detailed insights about sports card investments!')}
-                                                    className="quantum-btn px-6 py-3 rounded-xl mt-4 w-full"
-                                                >
-                                                    Ask Oracle
-                                                </button>
-                                            </div>
-                                            
-                                            <div>
-                                                <h4 className="text-xl font-bold text-cyan-400 mb-4">Oracle Capabilities:</h4>
-                                                <ul className="space-y-2 text-gray-300">
-                                                    <li className="flex items-center gap-2">
-                                                        <span className="text-purple-400">🔮</span>
-                                                        Market trend analysis
-                                                    </li>
-                                                    <li className="flex items-center gap-2">
-                                                        <span className="text-purple-400">🔮</span>
-                                                        Investment recommendations
-                                                    </li>
-                                                    <li className="flex items-center gap-2">
-                                                        <span className="text-purple-400">🔮</span>
-                                                        Player performance predictions
-                                                    </li>
-                                                    <li className="flex items-center gap-2">
-                                                        <span className="text-purple-400">🔮</span>
-                                                        Card value forecasting
-                                                    </li>
-                                                </ul>
-                                            </div>
+                            </div>
+                        )}
+                        
+                        {activeTab === 'oracle' && (
+                            <div id="oracle-section" className="space-y-8">
+                                {/* Oracle Hero Section */}
+                                <div className="text-center mb-12">
+                                    <h2 className="text-6xl font-bold holographic-text orbitron mb-4">
+                                        🔮 AI ORACLE
+                                    </h2>
+                                    <p className="text-xl text-gray-300 mb-8">
+                                        Expert Investment Advisor • Market Intelligence • Predictive Analytics
+                                    </p>
+                                </div>
+
+                                {/* Oracle Main Section */}
+                                <div className="glass-morphism rounded-3xl p-8">
+                                    <div className="text-center mb-8">
+                                        <div className="flex items-center justify-center gap-3 mb-4">
+                                            <div className="text-3xl">🤖</div>
+                                            <h3 className="text-3xl font-bold text-cyan-400">AI ORACLE</h3>
                                         </div>
+                                        <p className="text-gray-300 text-lg">Expert investment advisor</p>
+                                    </div>
+
+                                    <div className="text-center mb-8">
+                                        <div className="text-6xl mb-4">🔮</div>
+                                        <h4 className="text-2xl font-bold text-cyan-400 mb-2">Welcome to the AI Oracle!</h4>
+                                        <p className="text-gray-300">Ask me anything about trading card investments</p>
+                                    </div>
+
+                                    <div className="grid grid-cols-2 gap-4 mb-8">
+                                        <button className="cyber-card p-4 rounded-xl text-left hover:scale-105 transition-transform">
+                                            <div className="font-bold text-cyan-400">What should I buy right now?</div>
+                                        </button>
+                                        <button className="cyber-card p-4 rounded-xl text-left hover:scale-105 transition-transform">
+                                            <div className="font-bold text-cyan-400">Analyze current market trends</div>
+                                        </button>
+                                        <button className="cyber-card p-4 rounded-xl text-left hover:scale-105 transition-transform">
+                                            <div className="font-bold text-cyan-400">Tell me about Victor Wembanyama</div>
+                                        </button>
+                                        <button className="cyber-card p-4 rounded-xl text-left hover:scale-105 transition-transform">
+                                            <div className="font-bold text-cyan-400">Best investment strategy?</div>
+                                        </button>
+                                    </div>
+
+                                    <div className="flex gap-4">
+                                        <input 
+                                            type="text" 
+                                            placeholder="Ask me about trading cards..."
+                                            className="flex-1 bg-gray-800 border border-cyan-500/50 rounded-xl px-6 py-4 text-white placeholder-gray-400"
+                                        />
+                                        <button 
+                                            onClick={() => alert('Oracle is analyzing your question... This would connect to advanced AI and provide detailed insights!')}
+                                            className="quantum-btn px-6 py-4 rounded-xl"
+                                        >
+                                            Send
+                                        </button>
                                     </div>
                                 </div>
-                            )}
-                            
-                            {activeTab === 'portfolio' && (
-                                <div id="portfolio-section">
-                                    <h3 className="text-3xl font-bold text-cyan-400 mb-6">💼 Portfolio Center</h3>
-                                    <p className="text-gray-300 mb-8 text-lg">Track your collection, monitor performance, and manage your sports card investments.</p>
+                            </div>
+                        )}
+                        
+                        {activeTab === 'portfolio' && (
+                            <div id="portfolio-section" className="space-y-8">
+                                {/* Portfolio Hero Section */}
+                                <div className="text-center mb-12">
+                                    <h2 className="text-6xl font-bold holographic-text orbitron mb-4">
+                                        💼 PORTFOLIO CENTER
+                                    </h2>
+                                    <p className="text-xl text-gray-300 mb-8">
+                                        Collection Management • Performance Tracking • Investment Analytics
+                                    </p>
+                                </div>
+
+                                {/* Portfolio Main Section */}
+                                <div className="glass-morphism rounded-3xl p-8">
+                                    <div className="text-center mb-8">
+                                        <h3 className="text-3xl font-bold text-cyan-400 mb-4">💼 Portfolio Center</h3>
+                                        <p className="text-gray-300 text-lg">Track your collection, monitor performance, and manage your sports card investments.</p>
+                                    </div>
                                     
                                     <div className="space-y-8">
                                         <div className="grid grid-cols-3 gap-4 mb-6">
@@ -453,8 +550,8 @@
                                         </div>
                                     </div>
                                 </div>
-                            )}
-                        </div>
+                            </div>
+                        )}
                     </main>
 
                     {/* Footer */}
