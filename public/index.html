@@ -170,28 +170,40 @@
                             {/* Feature Buttons */}
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
                                 <button 
-                                    onClick={() => setActiveTab('grader')}
+                                    onClick={() => {
+                                        setActiveTab('grader');
+                                        document.getElementById('grader-section').scrollIntoView({ behavior: 'smooth' });
+                                    }}
                                     className="cyber-card p-6 rounded-2xl text-center hover:scale-105 transition-transform cursor-pointer"
                                 >
                                     <div className="text-4xl mb-2">🧠</div>
                                     <div className="font-bold text-cyan-400">QUANTUM AI GRADER</div>
                                 </button>
                                 <button 
-                                    onClick={() => setActiveTab('scanner')}
+                                    onClick={() => {
+                                        setActiveTab('scanner');
+                                        document.getElementById('scanner-section').scrollIntoView({ behavior: 'smooth' });
+                                    }}
                                     className="cyber-card p-6 rounded-2xl text-center hover:scale-105 transition-transform cursor-pointer"
                                 >
                                     <div className="text-4xl mb-2">🚀</div>
                                     <div className="font-bold text-cyan-400">EBAY QUANTUM SCANNER</div>
                                 </button>
                                 <button 
-                                    onClick={() => setActiveTab('oracle')}
+                                    onClick={() => {
+                                        setActiveTab('oracle');
+                                        document.getElementById('oracle-section').scrollIntoView({ behavior: 'smooth' });
+                                    }}
                                     className="cyber-card p-6 rounded-2xl text-center hover:scale-105 transition-transform cursor-pointer"
                                 >
                                     <div className="text-4xl mb-2">🔮</div>
                                     <div className="font-bold text-cyan-400">AI ORACLE</div>
                                 </button>
                                 <button 
-                                    onClick={() => setActiveTab('portfolio')}
+                                    onClick={() => {
+                                        setActiveTab('portfolio');
+                                        document.getElementById('portfolio-section').scrollIntoView({ behavior: 'smooth' });
+                                    }}
                                     className="cyber-card p-6 rounded-2xl text-center hover:scale-105 transition-transform cursor-pointer"
                                 >
                                     <div className="text-4xl mb-2">💼</div>
@@ -273,74 +285,173 @@
                             )}
                             
                             {activeTab === 'grader' && (
-                                <div>
-                                    <h3 className="text-2xl font-bold text-cyan-400 mb-4">🤖 AI Card Grader</h3>
-                                    <p className="text-gray-300 mb-6">Upload card images for AI-powered condition analysis.</p>
-                                    <div className="border-2 border-dashed border-cyan-400/50 rounded-2xl p-8 text-center">
-                                        <div className="text-6xl mb-4">📸</div>
-                                        <p className="text-cyan-400 font-bold mb-2">Upload Card Images</p>
-                                        <p className="text-gray-400 text-sm">Drag and drop or click to select</p>
+                                <div id="grader-section">
+                                    <h3 className="text-3xl font-bold text-cyan-400 mb-6">🤖 AI Card Grader</h3>
+                                    <p className="text-gray-300 mb-8 text-lg">Upload card images for AI-powered condition analysis and grading.</p>
+                                    
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                        <div className="border-2 border-dashed border-cyan-400/50 rounded-2xl p-8 text-center hover:border-cyan-400 transition-colors">
+                                            <div className="text-6xl mb-4">📸</div>
+                                            <p className="text-cyan-400 font-bold mb-2 text-xl">Upload Card Images</p>
+                                            <p className="text-gray-400 text-sm">Drag and drop or click to select</p>
+                                            <button className="quantum-btn px-6 py-3 rounded-xl mt-4">
+                                                Choose Files
+                                            </button>
+                                        </div>
+                                        
+                                        <div className="space-y-4">
+                                            <h4 className="text-xl font-bold text-cyan-400">AI Analysis Features:</h4>
+                                            <ul className="space-y-2 text-gray-300">
+                                                <li className="flex items-center gap-2">
+                                                    <span className="text-green-400">✓</span>
+                                                    Corner condition analysis
+                                                </li>
+                                                <li className="flex items-center gap-2">
+                                                    <span className="text-green-400">✓</span>
+                                                    Surface defect detection
+                                                </li>
+                                                <li className="flex items-center gap-2">
+                                                    <span className="text-green-400">✓</span>
+                                                    Centering evaluation
+                                                </li>
+                                                <li className="flex items-center gap-2">
+                                                    <span className="text-green-400">✓</span>
+                                                    PSA/BGS grade prediction
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
                             )}
                             
                             {activeTab === 'scanner' && (
-                                <div>
-                                    <h3 className="text-2xl font-bold text-cyan-400 mb-4">🎯 Market Scanner</h3>
-                                    <p className="text-gray-300 mb-6">Scan the market for profitable opportunities.</p>
-                                    <button 
-                                        onClick={() => alert('Market scanning in progress... This would connect to eBay API!')}
-                                        className="quantum-btn px-8 py-4 rounded-2xl cursor-pointer"
-                                    >
-                                        🔍 Scan Market Now
-                                    </button>
+                                <div id="scanner-section">
+                                    <h3 className="text-3xl font-bold text-cyan-400 mb-6">🚀 eBay Quantum Scanner</h3>
+                                    <p className="text-gray-300 mb-8 text-lg">Scan eBay for profitable sports card opportunities using advanced AI algorithms.</p>
+                                    
+                                    <div className="space-y-6">
+                                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                            <div className="cyber-card p-4 rounded-xl text-center">
+                                                <div className="text-2xl mb-2">🔍</div>
+                                                <h4 className="font-bold text-cyan-400">Search Cards</h4>
+                                                <p className="text-sm text-gray-400">Find specific players or sets</p>
+                                            </div>
+                                            <div className="cyber-card p-4 rounded-xl text-center">
+                                                <div className="text-2xl mb-2">📊</div>
+                                                <h4 className="font-bold text-cyan-400">Analyze Prices</h4>
+                                                <p className="text-sm text-gray-400">Compare market values</p>
+                                            </div>
+                                            <div className="cyber-card p-4 rounded-xl text-center">
+                                                <div className="text-2xl mb-2">💰</div>
+                                                <h4 className="font-bold text-cyan-400">Find Deals</h4>
+                                                <p className="text-sm text-gray-400">Identify undervalued cards</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div className="text-center">
+                                            <button 
+                                                onClick={() => alert('eBay Quantum Scanner activated! This would connect to eBay API and start scanning for opportunities...')}
+                                                className="quantum-btn px-8 py-4 rounded-2xl cursor-pointer text-lg"
+                                            >
+                                                🔍 Start Quantum Scan
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                             )}
                             
                             {activeTab === 'oracle' && (
-                                <div>
-                                    <h3 className="text-2xl font-bold text-cyan-400 mb-4">🔮 AI Oracle</h3>
-                                    <p className="text-gray-300 mb-6">Ask the AI Oracle anything about sports cards.</p>
-                                    <div className="space-y-4">
-                                        <input 
-                                            type="text" 
-                                            placeholder="Ask me anything about sports cards..."
-                                            className="w-full bg-gray-800 border border-cyan-500/50 rounded-xl px-6 py-4 text-white placeholder-gray-400"
-                                        />
-                                        <button 
-                                            onClick={() => alert('Oracle is analyzing your question... This would connect to AI!')}
-                                            className="quantum-btn px-8 py-4 rounded-2xl cursor-pointer"
-                                        >
-                                            Ask Oracle
-                                        </button>
+                                <div id="oracle-section">
+                                    <h3 className="text-3xl font-bold text-cyan-400 mb-6">🔮 AI Oracle</h3>
+                                    <p className="text-gray-300 mb-8 text-lg">Ask the AI Oracle anything about sports cards, market trends, and investment strategies.</p>
+                                    
+                                    <div className="space-y-6">
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                            <div>
+                                                <h4 className="text-xl font-bold text-cyan-400 mb-4">Ask Your Question:</h4>
+                                                <textarea 
+                                                    placeholder="What's the best investment strategy for rookie cards? Which players should I focus on? What are the current market trends?"
+                                                    className="w-full bg-gray-800 border border-cyan-500/50 rounded-xl px-6 py-4 text-white placeholder-gray-400 h-32 resize-none"
+                                                />
+                                                <button 
+                                                    onClick={() => alert('Oracle is analyzing your question... This would connect to advanced AI and provide detailed insights about sports card investments!')}
+                                                    className="quantum-btn px-6 py-3 rounded-xl mt-4 w-full"
+                                                >
+                                                    Ask Oracle
+                                                </button>
+                                            </div>
+                                            
+                                            <div>
+                                                <h4 className="text-xl font-bold text-cyan-400 mb-4">Oracle Capabilities:</h4>
+                                                <ul className="space-y-2 text-gray-300">
+                                                    <li className="flex items-center gap-2">
+                                                        <span className="text-purple-400">🔮</span>
+                                                        Market trend analysis
+                                                    </li>
+                                                    <li className="flex items-center gap-2">
+                                                        <span className="text-purple-400">🔮</span>
+                                                        Investment recommendations
+                                                    </li>
+                                                    <li className="flex items-center gap-2">
+                                                        <span className="text-purple-400">🔮</span>
+                                                        Player performance predictions
+                                                    </li>
+                                                    <li className="flex items-center gap-2">
+                                                        <span className="text-purple-400">🔮</span>
+                                                        Card value forecasting
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             )}
                             
                             {activeTab === 'portfolio' && (
-                                <div>
-                                    <h3 className="text-2xl font-bold text-cyan-400 mb-4">💼 Portfolio Center</h3>
-                                    <p className="text-gray-300 mb-6">Track your collection and performance.</p>
-                                    <div className="grid grid-cols-3 gap-4 mb-6">
-                                        <div className="bg-blue-900/30 rounded-xl p-4 text-center">
-                                            <div className="text-2xl font-bold text-blue-400">$0</div>
-                                            <div className="text-sm text-gray-400">Total Value</div>
+                                <div id="portfolio-section">
+                                    <h3 className="text-3xl font-bold text-cyan-400 mb-6">💼 Portfolio Center</h3>
+                                    <p className="text-gray-300 mb-8 text-lg">Track your collection, monitor performance, and manage your sports card investments.</p>
+                                    
+                                    <div className="space-y-8">
+                                        <div className="grid grid-cols-3 gap-4 mb-6">
+                                            <div className="bg-blue-900/30 rounded-xl p-6 text-center">
+                                                <div className="text-3xl font-bold text-blue-400 mb-2">$0</div>
+                                                <div className="text-sm text-gray-400">Total Value</div>
+                                            </div>
+                                            <div className="bg-green-900/30 rounded-xl p-6 text-center">
+                                                <div className="text-3xl font-bold text-green-400 mb-2">0</div>
+                                                <div className="text-sm text-gray-400">Cards Owned</div>
+                                            </div>
+                                            <div className="bg-yellow-900/30 rounded-xl p-6 text-center">
+                                                <div className="text-3xl font-bold text-yellow-400 mb-2">0%</div>
+                                                <div className="text-sm text-gray-400">ROI</div>
+                                            </div>
                                         </div>
-                                        <div className="bg-green-900/30 rounded-xl p-4 text-center">
-                                            <div className="text-2xl font-bold text-green-400">0</div>
-                                            <div className="text-sm text-gray-400">Cards</div>
-                                        </div>
-                                        <div className="bg-yellow-900/30 rounded-xl p-4 text-center">
-                                            <div className="text-2xl font-bold text-yellow-400">0%</div>
-                                            <div className="text-sm text-gray-400">ROI</div>
+                                        
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                            <div className="cyber-card p-6 rounded-xl">
+                                                <h4 className="text-xl font-bold text-cyan-400 mb-4">Add New Card</h4>
+                                                <p className="text-gray-300 mb-4">Add cards to your portfolio to track their value and performance.</p>
+                                                <button 
+                                                    onClick={() => alert('Add Card feature coming soon! This would open a comprehensive card upload and tracking form.')}
+                                                    className="quantum-btn px-6 py-3 rounded-xl w-full"
+                                                >
+                                                    ➕ Add Card to Portfolio
+                                                </button>
+                                            </div>
+                                            
+                                            <div className="cyber-card p-6 rounded-xl">
+                                                <h4 className="text-xl font-bold text-cyan-400 mb-4">Portfolio Analytics</h4>
+                                                <p className="text-gray-300 mb-4">View detailed analytics and performance metrics for your collection.</p>
+                                                <button 
+                                                    onClick={() => alert('Portfolio Analytics coming soon! This would show detailed charts and performance data.')}
+                                                    className="quantum-btn px-6 py-3 rounded-xl w-full"
+                                                >
+                                                    📊 View Analytics
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
-                                    <button 
-                                        onClick={() => alert('Add Card feature coming soon! This would open a card upload form.')}
-                                        className="quantum-btn px-8 py-4 rounded-2xl cursor-pointer"
-                                    >
-                                        ➕ Add Card
-                                    </button>
                                 </div>
                             )}
                         </div>
