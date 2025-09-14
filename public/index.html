@@ -624,72 +624,190 @@
             const questionLower = question.toLowerCase();
             let response = '';
             
-            // Specific player analysis
-            if (questionLower.includes('wembanyama') || questionLower.includes('victor')) {
-                if (questionLower.includes('sell')) {
-                    response = '❌ NO - Don\'t sell Victor Wembanyama! He\'s a 7\'4" generational talent, #1 overall pick. His rookie cards are up 400% this year and will continue rising. PSA 10 Prizm base: $2,500+ now, could hit $5,000+ in 2-3 years. HOLD for maximum profit!';
-                } else if (questionLower.includes('buy')) {
-                    response = '✅ YES - Buy Victor Wembanyama now! 7\'4" French phenom with unlimited potential. Rookie cards exploding! PSA 10 Prizm base: $2,500+ (up 400% this year). Long-term superstar - this is your chance!';
-                } else {
-                    response = '🏀 VICTOR WEMBANYAMA: 7\'4" French phenom, #1 overall pick. Rookie cards exploding! PSA 10 Prizm base: $2,500+ (up 400% this year). Long-term superstar potential - buy now!';
-                }
-            } else if (questionLower.includes('jalen hurts') || questionLower.includes('hurts')) {
-                if (questionLower.includes('sell')) {
-                    response = '🤔 MAYBE - Jalen Hurts is solid but not elite. His cards peaked after Super Bowl run. If you have PSA 10s, consider selling now ($800-1,200). If raw or lower grades, hold for next season. Eagles need to improve for his value to rise.';
-                } else if (questionLower.includes('buy')) {
-                    response = '⚠️ CAUTION - Jalen Hurts cards are overpriced right now. His rookie cards are $500-800 raw, but he\'s not a generational talent. Better options: Mahomes, Allen, or 2024 rookies. Only buy if under $300.';
-                } else if (questionLower.includes('grade')) {
-                    response = '📋 GRADING JALEN HURTS: If you expect PSA 9, YES grade it! Raw sells for $400-600, PSA 9 sells for $800-1,200. Cost: $25-50 grading + $20-30 shipping. Profit: $300-600 after costs. Worth it if card is clean!';
-                } else {
-                    response = '🏈 JALEN HURTS: Solid QB but not elite. Cards peaked after Super Bowl run. PSA 10 rookie: $1,200-1,500. Better long-term options: Mahomes, Allen, or 2024 rookies.';
-                }
-            } else if (questionLower.includes('jordan') || questionLower.includes('michael')) {
-                if (questionLower.includes('sell')) {
-                    response = '❌ NEVER SELL - Michael Jordan is the GOAT! His cards are the safest long-term investment. 1986 Fleer PSA 10: $50,000+ and still rising. Hold forever - this is generational wealth!';
-                } else if (questionLower.includes('buy')) {
-                    response = '✅ YES - Always buy Michael Jordan! The GOAT! 1986 Fleer rookie is the holy grail. PSA 10 sells for $50,000+. 1986-87 cards are gold. Always a safe long-term investment!';
-                } else {
-                    response = '🏀 MICHAEL JORDAN: The GOAT! 1986 Fleer rookie is the holy grail. PSA 10 sells for $50,000+. 1986-87 cards are gold. Always a safe long-term investment!';
-                }
-            } else if (questionLower.includes('lebron') || questionLower.includes('james')) {
-                if (questionLower.includes('sell')) {
-                    response = '🤔 TIMING - LeBron has 2-3 years left. His cards are stable but not growing much. If you need money, sell now. If you can hold, wait for retirement announcement - that\'s when they\'ll spike!';
-                } else if (questionLower.includes('buy')) {
-                    response = '⚠️ CAUTION - LeBron cards are expensive and not growing much. 2003 Topps Chrome PSA 10: $3,000+. Better options: 2024 rookies or younger stars. Only buy if you\'re a collector, not investor.';
-                } else {
-                    response = '🏀 LEBRON JAMES: 2003 Topps Chrome rookie is iconic. PSA 10 sells for $3,000+. 2003-04 cards are his rookie year. Still has 2-3 years left in career!';
-                }
-            } else if (questionLower.includes('mahomes') || questionLower.includes('patrick')) {
-                if (questionLower.includes('sell')) {
-                    response = '❌ NO - Don\'t sell Mahomes! He\'s the best QB in the league, 2x Super Bowl winner. His cards are still growing. PSA 10 rookie: $1,500+ and rising. Hold for 5+ years - he\'s your safest bet!';
-                } else if (questionLower.includes('buy')) {
-                    response = '✅ YES - Buy Mahomes! Best QB in the league, 2x Super Bowl winner. 2017 Prizm rookie PSA 10: $1,500+. Football cards trending up 20% this year. He\'s your safest long-term investment!';
-                } else {
-                    response = '🏈 PATRICK MAHOMES: 2017 Prizm rookie is hot! PSA 10 sells for $1,500+. Super Bowl winner, MVP. Football cards trending up 20% this year!';
-                }
-            } else if (questionLower.includes('grade')) {
-                if (questionLower.includes('9') || questionLower.includes('nine')) {
-                    response = '✅ YES - Grade if you expect PSA 9! Raw cards sell for 50-70% of graded value. PSA 9 typically sells for 2-3x raw price. Cost: $25-50 grading + shipping. Profit margin: 100-200% after costs. Worth it!';
-                } else if (questionLower.includes('10') || questionLower.includes('ten')) {
-                    response = '✅ DEFINITELY - Grade if you expect PSA 10! Raw to PSA 10 is 3-5x value increase. Cost: $25-50 grading. Profit: 200-400% after costs. This is where the real money is made!';
-                } else if (questionLower.includes('8') || questionLower.includes('eight')) {
-                    response = '❌ NO - Don\'t grade if you expect PSA 8. Raw and PSA 8 sell for similar prices. You\'ll lose money on grading costs ($25-50). Only grade if you\'re confident it\'s a 9 or 10.';
-                } else {
-                    response = '📋 GRADING ADVICE: Only grade if you expect PSA 9+ or BGS 9.5+. Raw cards sell for 50-70% of graded value. Cost: $25-50 grading + $20-30 shipping. Profit margin needs to be 100%+ to be worth it!';
-                }
-            } else if (questionLower.includes('sell')) {
-                response = '🤔 SELLING ADVICE: Depends on the player and your situation. Elite players (Jordan, Mahomes, Wembanyama): HOLD. Mid-tier players: Consider selling if you need money. Always check current market prices first!';
-            } else if (questionLower.includes('buy')) {
-                response = '💡 BUYING ADVICE: Focus on 2023-2024 rookies! Victor Wembanyama, Anthony Richardson, Bryce Young. Buy PSA 9+ grades. Hold 3-5 years minimum for best returns. Avoid overpriced veterans!';
-            } else if (questionLower.includes('trend') || questionLower.includes('market')) {
-                response = '📊 MARKET TRENDS: Basketball up 15%, Football up 8%, Baseball stable. Rookie cards outperforming veterans. PSA 9+ grades preferred. Focus on top draft picks!';
-            } else if (questionLower.includes('invest') || questionLower.includes('investment')) {
-                response = '💡 INVESTMENT STRATEGY: 1) Focus on rookies from top 5 draft picks 2) Buy PSA 9+ grades only 3) Hold 3-5 years minimum 4) Diversify across sports 5) Monitor player performance closely!';
-            } else {
-                response = '🔮 ORACLE RESPONSE: I need more specific information! Ask me about specific players (like "Should I sell Jalen Hurts?" or "Should I grade this card?"), market trends, or investment strategies. Be specific for the best advice!';
-            }
+            // Add typing indicator
+            addMessageToChat('🔮 Analyzing your question...', 'oracle');
             
-            addMessageToChat(response, 'oracle');
+            // Simulate research time
+            setTimeout(() => {
+                // Enhanced keyword detection for better understanding
+                const hasSell = questionLower.includes('sell') || questionLower.includes('should i sell') || questionLower.includes('sell now') || questionLower.includes('when to sell');
+                const hasBuy = questionLower.includes('buy') || questionLower.includes('should i buy') || questionLower.includes('buy now') || questionLower.includes('worth buying');
+                const hasGrade = questionLower.includes('grade') || questionLower.includes('grading') || questionLower.includes('psa') || questionLower.includes('bgs') || questionLower.includes('should i grade');
+                const hasValue = questionLower.includes('value') || questionLower.includes('worth') || questionLower.includes('price') || questionLower.includes('how much');
+                const hasInvest = questionLower.includes('invest') || questionLower.includes('investment') || questionLower.includes('long term') || questionLower.includes('hold');
+                
+                // Player detection with more variations
+                const isWembanyama = questionLower.includes('wembanyama') || questionLower.includes('victor') || questionLower.includes('wemby');
+                const isHurts = questionLower.includes('jalen hurts') || questionLower.includes('hurts') || questionLower.includes('jalen');
+                const isJordan = questionLower.includes('jordan') || questionLower.includes('michael jordan') || questionLower.includes('michael') || questionLower.includes('mj');
+                const isLeBron = questionLower.includes('lebron') || questionLower.includes('james') || questionLower.includes('lebron james');
+                const isMahomes = questionLower.includes('mahomes') || questionLower.includes('patrick mahomes') || questionLower.includes('patrick');
+                const isBrady = questionLower.includes('brady') || questionLower.includes('tom brady') || questionLower.includes('tom');
+                const isCurry = questionLower.includes('curry') || questionLower.includes('stephen curry') || questionLower.includes('steph');
+                const isLuka = questionLower.includes('luka') || questionLower.includes('doncic') || questionLower.includes('luka doncic');
+                const isGiannis = questionLower.includes('giannis') || questionLower.includes('antetokounmpo') || questionLower.includes('greek freak');
+                
+                // Grade detection
+                const isPSA9 = questionLower.includes('9') || questionLower.includes('nine') || questionLower.includes('psa 9');
+                const isPSA10 = questionLower.includes('10') || questionLower.includes('ten') || questionLower.includes('psa 10');
+                const isPSA8 = questionLower.includes('8') || questionLower.includes('eight') || questionLower.includes('psa 8');
+                
+                // Remove previous typing message
+                const chatContainer = document.getElementById('oracle-chat');
+                const lastMessage = chatContainer.lastElementChild;
+                if (lastMessage && lastMessage.textContent.includes('Analyzing your question')) {
+                    lastMessage.remove();
+                }
+                
+                // Victor Wembanyama Analysis
+                if (isWembanyama) {
+                    if (hasSell) {
+                        response = '❌ NO - Don\'t sell Victor Wembanyama! He\'s a 7\'4" generational talent, #1 overall pick. His rookie cards are up 400% this year and will continue rising. PSA 10 Prizm base: $2,500+ now, could hit $5,000+ in 2-3 years. HOLD for maximum profit!';
+                    } else if (hasBuy) {
+                        response = '✅ YES - Buy Victor Wembanyama now! 7\'4" French phenom with unlimited potential. Rookie cards exploding! PSA 10 Prizm base: $2,500+ (up 400% this year). Long-term superstar - this is your chance!';
+                    } else if (hasValue) {
+                        response = '💰 VICTOR WEMBANYAMA VALUES: Raw Prizm base: $800-1,200. PSA 9: $1,800-2,200. PSA 10: $2,500-3,000. Up 400% this year! Still undervalued compared to his potential.';
+                    } else {
+                        response = '🏀 VICTOR WEMBANYAMA: 7\'4" French phenom, #1 overall pick. Rookie cards exploding! PSA 10 Prizm base: $2,500+ (up 400% this year). Long-term superstar potential - buy now!';
+                    }
+                }
+                // Jalen Hurts Analysis
+                else if (isHurts) {
+                    if (hasSell) {
+                        response = '🤔 MAYBE - Jalen Hurts is solid but not elite. His cards peaked after Super Bowl run. If you have PSA 10s, consider selling now ($800-1,200). If raw or lower grades, hold for next season. Eagles need to improve for his value to rise.';
+                    } else if (hasBuy) {
+                        response = '⚠️ CAUTION - Jalen Hurts cards are overpriced right now. His rookie cards are $500-800 raw, but he\'s not a generational talent. Better options: Mahomes, Allen, or 2024 rookies. Only buy if under $300.';
+                    } else if (hasGrade) {
+                        response = '📋 GRADING JALEN HURTS: If you expect PSA 9, YES grade it! Raw sells for $400-600, PSA 9 sells for $800-1,200. Cost: $25-50 grading + $20-30 shipping. Profit: $300-600 after costs. Worth it if card is clean!';
+                    } else if (hasValue) {
+                        response = '💰 JALEN HURTS VALUES: Raw rookie: $400-600. PSA 9: $800-1,200. PSA 10: $1,200-1,500. Peaked after Super Bowl, now stable. Not growing much.';
+                    } else {
+                        response = '🏈 JALEN HURTS: Solid QB but not elite. Cards peaked after Super Bowl run. PSA 10 rookie: $1,200-1,500. Better long-term options: Mahomes, Allen, or 2024 rookies.';
+                    }
+                }
+                // Michael Jordan Analysis
+                else if (isJordan) {
+                    if (hasSell) {
+                        response = '❌ NEVER SELL - Michael Jordan is the GOAT! His cards are the safest long-term investment. 1986 Fleer PSA 10: $50,000+ and still rising. Hold forever - this is generational wealth!';
+                    } else if (hasBuy) {
+                        response = '✅ YES - Always buy Michael Jordan! The GOAT! 1986 Fleer rookie is the holy grail. PSA 10 sells for $50,000+. 1986-87 cards are gold. Always a safe long-term investment!';
+                    } else if (hasValue) {
+                        response = '💰 MICHAEL JORDAN VALUES: 1986 Fleer PSA 10: $50,000+. 1987 Fleer PSA 10: $15,000+. 1988 Fleer PSA 10: $8,000+. Always rising. The safest investment in cards.';
+                    } else {
+                        response = '🏀 MICHAEL JORDAN: The GOAT! 1986 Fleer rookie is the holy grail. PSA 10 sells for $50,000+. 1986-87 cards are gold. Always a safe long-term investment!';
+                    }
+                }
+                // LeBron James Analysis
+                else if (isLeBron) {
+                    if (hasSell) {
+                        response = '🤔 TIMING - LeBron has 2-3 years left. His cards are stable but not growing much. If you need money, sell now. If you can hold, wait for retirement announcement - that\'s when they\'ll spike!';
+                    } else if (hasBuy) {
+                        response = '⚠️ CAUTION - LeBron cards are expensive and not growing much. 2003 Topps Chrome PSA 10: $3,000+. Better options: 2024 rookies or younger stars. Only buy if you\'re a collector, not investor.';
+                    } else if (hasValue) {
+                        response = '💰 LEBRON JAMES VALUES: 2003 Topps Chrome PSA 10: $3,000+. 2003 Topps PSA 10: $1,500+. 2004 Topps PSA 10: $800+. Stable but not growing much.';
+                    } else {
+                        response = '🏀 LEBRON JAMES: 2003 Topps Chrome rookie is iconic. PSA 10 sells for $3,000+. 2003-04 cards are his rookie year. Still has 2-3 years left in career!';
+                    }
+                }
+                // Patrick Mahomes Analysis
+                else if (isMahomes) {
+                    if (hasSell) {
+                        response = '❌ NO - Don\'t sell Mahomes! He\'s the best QB in the league, 2x Super Bowl winner. His cards are still growing. PSA 10 rookie: $1,500+ and rising. Hold for 5+ years - he\'s your safest bet!';
+                    } else if (hasBuy) {
+                        response = '✅ YES - Buy Mahomes! Best QB in the league, 2x Super Bowl winner. 2017 Prizm rookie PSA 10: $1,500+. Football cards trending up 20% this year. He\'s your safest long-term investment!';
+                    } else if (hasValue) {
+                        response = '💰 PATRICK MAHOMES VALUES: 2017 Prizm PSA 10: $1,500+. 2017 Topps PSA 10: $800+. 2018 Prizm PSA 10: $600+. Still growing, best QB in league.';
+                    } else {
+                        response = '🏈 PATRICK MAHOMES: 2017 Prizm rookie is hot! PSA 10 sells for $1,500+. Super Bowl winner, MVP. Football cards trending up 20% this year!';
+                    }
+                }
+                // Tom Brady Analysis
+                else if (isBrady) {
+                    if (hasSell) {
+                        response = '🤔 TIMING - Brady is retired, cards are stable. If you need money, sell now. If you can hold, wait for Hall of Fame induction - that\'s when they\'ll spike!';
+                    } else if (hasBuy) {
+                        response = '⚠️ CAUTION - Brady cards are expensive and not growing much. 2000 Topps Chrome PSA 10: $2,000+. Better options: Current stars or rookies. Only buy if you\'re a collector.';
+                    } else if (hasValue) {
+                        response = '💰 TOM BRADY VALUES: 2000 Topps Chrome PSA 10: $2,000+. 2000 Topps PSA 10: $1,000+. 2001 Topps PSA 10: $500+. Stable but not growing much.';
+                    } else {
+                        response = '🏈 TOM BRADY: GOAT QB, 7x Super Bowl winner. 2000 Topps Chrome PSA 10: $2,000+. Retired, cards are stable but not growing much.';
+                    }
+                }
+                // Stephen Curry Analysis
+                else if (isCurry) {
+                    if (hasSell) {
+                        response = '🤔 TIMING - Curry has 2-3 years left. His cards are stable but not growing much. If you need money, sell now. If you can hold, wait for retirement announcement.';
+                    } else if (hasBuy) {
+                        response = '⚠️ CAUTION - Curry cards are expensive and not growing much. 2009 Topps Chrome PSA 10: $2,500+. Better options: 2024 rookies or younger stars.';
+                    } else if (hasValue) {
+                        response = '💰 STEPHEN CURRY VALUES: 2009 Topps Chrome PSA 10: $2,500+. 2009 Topps PSA 10: $1,200+. 2010 Topps PSA 10: $800+. Stable but not growing much.';
+                    } else {
+                        response = '🏀 STEPHEN CURRY: 4x NBA champion, 3-point king. 2009 Topps Chrome PSA 10: $2,500+. Still playing but cards are stable.';
+                    }
+                }
+                // Luka Doncic Analysis
+                else if (isLuka) {
+                    if (hasSell) {
+                        response = '❌ NO - Don\'t sell Luka! He\'s a generational talent, 25 years old. His cards are still growing. PSA 10 rookie: $1,200+ and rising. Hold for 5+ years - he\'s your best bet!';
+                    } else if (hasBuy) {
+                        response = '✅ YES - Buy Luka! Generational talent, 25 years old. 2018 Prizm PSA 10: $1,200+. Still growing, best young player in NBA. Great long-term investment!';
+                    } else if (hasValue) {
+                        response = '💰 LUKA DONCIC VALUES: 2018 Prizm PSA 10: $1,200+. 2018 Topps Chrome PSA 10: $800+. 2019 Prizm PSA 10: $600+. Still growing, generational talent.';
+                    } else {
+                        response = '🏀 LUKA DONCIC: Generational talent, 25 years old. 2018 Prizm PSA 10: $1,200+. Still growing, best young player in NBA. Great long-term investment!';
+                    }
+                }
+                // Giannis Antetokounmpo Analysis
+                else if (isGiannis) {
+                    if (hasSell) {
+                        response = '🤔 TIMING - Giannis is 29, still in prime. His cards are stable but not growing much. If you need money, sell now. If you can hold, wait for retirement announcement.';
+                    } else if (hasBuy) {
+                        response = '⚠️ CAUTION - Giannis cards are expensive and not growing much. 2013 Prizm PSA 10: $1,500+. Better options: 2024 rookies or younger stars.';
+                    } else if (hasValue) {
+                        response = '💰 GIANNIS VALUES: 2013 Prizm PSA 10: $1,500+. 2013 Topps Chrome PSA 10: $800+. 2014 Prizm PSA 10: $600+. Stable but not growing much.';
+                    } else {
+                        response = '🏀 GIANNIS ANTETOKOUNMPO: 2x MVP, 1x champion. 2013 Prizm PSA 10: $1,500+. Still in prime but cards are stable.';
+                    }
+                }
+                // Grading Analysis
+                else if (hasGrade) {
+                    if (isPSA10) {
+                        response = '✅ DEFINITELY - Grade if you expect PSA 10! Raw to PSA 10 is 3-5x value increase. Cost: $25-50 grading. Profit: 200-400% after costs. This is where the real money is made!';
+                    } else if (isPSA9) {
+                        response = '✅ YES - Grade if you expect PSA 9! Raw cards sell for 50-70% of graded value. PSA 9 typically sells for 2-3x raw price. Cost: $25-50 grading + shipping. Profit margin: 100-200% after costs. Worth it!';
+                    } else if (isPSA8) {
+                        response = '❌ NO - Don\'t grade if you expect PSA 8. Raw and PSA 8 sell for similar prices. You\'ll lose money on grading costs ($25-50). Only grade if you\'re confident it\'s a 9 or 10.';
+                    } else {
+                        response = '📋 GRADING ADVICE: Only grade if you expect PSA 9+ or BGS 9.5+. Raw cards sell for 50-70% of graded value. Cost: $25-50 grading + $20-30 shipping. Profit margin needs to be 100%+ to be worth it!';
+                    }
+                }
+                // General selling advice
+                else if (hasSell) {
+                    response = '🤔 SELLING ADVICE: Depends on the player and your situation. Elite players (Jordan, Mahomes, Wembanyama, Luka): HOLD. Mid-tier players: Consider selling if you need money. Always check current market prices first!';
+                }
+                // General buying advice
+                else if (hasBuy) {
+                    response = '💡 BUYING ADVICE: Focus on 2023-2024 rookies! Victor Wembanyama, Anthony Richardson, Bryce Young. Buy PSA 9+ grades. Hold 3-5 years minimum for best returns. Avoid overpriced veterans!';
+                }
+                // Market trends
+                else if (questionLower.includes('trend') || questionLower.includes('market') || questionLower.includes('market trends')) {
+                    response = '📊 MARKET TRENDS: Basketball up 15%, Football up 8%, Baseball stable. Rookie cards outperforming veterans. PSA 9+ grades preferred. Focus on top draft picks!';
+                }
+                // Investment strategy
+                else if (hasInvest) {
+                    response = '💡 INVESTMENT STRATEGY: 1) Focus on rookies from top 5 draft picks 2) Buy PSA 9+ grades only 3) Hold 3-5 years minimum 4) Diversify across sports 5) Monitor player performance closely!';
+                }
+                // General value questions
+                else if (hasValue) {
+                    response = '💰 VALUE ANALYSIS: Card values depend on player, year, brand, and grade. Rookie cards typically have highest upside. PSA 9+ grades sell for 2-5x raw prices. Always research recent sales before buying/selling!';
+                }
+                // Default response
+                else {
+                    response = '🔮 ORACLE RESPONSE: I need more specific information! Ask me about specific players (like "Should I sell Jalen Hurts?" or "Should I grade this card?"), market trends, or investment strategies. Be specific for the best advice!';
+                }
+                
+                addMessageToChat(response, 'oracle');
+            }, 2000); // 2 second delay for research simulation
         }
 
         // Render the application
