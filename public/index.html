@@ -415,10 +415,25 @@
                                         <p className="text-gray-300">Ask me anything about trading card investments</p>
                                     </div>
 
+                                    {/* Chat Area */}
+                                    <div className="bg-gray-900/50 rounded-2xl p-6 mb-6 h-96 overflow-y-auto">
+                                        <div id="oracle-chat" className="space-y-4">
+                                            <div className="flex items-start gap-3">
+                                                <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold">🔮</div>
+                                                <div className="bg-gray-800 rounded-lg p-4 max-w-3xl">
+                                                    <p className="text-gray-300">Hello! I'm the AI Oracle, your expert trading card investment advisor. Ask me anything about market trends, player analysis, or investment strategies!</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <div className="grid grid-cols-2 gap-4 mb-8">
                                         <button 
                                             onClick={() => {
-                                                alert('🔮 ORACLE INSIGHT: Focus on rookie cards from 2023-2024. Victor Wembanyama, Anthony Richardson, and Bryce Young show strong potential. Look for PSA 10s under $500 for maximum upside!');
+                                                addMessageToChat('What should I buy right now?', 'user');
+                                                setTimeout(() => {
+                                                    addMessageToChat('🔮 ORACLE INSIGHT: Focus on rookie cards from 2023-2024. Victor Wembanyama, Anthony Richardson, and Bryce Young show strong potential. Look for PSA 10s under $500 for maximum upside!', 'oracle');
+                                                }, 1000);
                                             }}
                                             className="cyber-card p-4 rounded-xl text-left hover:scale-105 transition-transform cursor-pointer"
                                         >
@@ -426,7 +441,10 @@
                                         </button>
                                         <button 
                                             onClick={() => {
-                                                alert('📊 MARKET ANALYSIS: Current trends show 15% increase in basketball card values. Football cards up 8%. Baseball cards stable. Focus on graded cards (PSA 9+) for best returns!');
+                                                addMessageToChat('Analyze current market trends', 'user');
+                                                setTimeout(() => {
+                                                    addMessageToChat('📊 MARKET ANALYSIS: Current trends show 15% increase in basketball card values. Football cards up 8%. Baseball cards stable. Focus on graded cards (PSA 9+) for best returns!', 'oracle');
+                                                }, 1000);
                                             }}
                                             className="cyber-card p-4 rounded-xl text-left hover:scale-105 transition-transform cursor-pointer"
                                         >
@@ -434,7 +452,10 @@
                                         </button>
                                         <button 
                                             onClick={() => {
-                                                alert('🏀 VICTOR WEMBANYAMA: 7\'4" French phenom, #1 overall pick. Rookie cards exploding! PSA 10 Prizm base: $2,500+ (up 400% this year). Long-term superstar potential - buy now!');
+                                                addMessageToChat('Tell me about Victor Wembanyama', 'user');
+                                                setTimeout(() => {
+                                                    addMessageToChat('🏀 VICTOR WEMBANYAMA: 7\'4" French phenom, #1 overall pick. Rookie cards exploding! PSA 10 Prizm base: $2,500+ (up 400% this year). Long-term superstar potential - buy now!', 'oracle');
+                                                }, 1000);
                                             }}
                                             className="cyber-card p-4 rounded-xl text-left hover:scale-105 transition-transform cursor-pointer"
                                         >
@@ -442,7 +463,10 @@
                                         </button>
                                         <button 
                                             onClick={() => {
-                                                alert('💡 INVESTMENT STRATEGY: 1) Focus on rookies from top 5 draft picks 2) Buy PSA 9+ grades only 3) Hold 3-5 years minimum 4) Diversify across sports 5) Monitor player performance closely!');
+                                                addMessageToChat('Best investment strategy?', 'user');
+                                                setTimeout(() => {
+                                                    addMessageToChat('💡 INVESTMENT STRATEGY: 1) Focus on rookies from top 5 draft picks 2) Buy PSA 9+ grades only 3) Hold 3-5 years minimum 4) Diversify across sports 5) Monitor player performance closely!', 'oracle');
+                                                }, 1000);
                                             }}
                                             className="cyber-card p-4 rounded-xl text-left hover:scale-105 transition-transform cursor-pointer"
                                         >
@@ -456,31 +480,31 @@
                                             id="oracle-input"
                                             placeholder="Ask me about trading cards..."
                                             className="flex-1 bg-gray-800 border border-cyan-500/50 rounded-xl px-6 py-4 text-white placeholder-gray-400"
+                                            onKeyPress={(e) => {
+                                                if (e.key === 'Enter') {
+                                                    const input = document.getElementById('oracle-input');
+                                                    const question = input.value;
+                                                    if (question.trim()) {
+                                                        addMessageToChat(question, 'user');
+                                                        input.value = '';
+                                                        setTimeout(() => {
+                                                            getOracleResponse(question);
+                                                        }, 1000);
+                                                    }
+                                                }
+                                            }}
                                         />
                                         <button 
                                             onClick={() => {
                                                 const input = document.getElementById('oracle-input');
-                                                const question = input.value.toLowerCase();
-                                                
-                                                if (question.includes('wembanyama') || question.includes('victor')) {
-                                                    alert('🏀 VICTOR WEMBANYAMA: 7\'4" French phenom, #1 overall pick. Rookie cards exploding! PSA 10 Prizm base: $2,500+ (up 400% this year). Long-term superstar potential - buy now!');
-                                                } else if (question.includes('jordan') || question.includes('michael')) {
-                                                    alert('🏀 MICHAEL JORDAN: The GOAT! 1986 Fleer rookie is the holy grail. PSA 10 sells for $50,000+. 1986-87 cards are gold. Always a safe long-term investment!');
-                                                } else if (question.includes('lebron') || question.includes('james')) {
-                                                    alert('🏀 LEBRON JAMES: 2003 Topps Chrome rookie is iconic. PSA 10 sells for $3,000+. 2003-04 cards are his rookie year. Still has 2-3 years left in career!');
-                                                } else if (question.includes('mahomes') || question.includes('patrick')) {
-                                                    alert('🏈 PATRICK MAHOMES: 2017 Prizm rookie is hot! PSA 10 sells for $1,500+. Super Bowl winner, MVP. Football cards trending up 20% this year!');
-                                                } else if (question.includes('trend') || question.includes('market')) {
-                                                    alert('📊 MARKET TRENDS: Basketball up 15%, Football up 8%, Baseball stable. Rookie cards outperforming veterans. PSA 9+ grades preferred. Focus on top draft picks!');
-                                                } else if (question.includes('buy') || question.includes('invest')) {
-                                                    alert('💡 INVESTMENT ADVICE: Focus on 2023-2024 rookies! Victor Wembanyama, Anthony Richardson, Bryce Young. Buy PSA 9+ grades. Hold 3-5 years minimum for best returns!');
-                                                } else if (question.includes('grade') || question.includes('psa') || question.includes('bgs')) {
-                                                    alert('📋 GRADING ADVICE: PSA 9+ only for investment. BGS 9.5+ acceptable. Raw cards risky unless you can grade yourself. Centering, corners, surface, edges all matter!');
-                                                } else {
-                                                    alert('🔮 ORACLE RESPONSE: Based on current market data, I recommend focusing on rookie cards from top 5 draft picks. Look for PSA 9+ grades and hold long-term. The market is showing strong growth in basketball and football cards!');
+                                                const question = input.value;
+                                                if (question.trim()) {
+                                                    addMessageToChat(question, 'user');
+                                                    input.value = '';
+                                                    setTimeout(() => {
+                                                        getOracleResponse(question);
+                                                    }, 1000);
                                                 }
-                                                
-                                                input.value = '';
                                             }}
                                             className="quantum-btn px-6 py-4 rounded-xl cursor-pointer"
                                         >
@@ -568,6 +592,57 @@
                     </footer>
                 </div>
             );
+        }
+
+        // Chat functions for Oracle
+        function addMessageToChat(message, sender) {
+            const chatContainer = document.getElementById('oracle-chat');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'flex items-start gap-3';
+            
+            if (sender === 'user') {
+                messageDiv.innerHTML = `
+                    <div class="w-8 h-8 bg-cyan-500 rounded-full flex items-center justify-center text-white font-bold">You</div>
+                    <div class="bg-cyan-900/30 rounded-lg p-4 max-w-3xl ml-auto">
+                        <p class="text-white">${message}</p>
+                    </div>
+                `;
+            } else {
+                messageDiv.innerHTML = `
+                    <div class="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold">🔮</div>
+                    <div class="bg-gray-800 rounded-lg p-4 max-w-3xl">
+                        <p class="text-gray-300">${message}</p>
+                    </div>
+                `;
+            }
+            
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+        
+        function getOracleResponse(question) {
+            const questionLower = question.toLowerCase();
+            let response = '';
+            
+            if (questionLower.includes('wembanyama') || questionLower.includes('victor')) {
+                response = '🏀 VICTOR WEMBANYAMA: 7\'4" French phenom, #1 overall pick. Rookie cards exploding! PSA 10 Prizm base: $2,500+ (up 400% this year). Long-term superstar potential - buy now!';
+            } else if (questionLower.includes('jordan') || questionLower.includes('michael')) {
+                response = '🏀 MICHAEL JORDAN: The GOAT! 1986 Fleer rookie is the holy grail. PSA 10 sells for $50,000+. 1986-87 cards are gold. Always a safe long-term investment!';
+            } else if (questionLower.includes('lebron') || questionLower.includes('james')) {
+                response = '🏀 LEBRON JAMES: 2003 Topps Chrome rookie is iconic. PSA 10 sells for $3,000+. 2003-04 cards are his rookie year. Still has 2-3 years left in career!';
+            } else if (questionLower.includes('mahomes') || questionLower.includes('patrick')) {
+                response = '🏈 PATRICK MAHOMES: 2017 Prizm rookie is hot! PSA 10 sells for $1,500+. Super Bowl winner, MVP. Football cards trending up 20% this year!';
+            } else if (questionLower.includes('trend') || questionLower.includes('market')) {
+                response = '📊 MARKET TRENDS: Basketball up 15%, Football up 8%, Baseball stable. Rookie cards outperforming veterans. PSA 9+ grades preferred. Focus on top draft picks!';
+            } else if (questionLower.includes('buy') || questionLower.includes('invest')) {
+                response = '💡 INVESTMENT ADVICE: Focus on 2023-2024 rookies! Victor Wembanyama, Anthony Richardson, Bryce Young. Buy PSA 9+ grades. Hold 3-5 years minimum for best returns!';
+            } else if (questionLower.includes('grade') || questionLower.includes('psa') || questionLower.includes('bgs')) {
+                response = '📋 GRADING ADVICE: PSA 9+ only for investment. BGS 9.5+ acceptable. Raw cards risky unless you can grade yourself. Centering, corners, surface, edges all matter!';
+            } else {
+                response = '🔮 ORACLE RESPONSE: Based on current market data, I recommend focusing on rookie cards from top 5 draft picks. Look for PSA 9+ grades and hold long-term. The market is showing strong growth in basketball and football cards!';
+            }
+            
+            addMessageToChat(response, 'oracle');
         }
 
         // Render the application
