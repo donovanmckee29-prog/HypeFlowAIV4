@@ -636,6 +636,17 @@
                 const hasValue = questionLower.includes('value') || questionLower.includes('worth') || questionLower.includes('price') || questionLower.includes('how much');
                 const hasInvest = questionLower.includes('invest') || questionLower.includes('investment') || questionLower.includes('long term') || questionLower.includes('hold');
                 
+                // Card type detection
+                const isBase = questionLower.includes('base') || questionLower.includes('regular') || questionLower.includes('standard');
+                const isPrizm = questionLower.includes('prizm') || questionLower.includes('prizm base');
+                const isChrome = questionLower.includes('chrome') || questionLower.includes('topps chrome');
+                const isRefractor = questionLower.includes('refractor') || questionLower.includes('refractors');
+                const isRookie = questionLower.includes('rookie') || questionLower.includes('rc') || questionLower.includes('first year');
+                const isAuto = questionLower.includes('auto') || questionLower.includes('autograph') || questionLower.includes('signed');
+                const isPatch = questionLower.includes('patch') || questionLower.includes('jersey') || questionLower.includes('memorabilia');
+                const isNumbered = questionLower.includes('numbered') || questionLower.includes('/') || questionLower.includes('limited');
+                const isVintage = questionLower.includes('vintage') || questionLower.includes('1980') || questionLower.includes('1990') || questionLower.includes('2000');
+                
                 // Player detection with more variations
                 const isWembanyama = questionLower.includes('wembanyama') || questionLower.includes('victor') || questionLower.includes('wemby');
                 const isHurts = questionLower.includes('jalen hurts') || questionLower.includes('hurts') || questionLower.includes('jalen');
@@ -646,11 +657,18 @@
                 const isCurry = questionLower.includes('curry') || questionLower.includes('stephen curry') || questionLower.includes('steph');
                 const isLuka = questionLower.includes('luka') || questionLower.includes('doncic') || questionLower.includes('luka doncic');
                 const isGiannis = questionLower.includes('giannis') || questionLower.includes('antetokounmpo') || questionLower.includes('greek freak');
+                const isKobe = questionLower.includes('kobe') || questionLower.includes('bryant') || questionLower.includes('kobe bryant');
+                const isShaq = questionLower.includes('shaq') || questionLower.includes('o\'neal') || questionLower.includes('shaquille');
+                const isMagic = questionLower.includes('magic') || questionLower.includes('johnson') || questionLower.includes('magic johnson');
+                const isBird = questionLower.includes('bird') || questionLower.includes('larry bird') || questionLower.includes('larry');
                 
                 // Grade detection
                 const isPSA9 = questionLower.includes('9') || questionLower.includes('nine') || questionLower.includes('psa 9');
                 const isPSA10 = questionLower.includes('10') || questionLower.includes('ten') || questionLower.includes('psa 10');
                 const isPSA8 = questionLower.includes('8') || questionLower.includes('eight') || questionLower.includes('psa 8');
+                const isPSA7 = questionLower.includes('7') || questionLower.includes('seven') || questionLower.includes('psa 7');
+                const isBGS9 = questionLower.includes('bgs 9') || questionLower.includes('bgs9') || questionLower.includes('beckett 9');
+                const isBGS10 = questionLower.includes('bgs 10') || questionLower.includes('bgs10') || questionLower.includes('beckett 10');
                 
                 // Remove previous typing message
                 const chatContainer = document.getElementById('oracle-chat');
@@ -659,30 +677,117 @@
                     lastMessage.remove();
                 }
                 
+                // Research function to get accurate pricing
+                function researchCardValue(player, cardType, grade, year) {
+                    // This simulates real research - in a real app, this would query databases
+                    const baseValues = {
+                        'wembanyama': {
+                            'prizm': { 'raw': 800, 'psa9': 1800, 'psa10': 2500 },
+                            'base': { 'raw': 200, 'psa9': 400, 'psa10': 600 },
+                            'chrome': { 'raw': 300, 'psa9': 600, 'psa10': 900 }
+                        },
+                        'hurts': {
+                            'prizm': { 'raw': 400, 'psa9': 800, 'psa10': 1200 },
+                            'base': { 'raw': 50, 'psa9': 100, 'psa10': 150 },
+                            'chrome': { 'raw': 80, 'psa9': 150, 'psa10': 250 }
+                        },
+                        'jordan': {
+                            'fleur': { 'raw': 15000, 'psa9': 25000, 'psa10': 50000 },
+                            'base': { 'raw': 5000, 'psa9': 8000, 'psa10': 15000 },
+                            'chrome': { 'raw': 8000, 'psa9': 12000, 'psa10': 25000 }
+                        },
+                        'mahomes': {
+                            'prizm': { 'raw': 600, 'psa9': 1200, 'psa10': 1800 },
+                            'base': { 'raw': 150, 'psa9': 300, 'psa10': 500 },
+                            'chrome': { 'raw': 200, 'psa9': 400, 'psa10': 700 }
+                        }
+                    };
+                    
+                    const playerKey = player.toLowerCase();
+                    const cardKey = cardType.toLowerCase();
+                    
+                    if (baseValues[playerKey] && baseValues[playerKey][cardKey]) {
+                        return baseValues[playerKey][cardKey];
+                    }
+                    
+                    // Default values for unknown combinations
+                    return { 'raw': 50, 'psa9': 100, 'psa10': 200 };
+                }
+                
+                // Smart grading cost analysis
+                function analyzeGradingCost(rawValue, expectedGrade, cardType) {
+                    const gradingCost = 25; // PSA cost
+                    const shipping = 20;
+                    const totalCost = gradingCost + shipping;
+                    
+                    let expectedValue = 0;
+                    if (expectedGrade === 'psa9') {
+                        expectedValue = rawValue * 2.5; // PSA 9 typically 2.5x raw
+                    } else if (expectedGrade === 'psa10') {
+                        expectedValue = rawValue * 4; // PSA 10 typically 4x raw
+                    } else if (expectedGrade === 'psa8') {
+                        expectedValue = rawValue * 1.2; // PSA 8 barely above raw
+                    }
+                    
+                    const profit = expectedValue - totalCost;
+                    const profitMargin = (profit / rawValue) * 100;
+                    
+                    return {
+                        rawValue,
+                        expectedValue,
+                        totalCost,
+                        profit,
+                        profitMargin,
+                        worthIt: profit > 0 && profitMargin > 50
+                    };
+                }
+                
                 // Victor Wembanyama Analysis
                 if (isWembanyama) {
+                    const cardType = isPrizm ? 'prizm' : (isChrome ? 'chrome' : 'base');
+                    const values = researchCardValue('wembanyama', cardType);
+                    
                     if (hasSell) {
-                        response = '❌ NO - Don\'t sell Victor Wembanyama! He\'s a 7\'4" generational talent, #1 overall pick. His rookie cards are up 400% this year and will continue rising. PSA 10 Prizm base: $2,500+ now, could hit $5,000+ in 2-3 years. HOLD for maximum profit!';
+                        response = `❌ NO - Don't sell Victor Wembanyama! He's a 7'4" generational talent, #1 overall pick. His rookie cards are up 400% this year and will continue rising. ${cardType.toUpperCase()} PSA 10: $${values.psa10}+ now, could hit $5,000+ in 2-3 years. HOLD for maximum profit!`;
                     } else if (hasBuy) {
-                        response = '✅ YES - Buy Victor Wembanyama now! 7\'4" French phenom with unlimited potential. Rookie cards exploding! PSA 10 Prizm base: $2,500+ (up 400% this year). Long-term superstar - this is your chance!';
+                        response = `✅ YES - Buy Victor Wembanyama now! 7'4" French phenom with unlimited potential. Rookie cards exploding! ${cardType.toUpperCase()} PSA 10: $${values.psa10}+ (up 400% this year). Long-term superstar - this is your chance!`;
                     } else if (hasValue) {
-                        response = '💰 VICTOR WEMBANYAMA VALUES: Raw Prizm base: $800-1,200. PSA 9: $1,800-2,200. PSA 10: $2,500-3,000. Up 400% this year! Still undervalued compared to his potential.';
+                        response = `💰 VICTOR WEMBANYAMA ${cardType.toUpperCase()} VALUES: Raw: $${values.raw}. PSA 9: $${values.psa9}. PSA 10: $${values.psa10}. Up 400% this year! Still undervalued compared to his potential.`;
+                    } else if (hasGrade) {
+                        const expectedGrade = isPSA10 ? 'psa10' : (isPSA9 ? 'psa9' : 'psa8');
+                        const analysis = analyzeGradingCost(values.raw, expectedGrade, cardType);
+                        
+                        if (analysis.worthIt) {
+                            response = `✅ YES - Grade your Wembanyama ${cardType}! Raw: $${values.raw} → PSA ${expectedGrade.replace('psa', '')}: $${analysis.expectedValue}. Cost: $${analysis.totalCost}. Profit: $${analysis.profit} (${analysis.profitMargin.toFixed(0)}% margin). Worth it!`;
+                        } else {
+                            response = `❌ NO - Don't grade this Wembanyama ${cardType}. Raw: $${values.raw} → PSA ${expectedGrade.replace('psa', '')}: $${analysis.expectedValue}. Cost: $${analysis.totalCost}. Loss: $${Math.abs(analysis.profit)}. Not worth it!`;
+                        }
                     } else {
-                        response = '🏀 VICTOR WEMBANYAMA: 7\'4" French phenom, #1 overall pick. Rookie cards exploding! PSA 10 Prizm base: $2,500+ (up 400% this year). Long-term superstar potential - buy now!';
+                        response = `🏀 VICTOR WEMBANYAMA: 7'4" French phenom, #1 overall pick. Rookie cards exploding! ${cardType.toUpperCase()} PSA 10: $${values.psa10}+ (up 400% this year). Long-term superstar potential - buy now!`;
                     }
                 }
                 // Jalen Hurts Analysis
                 else if (isHurts) {
+                    const cardType = isPrizm ? 'prizm' : (isChrome ? 'chrome' : 'base');
+                    const values = researchCardValue('hurts', cardType);
+                    
                     if (hasSell) {
-                        response = '🤔 MAYBE - Jalen Hurts is solid but not elite. His cards peaked after Super Bowl run. If you have PSA 10s, consider selling now ($800-1,200). If raw or lower grades, hold for next season. Eagles need to improve for his value to rise.';
+                        response = `🤔 MAYBE - Jalen Hurts is solid but not elite. His cards peaked after Super Bowl run. If you have PSA 10s, consider selling now ($${values.psa10}). If raw or lower grades, hold for next season. Eagles need to improve for his value to rise.`;
                     } else if (hasBuy) {
-                        response = '⚠️ CAUTION - Jalen Hurts cards are overpriced right now. His rookie cards are $500-800 raw, but he\'s not a generational talent. Better options: Mahomes, Allen, or 2024 rookies. Only buy if under $300.';
+                        response = `⚠️ CAUTION - Jalen Hurts cards are overpriced right now. His ${cardType} rookie cards are $${values.raw} raw, but he's not a generational talent. Better options: Mahomes, Allen, or 2024 rookies. Only buy if under $300.`;
                     } else if (hasGrade) {
-                        response = '📋 GRADING JALEN HURTS: If you expect PSA 9, YES grade it! Raw sells for $400-600, PSA 9 sells for $800-1,200. Cost: $25-50 grading + $20-30 shipping. Profit: $300-600 after costs. Worth it if card is clean!';
+                        const expectedGrade = isPSA10 ? 'psa10' : (isPSA9 ? 'psa9' : 'psa8');
+                        const analysis = analyzeGradingCost(values.raw, expectedGrade, cardType);
+                        
+                        if (analysis.worthIt) {
+                            response = `✅ YES - Grade your Hurts ${cardType}! Raw: $${values.raw} → PSA ${expectedGrade.replace('psa', '')}: $${analysis.expectedValue}. Cost: $${analysis.totalCost}. Profit: $${analysis.profit} (${analysis.profitMargin.toFixed(0)}% margin). Worth it!`;
+                        } else {
+                            response = `❌ NO - Don't grade this Hurts ${cardType}. Raw: $${values.raw} → PSA ${expectedGrade.replace('psa', '')}: $${analysis.expectedValue}. Cost: $${analysis.totalCost}. Loss: $${Math.abs(analysis.profit)}. Not worth it!`;
+                        }
                     } else if (hasValue) {
-                        response = '💰 JALEN HURTS VALUES: Raw rookie: $400-600. PSA 9: $800-1,200. PSA 10: $1,200-1,500. Peaked after Super Bowl, now stable. Not growing much.';
+                        response = `💰 JALEN HURTS ${cardType.toUpperCase()} VALUES: Raw: $${values.raw}. PSA 9: $${values.psa9}. PSA 10: $${values.psa10}. Peaked after Super Bowl, now stable. Not growing much.`;
                     } else {
-                        response = '🏈 JALEN HURTS: Solid QB but not elite. Cards peaked after Super Bowl run. PSA 10 rookie: $1,200-1,500. Better long-term options: Mahomes, Allen, or 2024 rookies.';
+                        response = `🏈 JALEN HURTS: Solid QB but not elite. Cards peaked after Super Bowl run. ${cardType.toUpperCase()} PSA 10: $${values.psa10}. Better long-term options: Mahomes, Allen, or 2024 rookies.`;
                     }
                 }
                 // Michael Jordan Analysis
@@ -769,16 +874,25 @@
                         response = '🏀 GIANNIS ANTETOKOUNMPO: 2x MVP, 1x champion. 2013 Prizm PSA 10: $1,500+. Still in prime but cards are stable.';
                     }
                 }
-                // Grading Analysis
+                // Smart Grading Analysis
                 else if (hasGrade) {
-                    if (isPSA10) {
-                        response = '✅ DEFINITELY - Grade if you expect PSA 10! Raw to PSA 10 is 3-5x value increase. Cost: $25-50 grading. Profit: 200-400% after costs. This is where the real money is made!';
+                    // Detect if it's a base card (low value)
+                    const isLowValue = isBase || questionLower.includes('base card') || questionLower.includes('regular card');
+                    const expectedGrade = isPSA10 ? 'psa10' : (isPSA9 ? 'psa9' : (isPSA8 ? 'psa8' : 'psa7'));
+                    
+                    if (isLowValue) {
+                        // Base cards are usually not worth grading
+                        response = `❌ NO - Don't grade base cards! Base cards typically sell for $10-50 raw and $20-100 graded. Grading costs $45+ (PSA $25 + shipping $20). You'll lose money! Only grade if it's a rare base or you expect PSA 10.`;
+                    } else if (isPSA10) {
+                        response = '✅ DEFINITELY - Grade if you expect PSA 10! Raw to PSA 10 is 3-5x value increase. Cost: $45+ grading. Profit: 200-400% after costs. This is where the real money is made!';
                     } else if (isPSA9) {
-                        response = '✅ YES - Grade if you expect PSA 9! Raw cards sell for 50-70% of graded value. PSA 9 typically sells for 2-3x raw price. Cost: $25-50 grading + shipping. Profit margin: 100-200% after costs. Worth it!';
+                        response = '✅ YES - Grade if you expect PSA 9! Raw cards sell for 50-70% of graded value. PSA 9 typically sells for 2-3x raw price. Cost: $45+ grading. Profit margin: 100-200% after costs. Worth it!';
                     } else if (isPSA8) {
-                        response = '❌ NO - Don\'t grade if you expect PSA 8. Raw and PSA 8 sell for similar prices. You\'ll lose money on grading costs ($25-50). Only grade if you\'re confident it\'s a 9 or 10.';
+                        response = '❌ NO - Don\'t grade if you expect PSA 8. Raw and PSA 8 sell for similar prices. You\'ll lose money on grading costs ($45+). Only grade if you\'re confident it\'s a 9 or 10.';
+                    } else if (isPSA7) {
+                        response = '❌ NO - Don\'t grade if you expect PSA 7. Raw and PSA 7 sell for similar or lower prices. You\'ll lose money on grading costs ($45+). Only grade if you\'re confident it\'s a 9 or 10.';
                     } else {
-                        response = '📋 GRADING ADVICE: Only grade if you expect PSA 9+ or BGS 9.5+. Raw cards sell for 50-70% of graded value. Cost: $25-50 grading + $20-30 shipping. Profit margin needs to be 100%+ to be worth it!';
+                        response = '📋 GRADING ADVICE: Only grade if you expect PSA 9+ or BGS 9.5+. Raw cards sell for 50-70% of graded value. Cost: $45+ grading. Profit margin needs to be 100%+ to be worth it! Base cards are usually NOT worth grading.';
                     }
                 }
                 // General selling advice
@@ -801,9 +915,24 @@
                 else if (hasValue) {
                     response = '💰 VALUE ANALYSIS: Card values depend on player, year, brand, and grade. Rookie cards typically have highest upside. PSA 9+ grades sell for 2-5x raw prices. Always research recent sales before buying/selling!';
                 }
-                // Default response
+                // Advanced research simulation for unknown questions
                 else {
-                    response = '🔮 ORACLE RESPONSE: I need more specific information! Ask me about specific players (like "Should I sell Jalen Hurts?" or "Should I grade this card?"), market trends, or investment strategies. Be specific for the best advice!';
+                    // Simulate deeper research for complex questions
+                    if (questionLower.includes('compare') || questionLower.includes('vs') || questionLower.includes('versus')) {
+                        response = '🔍 COMPARISON ANALYSIS: I need more details! Which specific players are you comparing? Include card types (Prizm, Chrome, Base) and grades. Example: "Compare Wembanyama Prizm vs LeBron Chrome for investment"';
+                    } else if (questionLower.includes('market') || questionLower.includes('trend') || questionLower.includes('future')) {
+                        response = '📊 MARKET RESEARCH: Current trends show basketball cards up 15%, football up 8%, baseball stable. Rookie cards outperforming veterans 3:1. PSA 9+ grades preferred. Focus on top 5 draft picks for best returns.';
+                    } else if (questionLower.includes('investment') || questionLower.includes('portfolio') || questionLower.includes('strategy')) {
+                        response = '💡 INVESTMENT STRATEGY: 1) Focus on rookies from top 5 draft picks 2) Buy PSA 9+ grades only 3) Hold 3-5 years minimum 4) Diversify across sports 5) Monitor player performance closely 6) Avoid base cards for grading';
+                    } else if (questionLower.includes('grading') || questionLower.includes('psa') || questionLower.includes('bgs')) {
+                        response = '📋 GRADING STRATEGY: Only grade cards worth $100+ raw. Base cards usually NOT worth grading. PSA 9+ or BGS 9.5+ only. Cost: $45+ total. Need 100%+ profit margin. Focus on Prizm, Chrome, and rare cards.';
+                    } else if (questionLower.includes('sell') || questionLower.includes('when') || questionLower.includes('timing')) {
+                        response = '⏰ SELLING TIMING: Elite players (Jordan, Mahomes, Wembanyama): HOLD long-term. Mid-tier players: Sell during hot streaks. Base cards: Sell immediately if you need money. Always check recent sales first!';
+                    } else if (questionLower.includes('buy') || questionLower.includes('purchase') || questionLower.includes('invest')) {
+                        response = '🛒 BUYING STRATEGY: Focus on 2023-2024 rookies! Victor Wembanyama, Anthony Richardson, Bryce Young. Buy PSA 9+ grades. Avoid base cards. Hold 3-5 years minimum. Research recent sales before buying!';
+                    } else {
+                        response = '🔮 ORACLE RESPONSE: I need more specific information! Ask me about specific players (like "Should I sell Jalen Hurts Prizm?" or "Should I grade this base card?"), market trends, or investment strategies. Be specific for the best advice!';
+                    }
                 }
                 
                 addMessageToChat(response, 'oracle');
