@@ -1,0 +1,38 @@
+{
+  "name": "hypeflow-ai-pro-v3",
+  "version": "3.0.0",
+  "description": "The Ultimate AI-Powered Sports Card Investment Platform - Production Edition",
+  "main": "index.html",
+  "scripts": {
+    "start": "python3 -m http.server 8000",
+    "dev": "python3 -m http.server 8000",
+    "build": "echo 'No build step required - static HTML file'",
+    "deploy": "echo 'Deploy index.html to your hosting service'"
+  },
+  "keywords": [
+    "sports-cards",
+    "trading-cards",
+    "ai",
+    "investment",
+    "ebay",
+    "grading",
+    "portfolio",
+    "market-analysis",
+    "quantum-design",
+    "glass-morphism"
+  ],
+  "author": "HypeFlow AI Pro Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/donovanmckee29-prog/hypeflowaiv3.git"
+  },
+  "homepage": "https://hypeflow-ai-pro-v3.vercel.app",
+  "devDependencies": {},
+  "dependencies": {},
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}
