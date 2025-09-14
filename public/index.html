@@ -661,6 +661,9 @@
                 const isShaq = questionLower.includes('shaq') || questionLower.includes('o\'neal') || questionLower.includes('shaquille');
                 const isMagic = questionLower.includes('magic') || questionLower.includes('johnson') || questionLower.includes('magic johnson');
                 const isBird = questionLower.includes('bird') || questionLower.includes('larry bird') || questionLower.includes('larry');
+                const isJackieRobinson = questionLower.includes('jackie robinson') || questionLower.includes('jackie') || questionLower.includes('robinson');
+                const isBabeRuth = questionLower.includes('babe ruth') || questionLower.includes('babe') || questionLower.includes('ruth');
+                const isMickeyMantle = questionLower.includes('mickey mantle') || questionLower.includes('mickey') || questionLower.includes('mantle');
                 
                 // Grade detection
                 const isPSA9 = questionLower.includes('9') || questionLower.includes('nine') || questionLower.includes('psa 9');
@@ -700,6 +703,19 @@
                             'prizm': { 'raw': 600, 'psa9': 1200, 'psa10': 1800 },
                             'base': { 'raw': 150, 'psa9': 300, 'psa10': 500 },
                             'chrome': { 'raw': 200, 'psa9': 400, 'psa10': 700 }
+                        },
+                        'jackie robinson': {
+                            'vintage': { 'raw': 5000, 'psa7': 8000, 'psa8': 12000, 'psa9': 20000, 'psa10': 50000 },
+                            'base': { 'raw': 5000, 'psa7': 8000, 'psa8': 12000, 'psa9': 20000, 'psa10': 50000 },
+                            'rookie': { 'raw': 8000, 'psa7': 15000, 'psa8': 25000, 'psa9': 40000, 'psa10': 100000 }
+                        },
+                        'babe ruth': {
+                            'vintage': { 'raw': 2000, 'psa7': 4000, 'psa8': 8000, 'psa9': 15000, 'psa10': 50000 },
+                            'base': { 'raw': 2000, 'psa7': 4000, 'psa8': 8000, 'psa9': 15000, 'psa10': 50000 }
+                        },
+                        'mickey mantle': {
+                            'vintage': { 'raw': 1000, 'psa7': 2000, 'psa8': 4000, 'psa9': 8000, 'psa10': 20000 },
+                            'base': { 'raw': 1000, 'psa7': 2000, 'psa8': 4000, 'psa9': 8000, 'psa10': 20000 }
                         }
                     };
                     
@@ -721,12 +737,14 @@
                     const totalCost = gradingCost + shipping;
                     
                     let expectedValue = 0;
-                    if (expectedGrade === 'psa9') {
-                        expectedValue = rawValue * 2.5; // PSA 9 typically 2.5x raw
-                    } else if (expectedGrade === 'psa10') {
+                    if (expectedGrade === 'psa10') {
                         expectedValue = rawValue * 4; // PSA 10 typically 4x raw
+                    } else if (expectedGrade === 'psa9') {
+                        expectedValue = rawValue * 2.5; // PSA 9 typically 2.5x raw
                     } else if (expectedGrade === 'psa8') {
-                        expectedValue = rawValue * 1.2; // PSA 8 barely above raw
+                        expectedValue = rawValue * 1.5; // PSA 8 typically 1.5x raw
+                    } else if (expectedGrade === 'psa7') {
+                        expectedValue = rawValue * 1.3; // PSA 7 typically 1.3x raw
                     }
                     
                     const profit = expectedValue - totalCost;
@@ -738,7 +756,7 @@
                         totalCost,
                         profit,
                         profitMargin,
-                        worthIt: profit > 0 && profitMargin > 50
+                        worthIt: profit > 0 && profitMargin > 30 // Lower threshold for vintage cards
                     };
                 }
                 
@@ -872,6 +890,30 @@
                         response = '💰 GIANNIS VALUES: 2013 Prizm PSA 10: $1,500+. 2013 Topps Chrome PSA 10: $800+. 2014 Prizm PSA 10: $600+. Stable but not growing much.';
                     } else {
                         response = '🏀 GIANNIS ANTETOKOUNMPO: 2x MVP, 1x champion. 2013 Prizm PSA 10: $1,500+. Still in prime but cards are stable.';
+                    }
+                }
+                // Jackie Robinson Analysis
+                else if (isJackieRobinson) {
+                    const cardType = isVintage ? 'vintage' : (isRookie ? 'rookie' : 'base');
+                    const values = researchCardValue('jackie robinson', cardType);
+                    
+                    if (hasSell) {
+                        response = `❌ NEVER SELL - Jackie Robinson is a legend! His cards are the safest long-term investment. ${cardType.toUpperCase()} PSA 7: $${values.psa7}+ and still rising. Hold forever - this is generational wealth!`;
+                    } else if (hasBuy) {
+                        response = `✅ YES - Always buy Jackie Robinson! Baseball legend, broke the color barrier. ${cardType.toUpperCase()} PSA 7: $${values.psa7}+. 1945-1950 cards are gold. Always a safe long-term investment!`;
+                    } else if (hasValue) {
+                        response = `💰 JACKIE ROBINSON ${cardType.toUpperCase()} VALUES: Raw: $${values.raw}. PSA 7: $${values.psa7}. PSA 8: $${values.psa8}. PSA 9: $${values.psa9}. PSA 10: $${values.psa10}. Always rising. The safest investment in cards.`;
+                    } else if (hasGrade) {
+                        const expectedGrade = isPSA10 ? 'psa10' : (isPSA9 ? 'psa9' : (isPSA8 ? 'psa8' : 'psa7'));
+                        const analysis = analyzeGradingCost(values.raw, expectedGrade, cardType);
+                        
+                        if (analysis.worthIt) {
+                            response = `✅ YES - Grade your Jackie Robinson ${cardType}! Raw: $${values.raw} → PSA ${expectedGrade.replace('psa', '')}: $${analysis.expectedValue}. Cost: $${analysis.totalCost}. Profit: $${analysis.profit} (${analysis.profitMargin.toFixed(0)}% margin). Worth it!`;
+                        } else {
+                            response = `❌ NO - Don't grade this Jackie Robinson ${cardType}. Raw: $${values.raw} → PSA ${expectedGrade.replace('psa', '')}: $${analysis.expectedValue}. Cost: $${analysis.totalCost}. Loss: $${Math.abs(analysis.profit)}. Not worth it!`;
+                        }
+                    } else {
+                        response = `⚾ JACKIE ROBINSON: Baseball legend, broke the color barrier. ${cardType.toUpperCase()} PSA 7: $${values.psa7}+. 1945-1950 cards are gold. Always a safe long-term investment!`;
                     }
                 }
                 // Smart Grading Analysis
