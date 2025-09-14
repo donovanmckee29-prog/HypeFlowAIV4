@@ -212,51 +212,6 @@
                             </div>
                         </div>
 
-                        {/* AI Detected Opportunities - Only on Home Page */}
-                        {activeTab === 'home' && (
-                            <div className="mb-12">
-                                <h3 className="text-3xl font-bold holographic-text orbitron mb-6 text-center">
-                                    AI DETECTED OPPORTUNITIES
-                                </h3>
-                                
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                    {opportunityCards.map((card, index) => (
-                                        <div key={index} className="cyber-card rounded-2xl p-6">
-                                            <div className="flex items-center gap-4 mb-4">
-                                                <div className="text-6xl">{card.image}</div>
-                                                <div>
-                                                    <div className="font-bold text-white text-lg">{card.player}</div>
-                                                    <div className="text-sm text-gray-400">{card.year} {card.grade}</div>
-                                                </div>
-                                            </div>
-                                            
-                                            <div className="space-y-2 mb-4">
-                                                <div className="flex justify-between">
-                                                    <span className="text-gray-400">Price:</span>
-                                                    <span className="text-cyan-400 font-mono">${card.price.toLocaleString()}</span>
-                                                </div>
-                                                <div className="flex justify-between">
-                                                    <span className="text-gray-400">Upside:</span>
-                                                    <span className="text-green-400 font-bold">+{card.upside}%</span>
-                                                </div>
-                                            </div>
-                                            
-                                            <div className="flex items-center justify-between">
-                                                <div className="bg-cyan-500 px-3 py-1 rounded-full text-xs font-bold text-white">
-                                                    🧠 AI OPPORTUNITY
-                                                </div>
-                                                <button 
-                                                    onClick={() => alert(`Searching for ${card.player} ${card.year} ${card.grade} on eBay...`)}
-                                                    className="quantum-btn px-4 py-2 rounded-lg text-sm cursor-pointer"
-                                                >
-                                                    🔗 Find on eBay
-                                                </button>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
 
                         {/* Tab Content */}
                         {activeTab === 'home' && (
