@@ -164,6 +164,48 @@
             0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
             50% { transform: translate(-50%, -50%) scale(10); opacity: 0; }
         }
+
+        /* Enhanced Visual Effects */
+        .holographic-text {
+            background: linear-gradient(45deg, #00d4ff, #ff00ff, #00ff88, #ffaa00, #ff0066);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: holographic-shift 3s ease-in-out infinite;
+            text-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
+        }
+
+        @keyframes holographic-shift {
+            0%, 100% { background-position: 0% 50%; }
+            25% { background-position: 100% 50%; }
+            50% { background-position: 50% 100%; }
+            75% { background-position: 50% 0%; }
+        }
+
+        .enhanced-glow {
+            position: relative;
+        }
+
+        .enhanced-glow::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #00d4ff, #ff00ff, #00ff88, #ffaa00);
+            border-radius: inherit;
+            z-index: -1;
+            filter: blur(8px);
+            opacity: 0.6;
+            animation: glow-pulse 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow-pulse {
+            from { opacity: 0.4; transform: scale(1); }
+            to { opacity: 0.8; transform: scale(1.05); }
+        }
     </style>
 </head>
 <body>
