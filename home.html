@@ -30,17 +30,8 @@
         }
         
         .infinity-text {
-            background: linear-gradient(45deg, #00d4ff, #00a8cc);
-            background-size: 200% 200%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: infinity-pulse 2s ease-in-out infinite;
-        }
-        
-        @keyframes infinity-pulse {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
+            color: #00d4ff;
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
         }
         
         .glass-morphism {
@@ -80,7 +71,7 @@
         }
         
         .quantum-btn {
-            background: linear-gradient(45deg, #00d4ff, #0099cc);
+            background: #00d4ff;
             border: none;
             color: white;
             font-weight: 700;
@@ -92,22 +83,8 @@
             overflow: hidden;
         }
         
-        .quantum-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: left 0.3s;
-        }
-        
-        .quantum-btn:hover::before {
-            left: 100%;
-        }
-        
         .quantum-btn:hover {
+            background: #0099cc;
             transform: translateY(-2px) scale(1.05);
             box-shadow: 0 10px 30px rgba(0, 212, 255, 0.5);
         }
@@ -217,81 +194,26 @@
 
         /* Enhanced Glow Effects */
         .enhanced-glow {
-            position: relative;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
         }
 
-        .enhanced-glow::after {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(45deg, #00d4ff, #0099cc, #00a8cc);
-            border-radius: inherit;
-            z-index: -1;
-            filter: blur(8px);
-            opacity: 0.6;
-            animation: glow-pulse 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes glow-pulse {
-            from { opacity: 0.4; transform: scale(1); }
-            to { opacity: 0.8; transform: scale(1.05); }
-        }
-
-        /* Holographic Text Effect */
+        /* Clean Text Effect */
         .holographic-text {
-            background: linear-gradient(45deg, #00d4ff, #0099cc, #00a8cc);
-            background-size: 300% 300%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: holographic-shift 3s ease-in-out infinite;
-            text-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
+            color: #00d4ff;
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
         }
 
-        @keyframes holographic-shift {
-            0%, 100% { background-position: 0% 50%; }
-            25% { background-position: 100% 50%; }
-            50% { background-position: 50% 100%; }
-            75% { background-position: 50% 0%; }
-        }
-
-        /* Data Stream Enhancement */
+        /* Simple Data Stream */
         .data-stream-enhanced {
             position: relative;
-            overflow: hidden;
         }
 
-        .data-stream-enhanced::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.3), transparent);
-            animation: data-flow-enhanced 2s linear infinite;
-        }
-
-        @keyframes data-flow-enhanced {
-            0% { left: -100%; }
-            100% { left: 100%; }
-        }
-
-        /* Cyber Grid Background */
+        /* Simple Grid Background */
         .cyber-grid {
             background-image: 
                 linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
             background-size: 50px 50px;
-            animation: grid-move 20s linear infinite;
-        }
-
-        @keyframes grid-move {
-            0% { background-position: 0 0; }
-            100% { background-position: 50px 50px; }
         }
     </style>
 </head>
@@ -440,7 +362,7 @@
                                 <div className="particle" style={{bottom: '30%', left: '20%'}}></div>
                                 <div className="particle" style={{bottom: '15%', right: '10%'}}></div>
                                 
-                                <div className="text-8xl mb-6 holographic-text">🌌</div>
+                                <div className="text-8xl mb-6">🌌</div>
                                 <h2 className="text-5xl font-bold holographic-text mb-6">
                                     Welcome to the Future
                                 </h2>
@@ -477,7 +399,7 @@
                                         onClick={() => navigateToFeature(system.page)}
                                     >
                                         <div className="text-center">
-                                            <div className="text-6xl mb-4 holographic-text">{system.icon}</div>
+                                            <div className="text-6xl mb-4">{system.icon}</div>
                                             <h4 className="text-2xl font-bold text-white mb-3">{system.name}</h4>
                                             <p className="text-gray-300 mb-4">{system.description}</p>
                                             
