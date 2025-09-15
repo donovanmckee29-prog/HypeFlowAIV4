@@ -563,21 +563,41 @@ class InfinityAuthSystem {
 
     // Initialize from stored data
     initialize() {
-        const storedUser = localStorage.getItem('infinity-current-user');
-        if (storedUser) {
-            try {
+        try {
+            const storedUser = localStorage.getItem('infinity-current-user');
+            if (storedUser) {
                 const user = JSON.parse(storedUser);
-                this.currentUser = user;
-                this.isAuthenticated = true;
-                this.userData = user;
                 
-                // Load user data into AI system
-                if (window.InfinityAI) {
-                    window.InfinityAI.loadUserProfile(user.id, user);
+                // Verify user still exists in the system
+                const existingUser = this.getUserById(user.id);
+                if (existingUser) {
+                    // Update with latest data from storage
+                    this.currentUser = existingUser;
+                    this.isAuthenticated = true;
+                    this.userData = existingUser;
+                    
+                    // Load user data into AI system
+                    if (window.InfinityAI) {
+                        try {
+                            window.InfinityAI.loadUserProfile(user.id, existingUser);
+                        } catch (error) {
+                            console.warn('Failed to load AI profile:', error);
+                        }
+                    }
+                    
+                    console.log(`✅ User ${user.username} session restored`);
+                } else {
+                    // User no longer exists, clear session
+                    this.logoutUser();
+                    console.log('⚠️ Stored user not found, session cleared');
                 }
-            } catch (error) {
-                console.error('Failed to load stored user:', error);
+            } else {
+                console.log('ℹ️ No stored user session found');
             }
+        } catch (error) {
+            console.error('Failed to initialize auth system:', error);
+            // Clear corrupted session
+            this.logoutUser();
         }
     }
 
@@ -768,8 +788,13 @@ class InfinityAuthSystem {
 
     // Additional User Management
     getUserById(userId) {
-        const users = this.getAllUsers();
-        return users.find(user => user.id === userId);
+        try {
+            const users = this.getAllUsers();
+            return users.find(user => user.id === userId);
+        } catch (error) {
+            console.error('Failed to get user by ID:', error);
+            return null;
+        }
     }
 
     updateUserStats(userId, stats) {
@@ -822,15 +847,36 @@ class InfinityAuthSystem {
 // Global Auth System Instance
 window.InfinityAuth = new InfinityAuthSystem();
 
-// Initialize on page load
+// Initialize immediately and on page load
+function initializeAuthSystem() {
+    try {
+        if (window.InfinityAuth) {
+            window.InfinityAuth.initialize();
+            console.log('✅ Infinity Auth System initialized');
+        } else {
+            console.error('❌ Infinity Auth System not available');
+        }
+    } catch (error) {
+        console.error('❌ Failed to initialize auth system:', error);
+    }
+}
+
+// Initialize immediately
+initializeAuthSystem();
+
+// Also initialize on page load as backup
 window.addEventListener('load', () => {
-    window.InfinityAuth.initialize();
+    initializeAuthSystem();
 });
 
 // Auto-save user data every 30 seconds
 setInterval(() => {
-    if (window.InfinityAuth.isUserAuthenticated()) {
-        window.InfinityAuth.saveCurrentUser();
+    try {
+        if (window.InfinityAuth && window.InfinityAuth.isUserAuthenticated()) {
+            window.InfinityAuth.saveCurrentUser();
+        }
+    } catch (error) {
+        console.warn('Auto-save failed:', error);
     }
 }, 30000);
 

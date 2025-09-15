@@ -12,9 +12,10 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js" crossorigin></script>
     <script src="https://cdn.jsdelivr.net/npm/framer-motion@10.16.4/dist/framer-motion.min.js"></script>
     
-    <!-- Auth System -->
-    <script src="auth-system.js"></script>
+    <!-- AI System (load first) -->
     <script src="infinity-ai.js"></script>
+    <!-- Auth System (load second) -->
+    <script src="auth-system.js"></script>
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@400;600;700&display=swap');
@@ -232,10 +233,18 @@
 
             useEffect(() => {
                 // Wait for auth system to load
+                let attempts = 0;
+                const maxAttempts = 50; // 5 seconds max
+                
                 const checkAuthSystem = () => {
+                    attempts++;
+                    
                     if (window.InfinityAuth) {
+                        console.log('✅ Auth system loaded');
+                        
                         // Check if user is already logged in
                         if (window.InfinityAuth.isUserAuthenticated()) {
+                            console.log('✅ User already authenticated, redirecting...');
                             window.location.href = 'dashboard-ultimate.html';
                             return;
                         }
@@ -244,9 +253,14 @@
                         if (emailRef.current) {
                             emailRef.current.focus();
                         }
-                    } else {
+                        
+                        console.log('✅ Login form ready');
+                    } else if (attempts < maxAttempts) {
                         // Retry after a short delay
                         setTimeout(checkAuthSystem, 100);
+                    } else {
+                        console.error('❌ Auth system failed to load after maximum attempts');
+                        showActionFeedback('Authentication system failed to load. Please refresh the page.');
                     }
                 };
                 

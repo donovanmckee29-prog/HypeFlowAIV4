@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infinity Multi-User Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #1a1a2e;
+            color: white;
+        }
+        .test-section {
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .user-panel {
+            background: rgba(0, 100, 255, 0.1);
+            border: 1px solid rgba(0, 100, 255, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            display: inline-block;
+            width: 45%;
+            vertical-align: top;
+        }
+        button {
+            background: #00d4ff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0099cc;
+        }
+        button:disabled {
+            background: #666;
+            cursor: not-allowed;
+        }
+        input {
+            padding: 8px;
+            margin: 5px;
+            border-radius: 4px;
+            border: 1px solid #00d4ff;
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            width: 200px;
+        }
+        .result {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            white-space: pre-wrap;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .success { border-left: 4px solid #00ff88; }
+        .error { border-left: 4px solid #ff6b6b; }
+        .warning { border-left: 4px solid #ffaa00; }
+        .status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .status.online { background: #00ff88; color: #000; }
+        .status.offline { background: #ff6b6b; color: #fff; }
+        .chat-message {
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 4px;
+            padding: 8px;
+            margin: 5px 0;
+        }
+        .chat-message.user1 { border-left: 4px solid #00ff88; }
+        .chat-message.user2 { border-left: 4px solid #ff6b6b; }
+    </style>
+</head>
+<body>
+    <h1>🌌 Infinity Multi-User Authentication Test</h1>
+    
+    <div class="test-section">
+        <h2>System Status</h2>
+        <div id="system-status">Checking...</div>
+    </div>
+
+    <div class="test-section">
+        <h2>Multi-User Test</h2>
+        <p>This test creates two users, logs them in separately, and verifies data isolation.</p>
+        
+        <div class="user-panel">
+            <h3>👤 User 1 (Alice)</h3>
+            <div class="status offline" id="user1-status">Offline</div>
+            <br><br>
+            <input type="email" id="user1-email" placeholder="Email" value="alice@infinity.com">
+            <input type="text" id="user1-username" placeholder="Username" value="alice">
+            <input type="password" id="user1-password" placeholder="Password" value="alice123">
+            <br>
+            <button onclick="registerUser1()">Register User 1</button>
+            <button onclick="loginUser1()">Login User 1</button>
+            <button onclick="logoutUser1()">Logout User 1</button>
+            <br>
+            <button onclick="addChatUser1()">Add Chat Message</button>
+            <button onclick="viewDataUser1()">View User Data</button>
+            <div id="user1-result" class="result"></div>
+        </div>
+
+        <div class="user-panel">
+            <h3>👤 User 2 (Bob)</h3>
+            <div class="status offline" id="user2-status">Offline</div>
+            <br><br>
+            <input type="email" id="user2-email" placeholder="Email" value="bob@infinity.com">
+            <input type="text" id="user2-username" placeholder="Username" value="bob">
+            <input type="password" id="user2-password" placeholder="Password" value="bob123">
+            <br>
+            <button onclick="registerUser2()">Register User 2</button>
+            <button onclick="loginUser2()">Login User 2</button>
+            <button onclick="logoutUser2()">Logout User 2</button>
+            <br>
+            <button onclick="addChatUser2()">Add Chat Message</button>
+            <button onclick="viewDataUser2()">View User Data</button>
+            <div id="user2-result" class="result"></div>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>Data Isolation Test</h2>
+        <button onclick="testDataIsolation()">Test Data Isolation</button>
+        <button onclick="clearAllData()">Clear All Data</button>
+        <div id="isolation-result" class="result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Chat History</h2>
+        <div id="chat-history"></div>
+    </div>
+
+    <!-- Load scripts -->
+    <script src="infinity-ai.js"></script>
+    <script src="auth-system.js"></script>
+
+    <script>
+        let currentUser1 = null;
+        let currentUser2 = null;
+
+        // Check system status
+        function checkSystemStatus() {
+            const status = document.getElementById('system-status');
+            let statusText = '';
+            
+            if (window.InfinityAuth) {
+                statusText += '✅ Auth System: Loaded\n';
+            } else {
+                statusText += '❌ Auth System: Not loaded\n';
+            }
+            
+            if (window.InfinityAI) {
+                statusText += '✅ AI System: Loaded\n';
+            } else {
+                statusText += '❌ AI System: Not loaded\n';
+            }
+            
+            const users = localStorage.getItem('infinity-users') ? JSON.parse(localStorage.getItem('infinity-users')) : [];
+            statusText += `📊 Total Users: ${users.length}\n`;
+            statusText += `👤 Current Auth User: ${window.InfinityAuth && window.InfinityAuth.isUserAuthenticated() ? window.InfinityAuth.getCurrentUser().username : 'None'}`;
+            
+            status.className = 'result success';
+            status.textContent = statusText;
+        }
+
+        // User 1 functions
+        async function registerUser1() {
+            const resultDiv = document.getElementById('user1-result');
+            resultDiv.textContent = 'Registering User 1...';
+            resultDiv.className = 'result';
+            
+            try {
+                const email = document.getElementById('user1-email').value;
+                const username = document.getElementById('user1-username').value;
+                const password = document.getElementById('user1-password').value;
+                
+                const result = await window.InfinityAuth.registerUser(email, password, username);
+                
+                if (result.success) {
+                    currentUser1 = result.user;
+                    updateUser1Status(true);
+                    resultDiv.className = 'result success';
+                    resultDiv.textContent = `✅ User 1 registered!\nID: ${result.user.id}\nUsername: ${result.user.username}`;
+                } else {
+                    resultDiv.className = 'result error';
+                    resultDiv.textContent = `❌ Registration failed: ${result.error}`;
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = `❌ Error: ${error.message}`;
+            }
+            
+            checkSystemStatus();
+        }
+
+        async function loginUser1() {
+            const resultDiv = document.getElementById('user1-result');
+            resultDiv.textContent = 'Logging in User 1...';
+            resultDiv.className = 'result';
+            
+            try {
+                const email = document.getElementById('user1-email').value;
+                const password = document.getElementById('user1-password').value;
+                
+                const result = await window.InfinityAuth.loginUser(email, password);
+                
+                if (result.success) {
+                    currentUser1 = result.user;
+                    updateUser1Status(true);
+                    resultDiv.className = 'result success';
+                    resultDiv.textContent = `✅ User 1 logged in!\nUsername: ${result.user.username}\nAuthenticated: ${window.InfinityAuth.isUserAuthenticated()}`;
+                } else {
+                    resultDiv.className = 'result error';
+                    resultDiv.textContent = `❌ Login failed: ${result.error}`;
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = `❌ Error: ${error.message}`;
+            }
+            
+            checkSystemStatus();
+        }
+
+        function logoutUser1() {
+            const resultDiv = document.getElementById('user1-result');
+            
+            if (window.InfinityAuth.isUserAuthenticated()) {
+                const result = window.InfinityAuth.logoutUser();
+                currentUser1 = null;
+                updateUser1Status(false);
+                resultDiv.className = 'result success';
+                resultDiv.textContent = `✅ User 1 logged out!\nAuthenticated: ${window.InfinityAuth.isUserAuthenticated()}`;
+            } else {
+                resultDiv.className = 'result warning';
+                resultDiv.textContent = '⚠️ No user logged in';
+            }
+            
+            checkSystemStatus();
+        }
+
+        function addChatUser1() {
+            if (!currentUser1) {
+                document.getElementById('user1-result').textContent = '❌ User 1 not logged in';
+                return;
+            }
+            
+            const chatMessage = {
+                message: `Hello from ${currentUser1.username} at ${new Date().toLocaleTimeString()}`,
+                timestamp: Date.now()
+            };
+            
+            const result = window.InfinityAuth.addOracleChat(chatMessage);
+            
+            if (result.success) {
+                document.getElementById('user1-result').className = 'result success';
+                document.getElementById('user1-result').textContent = `✅ Chat message added for ${currentUser1.username}`;
+                updateChatHistory();
+            } else {
+                document.getElementById('user1-result').className = 'result error';
+                document.getElementById('user1-result').textContent = `❌ Failed to add chat: ${result.error}`;
+            }
+        }
+
+        function viewDataUser1() {
+            if (!currentUser1) {
+                document.getElementById('user1-result').textContent = '❌ User 1 not logged in';
+                return;
+            }
+            
+            const userData = window.InfinityAuth.getUserData();
+            document.getElementById('user1-result').className = 'result success';
+            document.getElementById('user1-result').textContent = `User 1 Data:\n${JSON.stringify(userData, null, 2)}`;
+        }
+
+        // User 2 functions (similar to User 1)
+        async function registerUser2() {
+            const resultDiv = document.getElementById('user2-result');
+            resultDiv.textContent = 'Registering User 2...';
+            resultDiv.className = 'result';
+            
+            try {
+                const email = document.getElementById('user2-email').value;
+                const username = document.getElementById('user2-username').value;
+                const password = document.getElementById('user2-password').value;
+                
+                const result = await window.InfinityAuth.registerUser(email, password, username);
+                
+                if (result.success) {
+                    currentUser2 = result.user;
+                    updateUser2Status(true);
+                    resultDiv.className = 'result success';
+                    resultDiv.textContent = `✅ User 2 registered!\nID: ${result.user.id}\nUsername: ${result.user.username}`;
+                } else {
+                    resultDiv.className = 'result error';
+                    resultDiv.textContent = `❌ Registration failed: ${result.error}`;
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = `❌ Error: ${error.message}`;
+            }
+            
+            checkSystemStatus();
+        }
+
+        async function loginUser2() {
+            const resultDiv = document.getElementById('user2-result');
+            resultDiv.textContent = 'Logging in User 2...';
+            resultDiv.className = 'result';
+            
+            try {
+                const email = document.getElementById('user2-email').value;
+                const password = document.getElementById('user2-password').value;
+                
+                const result = await window.InfinityAuth.loginUser(email, password);
+                
+                if (result.success) {
+                    currentUser2 = result.user;
+                    updateUser2Status(true);
+                    resultDiv.className = 'result success';
+                    resultDiv.textContent = `✅ User 2 logged in!\nUsername: ${result.user.username}\nAuthenticated: ${window.InfinityAuth.isUserAuthenticated()}`;
+                } else {
+                    resultDiv.className = 'result error';
+                    resultDiv.textContent = `❌ Login failed: ${result.error}`;
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = `❌ Error: ${error.message}`;
+            }
+            
+            checkSystemStatus();
+        }
+
+        function logoutUser2() {
+            const resultDiv = document.getElementById('user2-result');
+            
+            if (window.InfinityAuth.isUserAuthenticated()) {
+                const result = window.InfinityAuth.logoutUser();
+                currentUser2 = null;
+                updateUser2Status(false);
+                resultDiv.className = 'result success';
+                resultDiv.textContent = `✅ User 2 logged out!\nAuthenticated: ${window.InfinityAuth.isUserAuthenticated()}`;
+            } else {
+                resultDiv.className = 'result warning';
+                resultDiv.textContent = '⚠️ No user logged in';
+            }
+            
+            checkSystemStatus();
+        }
+
+        function addChatUser2() {
+            if (!currentUser2) {
+                document.getElementById('user2-result').textContent = '❌ User 2 not logged in';
+                return;
+            }
+            
+            const chatMessage = {
+                message: `Hello from ${currentUser2.username} at ${new Date().toLocaleTimeString()}`,
+                timestamp: Date.now()
+            };
+            
+            const result = window.InfinityAuth.addOracleChat(chatMessage);
+            
+            if (result.success) {
+                document.getElementById('user2-result').className = 'result success';
+                document.getElementById('user2-result').textContent = `✅ Chat message added for ${currentUser2.username}`;
+                updateChatHistory();
+            } else {
+                document.getElementById('user2-result').className = 'result error';
+                document.getElementById('user2-result').textContent = `❌ Failed to add chat: ${result.error}`;
+            }
+        }
+
+        function viewDataUser2() {
+            if (!currentUser2) {
+                document.getElementById('user2-result').textContent = '❌ User 2 not logged in';
+                return;
+            }
+            
+            const userData = window.InfinityAuth.getUserData();
+            document.getElementById('user2-result').className = 'result success';
+            document.getElementById('user2-result').textContent = `User 2 Data:\n${JSON.stringify(userData, null, 2)}`;
+        }
+
+        // Status update functions
+        function updateUser1Status(isOnline) {
+            const status = document.getElementById('user1-status');
+            if (isOnline) {
+                status.className = 'status online';
+                status.textContent = 'Online';
+            } else {
+                status.className = 'status offline';
+                status.textContent = 'Offline';
+            }
+        }
+
+        function updateUser2Status(isOnline) {
+            const status = document.getElementById('user2-status');
+            if (isOnline) {
+                status.className = 'status online';
+                status.textContent = 'Online';
+            } else {
+                status.className = 'status offline';
+                status.textContent = 'Offline';
+            }
+        }
+
+        // Data isolation test
+        function testDataIsolation() {
+            const resultDiv = document.getElementById('isolation-result');
+            resultDiv.textContent = 'Testing data isolation...';
+            resultDiv.className = 'result';
+            
+            try {
+                const users = JSON.parse(localStorage.getItem('infinity-users') || '[]');
+                
+                if (users.length < 2) {
+                    resultDiv.className = 'result warning';
+                    resultDiv.textContent = '⚠️ Need at least 2 users to test isolation. Please register both users first.';
+                    return;
+                }
+                
+                let isolationTest = 'Data Isolation Test Results:\n\n';
+                
+                users.forEach((user, index) => {
+                    isolationTest += `User ${index + 1} (${user.username}):\n`;
+                    isolationTest += `- ID: ${user.id}\n`;
+                    isolationTest += `- Email: ${user.email}\n`;
+                    isolationTest += `- Chat Messages: ${user.oracleChats ? user.oracleChats.length : 0}\n`;
+                    isolationTest += `- Portfolio Items: ${user.portfolio ? user.portfolio.length : 0}\n`;
+                    isolationTest += `- Grading History: ${user.gradingHistory ? user.gradingHistory.length : 0}\n\n`;
+                });
+                
+                // Check if data is properly isolated
+                const user1 = users[0];
+                const user2 = users[1];
+                
+                if (user1.id !== user2.id) {
+                    isolationTest += '✅ User IDs are unique\n';
+                } else {
+                    isolationTest += '❌ User IDs are not unique\n';
+                }
+                
+                if (user1.email !== user2.email) {
+                    isolationTest += '✅ Email addresses are unique\n';
+                } else {
+                    isolationTest += '❌ Email addresses are not unique\n';
+                }
+                
+                isolationTest += '\nData isolation test completed!';
+                
+                resultDiv.className = 'result success';
+                resultDiv.textContent = isolationTest;
+                
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = `❌ Isolation test failed: ${error.message}`;
+            }
+        }
+
+        function clearAllData() {
+            if (confirm('Are you sure you want to clear all user data? This cannot be undone.')) {
+                localStorage.removeItem('infinity-users');
+                localStorage.removeItem('infinity-current-user');
+                currentUser1 = null;
+                currentUser2 = null;
+                updateUser1Status(false);
+                updateUser2Status(false);
+                
+                document.getElementById('isolation-result').className = 'result success';
+                document.getElementById('isolation-result').textContent = '✅ All data cleared!';
+                
+                checkSystemStatus();
+                updateChatHistory();
+            }
+        }
+
+        function updateChatHistory() {
+            const chatDiv = document.getElementById('chat-history');
+            const users = JSON.parse(localStorage.getItem('infinity-users') || '[]');
+            
+            let chatHTML = '';
+            users.forEach(user => {
+                if (user.oracleChats && user.oracleChats.length > 0) {
+                    chatHTML += `<h4>${user.username}'s Chat History:</h4>`;
+                    user.oracleChats.forEach(chat => {
+                        chatHTML += `<div class="chat-message user${users.indexOf(user) + 1}">`;
+                        chatHTML += `<strong>${user.username}:</strong> ${chat.message}`;
+                        chatHTML += ` <small>(${new Date(chat.timestamp).toLocaleString()})</small>`;
+                        chatHTML += `</div>`;
+                    });
+                }
+            });
+            
+            if (chatHTML === '') {
+                chatHTML = '<p>No chat messages yet. Add some messages using the buttons above.</p>';
+            }
+            
+            chatDiv.innerHTML = chatHTML;
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                checkSystemStatus();
+                updateChatHistory();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

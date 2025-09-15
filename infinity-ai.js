@@ -111,10 +111,15 @@ class InfinityAISystem {
     }
 
     // Clear user profile
-    clearUserProfile(userId) {
+    clearUserProfile(userId = null) {
         try {
-            if (this.userProfiles[userId]) {
+            if (userId && this.userProfiles[userId]) {
                 delete this.userProfiles[userId];
+                console.log(`✅ Cleared AI profile for user ${userId}`);
+            } else if (!userId) {
+                // Clear all profiles (for logout)
+                this.userProfiles = {};
+                console.log('✅ Cleared all AI profiles');
             }
             return { success: true, message: 'User profile cleared' };
         } catch (error) {
@@ -719,15 +724,27 @@ class InfinityAISystem {
 
     // Store user interaction (called by auth system)
     storeUserInteraction(userId, type, data, outcome) {
-        const interaction = {
-            type,
-            data,
-            outcome,
-            userId,
-            timestamp: Date.now()
-        };
+        try {
+            const interaction = {
+                type,
+                data,
+                outcome,
+                userId,
+                timestamp: Date.now()
+            };
 
-        this.learnFromInteraction(interaction);
+            // Ensure user profile exists
+            if (!this.userProfiles[userId]) {
+                console.warn(`User profile not found for ${userId}, creating...`);
+                this.initializeUserProfile(userId, {});
+            }
+
+            this.learnFromInteraction(interaction);
+            return { success: true, message: 'Interaction stored' };
+        } catch (error) {
+            console.error('Failed to store user interaction:', error);
+            return { success: false, error: error.message };
+        }
     }
 
     // Get user profile
