@@ -10,6 +10,9 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://unpkg.com/lottie-web@5.12.2/build/player/lottie.min.js"></script>
+    <script src="notification-system.js"></script>
+    <script src="ai-core.js"></script>
+    <script src="performance-optimizer.js"></script>
     <style>
         body {
             background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
@@ -128,6 +131,69 @@
             0%, 100% { opacity: 1; }
             50% { opacity: 0.7; }
         }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+            
+            .grid {
+                gap: 1rem;
+            }
+            
+            .text-3xl {
+                font-size: 1.875rem;
+            }
+            
+            .text-2xl {
+                font-size: 1.5rem;
+            }
+            
+            .cyber-card {
+                padding: 1rem;
+            }
+            
+            .glass-morphism {
+                padding: 1rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .text-4xl {
+                font-size: 2rem;
+            }
+            
+            .text-3xl {
+                font-size: 1.5rem;
+            }
+            
+            .cyber-card {
+                padding: 0.75rem;
+            }
+            
+            .quantum-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.875rem;
+            }
+        }
+        
+        /* Performance optimizations */
+        .cyber-card {
+            will-change: transform;
+            transform: translateZ(0);
+        }
+        
+        .quantum-btn {
+            will-change: transform;
+            transform: translateZ(0);
+        }
+        
+        .glass-morphism {
+            will-change: transform;
+            transform: translateZ(0);
+        }
     </style>
 </head>
 <body>
@@ -159,13 +225,7 @@
                 topGain: 67.2
             });
 
-            const [notifications, setNotifications] = useState([
-                { id: 1, type: 'price_alert', message: 'Luka Prizm Silver +23% today', time: '2m ago', urgent: true },
-                { id: 2, type: 'grading', message: 'Your PSA submission ready', time: '1h ago', urgent: false },
-                { id: 3, type: 'market', message: 'Basketball cards trending up', time: '3h ago', urgent: false },
-                { id: 4, type: 'achievement', message: 'New badge: Grading Guru', time: '1d ago', urgent: false },
-                { id: 5, type: 'recommendation', message: '3 new AI picks available', time: '2d ago', urgent: false }
-            ]);
+            const [notifications, setNotifications] = useState([]);
 
             const [showNotifications, setShowNotifications] = useState(false);
             const [hypeLevel, setHypeLevel] = useState(75);
@@ -186,10 +246,37 @@
                 return () => clearInterval(interval);
             }, []);
 
+            // Notification system integration
+            useEffect(() => {
+                if (window.InfinityNotifications) {
+                    // Load initial notifications
+                    setNotifications(window.InfinityNotifications.getNotifications(5));
+                    setUserStats(prev => ({
+                        ...prev,
+                        notifications: window.InfinityNotifications.getUnreadCount()
+                    }));
+
+                    // Subscribe to new notifications
+                    const handleNewNotification = (notification) => {
+                        setNotifications(prev => [notification, ...prev.slice(0, 4)]);
+                        setUserStats(prev => ({
+                            ...prev,
+                            notifications: window.InfinityNotifications.getUnreadCount()
+                        }));
+                    };
+
+                    window.InfinityNotifications.subscribe(handleNewNotification);
+
+                    return () => {
+                        window.InfinityNotifications.unsubscribe(handleNewNotification);
+                    };
+                }
+            }, []);
+
             // Hype level animation
             useEffect(() => {
                 const interval = setInterval(() => {
-                    setHypeLevel(prev => Math.max(60, Math.min(95, prev + (Math.random() * 10 - 5)));
+                    setHypeLevel(prev => Math.max(60, Math.min(95, prev + (Math.random() * 10 - 5))));
                 }, 3000);
 
                 return () => clearInterval(interval);
@@ -253,8 +340,28 @@
                     icon: '🧬',
                     color: 'neon-purple',
                     page: 'dna.html',
-                    status: 'coming_soon',
-                    stats: 'Beta testing'
+                    status: 'active',
+                    stats: '12 cards analyzed'
+                },
+                {
+                    id: 'coach',
+                    name: 'AI Coach Mode',
+                    description: 'Personalized learning and investment guidance',
+                    icon: '🎓',
+                    color: 'neon-cyan',
+                    page: 'coach.html',
+                    status: 'active',
+                    stats: 'Level 3 Coach'
+                },
+                {
+                    id: 'synergy',
+                    name: 'Synergy Alerts',
+                    description: 'Discover related opportunities and market connections',
+                    icon: '🔗',
+                    color: 'neon-green',
+                    page: 'synergy.html',
+                    status: 'active',
+                    stats: '5 active alerts'
                 }
             ];
 
@@ -291,20 +398,20 @@
                                 <div className="text-lg text-gray-300">
                                     THE SINGULARITY OF SPORTS CARD INTELLIGENCE
                                 </div>
-                            </div>
+                                    </div>
                             <div className="flex items-center gap-4">
                                 <div className="glass-card px-4 py-2 rounded-full neon-cyan pulse-glow">
                                     <div className="flex items-center gap-2">
                                         <div className="text-xl">🏆</div>
                                         <div className="text-sm font-bold">Rank #{userStats.level}</div>
                                     </div>
-                                </div>
+                                                </div>
                                 <div className="glass-card px-4 py-2 rounded-full neon-green">
                                     <div className="flex items-center gap-2">
                                         <div className="text-xl">🎯</div>
                                         <div className="text-sm font-bold">{userStats.rank}</div>
                                     </div>
-                                </div>
+                                                        </div>
                                 <div className="glass-card px-4 py-2 rounded-full neon-purple relative cursor-pointer" 
                                      onClick={handleNotificationClick}>
                                     <div className="flex items-center gap-2">
@@ -316,8 +423,8 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        
+                                </div>
+
                         {/* Notifications Dropdown */}
                         {showNotifications && (
                             <div ref={notificationRef} className="absolute top-full right-0 mt-2 w-80 glass-card rounded-lg p-4 z-50">
@@ -334,22 +441,29 @@
                                     {notifications.map((notification) => (
                                         <div key={notification.id} className={`p-3 rounded-lg ${
                                             notification.urgent ? 'bg-red-500/20 border border-red-500/30' : 'bg-gray-800/50'
-                                        }`}>
+                                        } ${!notification.read ? 'border-l-4 border-cyan-400' : ''}`}>
                                             <div className="flex items-start gap-3">
                                                 <div className={`text-lg ${
                                                     notification.type === 'price_alert' ? '🔔' :
                                                     notification.type === 'grading' ? '🔬' :
                                                     notification.type === 'market' ? '📈' :
-                                                    notification.type === 'achievement' ? '🏆' : '💡'
+                                                    notification.type === 'achievement' ? '🏆' :
+                                                    notification.type === 'portfolio' ? '💼' : '💡'
                                                 }`}></div>
                                                 <div className="flex-1">
-                                                    <div className="text-sm text-white">{notification.message}</div>
-                                                    <div className="text-xs text-gray-400 mt-1">{notification.time}</div>
+                                                    <div className="text-sm font-bold text-white">{notification.title}</div>
+                                                    <div className="text-sm text-gray-300">{notification.message}</div>
+                                                    <div className="text-xs text-gray-400 mt-1">
+                                                        {new Date(notification.timestamp).toLocaleString()}
+                                                    </div>
                                                 </div>
+                                                {!notification.read && (
+                                                    <div className="w-2 h-2 bg-cyan-400 rounded-full"></div>
+                                                )}
                                             </div>
                                         </div>
                                     ))}
-                                </div>
+                                        </div>
                                 <div className="mt-4 pt-4 border-t border-gray-700">
                                     <button className="w-full text-center text-cyan-400 hover:text-white text-sm">
                                         View All Notifications
@@ -374,19 +488,19 @@
                             <div className="glass-card p-6 rounded-lg mb-8 neon-cyan">
                                 <h3 className="text-2xl font-bold text-cyan-400 mb-4">📊 Live Market Data</h3>
                                 <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                                    <div className="text-center">
+                                <div className="text-center">
                                         <div className="text-2xl font-bold text-white live-data">
                                             {formatCurrency(liveData.marketCap)}
                                         </div>
                                         <div className="text-sm text-gray-400">Market Cap</div>
-                                    </div>
+                                                </div>
                                     <div className="text-center">
                                         <div className="text-2xl font-bold text-cyan-400 live-data">
                                             {formatNumber(liveData.activeListings)}
                                         </div>
                                         <div className="text-sm text-gray-400">Active Listings</div>
                                     </div>
-                                    <div className="text-center">
+                                <div className="text-center">
                                         <div className="text-2xl font-bold text-green-400 live-data">
                                             +{liveData.avgROI.toFixed(1)}%
                                         </div>
@@ -410,7 +524,7 @@
                                 </div>
                                 <div className="hype-meter mx-auto w-full max-w-md">
                                     <div className="hype-indicator" style={{width: `${hypeLevel}%`}}></div>
-                                </div>
+                                        </div>
                                 <div className="text-xs text-gray-400 mt-2">
                                     {liveData.topPerformer} leading with +{liveData.topGain}% gain
                                 </div>
@@ -434,7 +548,7 @@
                                     <div className="w-full bg-gray-700 rounded-full h-3 mb-2">
                                         <div className="bg-gradient-to-r from-purple-400 to-cyan-400 h-3 rounded-full" 
                                              style={{width: `${(userStats.xp / userStats.maxXp) * 100}%`}}></div>
-                                    </div>
+                            </div>
                                     <div className="text-xs text-gray-400">{userStats.xp} / {userStats.maxXp} XP</div>
                                 </div>
                                 <div className="glass-card neon-orange">
@@ -478,7 +592,7 @@
                                     <div className="text-xs text-cyan-400 mb-4 font-bold">
                                         {feature.stats}
                                     </div>
-                                    <button 
+                                    <button
                                         className={`btn w-full py-3 px-4 rounded-lg text-sm font-bold ${
                                             feature.status === 'coming_soon' ? 'opacity-50 cursor-not-allowed' : ''
                                         }`}
@@ -487,7 +601,7 @@
                                         {feature.status === 'active' ? 'Launch Feature' : 'Coming Soon'}
                                     </button>
                                 </div>
-                            ))}
+                                ))}
                         </div>
                     </section>
 
@@ -514,7 +628,7 @@
                                 <button className="btn px-6 py-2 rounded-lg text-sm">
                                     View Report
                                 </button>
-                            </div>
+                                    </div>
                             <div className="glass-card p-6 rounded-lg text-center neon-green hover:scale-105 transition-all duration-300 cursor-pointer"
                                  onClick={() => navigateToFeature('oracle.html')}>
                                 <div className="text-5xl mb-4">🎯</div>

@@ -10,6 +10,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://unpkg.com/lottie-web@5.12.2/build/player/lottie.min.js"></script>
+    <script src="ai-core.js"></script>
     <style>
         body {
             background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
@@ -149,9 +150,18 @@
                 }, 200);
 
                 setTimeout(() => {
+                    // Use AI Core for enhanced analysis
+                    const cardData = {
+                        image: uploadedImage,
+                        timestamp: new Date(),
+                        userLevel: window.InfinityAI.getUserProfile().level
+                    };
+                    
+                    const aiResponse = window.InfinityAI.integrateWithGrader(cardData);
+                    
                     const mockResult = {
                         predicted_grade: "PSA 9",
-                        confidence: 0.92,
+                        confidence: aiResponse.confidence,
                         subgrades: {
                             centering: 0.88,
                             corners: 0.85,
@@ -192,8 +202,17 @@
                             areas_for_improvement: ["Surface wear", "Minor centering issues"],
                             grading_tips: ["Consider professional cleaning", "Handle with extreme care"],
                             market_outlook: "Strong demand for this card, especially in PSA 10"
-                        }
+                        },
+                        ai_core_response: aiResponse,
+                        memory_context: aiResponse.memoryContext,
+                        learning_insights: aiResponse.learningInsights
                     };
+                    
+                    // Learn from this interaction
+                    window.InfinityAI.learnFromInteraction('grading', cardData, {
+                        predictedGrade: mockResult.predicted_grade,
+                        success: true
+                    });
                     
                     setAnalysisResult(mockResult);
                     setIsAnalyzing(false);

@@ -8,6 +8,8 @@
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/lottie-web@5.12.2/build/player/lottie.min.js"></script>
     <style>
         body {
             background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
@@ -76,23 +78,65 @@
             color: #00ff88;
             font-size: 18px;
         }
+        
+        .portfolio-chart {
+            height: 400px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+        }
+        
+        .roi-indicator {
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .holding-card {
+            transition: all 0.3s ease;
+        }
+        
+        .holding-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.3);
+        }
+        
+        .performance-badge {
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { box-shadow: 0 0 5px rgba(0, 255, 136, 0.5); }
+            to { box-shadow: 0 0 20px rgba(0, 255, 136, 0.8); }
+        }
     </style>
 </head>
 <body>
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState } = React;
+        const { useState, useRef, useEffect } = React;
 
         const PortfolioCenter = () => {
             const [selectedTimeframe, setSelectedTimeframe] = useState('1M');
             const [selectedView, setSelectedView] = useState('overview');
-
-            const portfolioData = {
+            const [liveData, setLiveData] = useState({
                 totalValue: 47250,
                 totalCost: 35200,
                 roi: 34.2,
-                monthlyChange: 12.5,
+                monthlyChange: 12.5
+            });
+            const [selectedHolding, setSelectedHolding] = useState(null);
+            const chartRef = useRef(null);
+
+            const portfolioData = {
+                totalValue: liveData.totalValue,
+                totalCost: liveData.totalCost,
+                roi: liveData.roi,
+                monthlyChange: liveData.monthlyChange,
                 topPerformer: {
                     name: "Wembanyama RC Auto",
                     value: 2800,
@@ -100,14 +144,14 @@
                     qty: 1
                 },
                 holdings: [
-                    { name: "Luka Prizm Silver", qty: 2, cost: 1950, value: 2400, change: 23, sport: "🏀" },
-                    { name: "Wembanyama RC Auto", qty: 1, cost: 1675, value: 2800, change: 67, sport: "🏀" },
-                    { name: "Mahomes Championship", qty: 1, cost: 2700, value: 3200, change: 18, sport: "🏈" },
-                    { name: "Caitlin Clark RC", qty: 3, cost: 1840, value: 2670, change: 45, sport: "🏀" },
-                    { name: "Shohei Ohtani RC", qty: 2, cost: 1120, value: 1500, change: 34, sport: "⚾" },
-                    { name: "Connor Bedard YG", qty: 1, cost: 850, value: 1100, change: 29, sport: "🏒" },
-                    { name: "Anthony Edwards Prizm", qty: 4, cost: 2100, value: 3000, change: 43, sport: "🏀" },
-                    { name: "Josh Allen Rookie", qty: 2, cost: 780, value: 950, change: 22, sport: "🏈" }
+                    { id: 1, name: "Luka Prizm Silver", qty: 2, cost: 1950, value: 2400, change: 23, sport: "🏀", grade: "PSA 9", trend: "up" },
+                    { id: 2, name: "Wembanyama RC Auto", qty: 1, cost: 1675, value: 2800, change: 67, sport: "🏀", grade: "PSA 10", trend: "up" },
+                    { id: 3, name: "Mahomes Championship", qty: 1, cost: 2700, value: 3200, change: 18, sport: "🏈", grade: "PSA 9", trend: "up" },
+                    { id: 4, name: "Caitlin Clark RC", qty: 3, cost: 1840, value: 2670, change: 45, sport: "🏀", grade: "PSA 10", trend: "up" },
+                    { id: 5, name: "Shohei Ohtani RC", qty: 2, cost: 1120, value: 1500, change: 34, sport: "⚾", grade: "PSA 9", trend: "up" },
+                    { id: 6, name: "Connor Bedard YG", qty: 1, cost: 850, value: 1100, change: 29, sport: "🏒", grade: "PSA 9", trend: "up" },
+                    { id: 7, name: "Anthony Edwards Prizm", qty: 4, cost: 2100, value: 3000, change: 43, sport: "🏀", grade: "PSA 9", trend: "up" },
+                    { id: 8, name: "Josh Allen Rookie", qty: 2, cost: 780, value: 950, change: 22, sport: "🏈", grade: "PSA 8", trend: "up" }
                 ],
                 performance: {
                     '1D': { value: 47250, change: 2.1 },
@@ -115,8 +159,25 @@
                     '1M': { value: 42000, change: 12.5 },
                     '3M': { value: 38000, change: 24.3 },
                     '1Y': { value: 25000, change: 89.0 }
+                },
+                chartData: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    values: [25000, 26500, 28000, 29500, 31000, 32500, 34000, 35500, 37000, 38500, 40000, 47250]
                 }
             };
+
+            // Live data updates
+            React.useEffect(() => {
+                const interval = setInterval(() => {
+                    setLiveData(prev => ({
+                        ...prev,
+                        totalValue: prev.totalValue + Math.random() * 100 - 50,
+                        roi: prev.roi + (Math.random() * 0.1 - 0.05)
+                    }));
+                }, 10000);
+
+                return () => clearInterval(interval);
+            }, []);
 
             const goHome = () => {
                 window.location.href = 'home.html';
@@ -219,16 +280,26 @@
                                 </div>
                             </div>
                             
-                            <div className="chart-container">
-                                <div className="text-center">
-                                    <div className="text-4xl font-bold text-green-400 mb-2">
+                            <div className="portfolio-chart">
+                                <div className="text-center mb-4">
+                                    <div className="text-4xl font-bold text-green-400 mb-2 roi-indicator">
                                         {formatCurrency(portfolioData.performance[selectedTimeframe].value)}
                                     </div>
                                     <div className="text-lg text-gray-300">
                                         {formatPercent(portfolioData.performance[selectedTimeframe].change)} change
                                     </div>
-                                    <div className="text-sm text-gray-400 mt-2">
-                                        Interactive chart would be here
+                                </div>
+                                <div className="h-64 bg-gray-800/50 rounded-lg p-4 flex items-center justify-center">
+                                    <div className="text-center">
+                                        <div className="text-6xl mb-4">📈</div>
+                                        <div className="text-lg font-bold text-cyan-400 mb-2">Portfolio Growth Chart</div>
+                                        <div className="text-sm text-gray-400 mb-4">
+                                            {selectedTimeframe} Performance Visualization
+                                        </div>
+                                        <div className="grid grid-cols-2 gap-4 text-xs">
+                                            <div className="text-green-400">▲ Growth: +{portfolioData.performance[selectedTimeframe].change}%</div>
+                                            <div className="text-cyan-400">📊 Trend: Upward</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -276,13 +347,14 @@
                                     </thead>
                                     <tbody>
                                         {portfolioData.holdings.map((holding, idx) => (
-                                            <tr key={idx} className="border-b border-gray-700/30 hover:bg-gray-800/30 transition-colors">
+                                            <tr key={holding.id} className="border-b border-gray-700/30 hover:bg-gray-800/30 transition-colors holding-card cursor-pointer"
+                                                onClick={() => setSelectedHolding(holding)}>
                                                 <td className="py-4 px-4">
                                                     <div className="flex items-center gap-3">
                                                         <div className="text-2xl">{holding.sport}</div>
                                                         <div>
                                                             <div className="font-bold text-white">{holding.name}</div>
-                                                            <div className="text-sm text-gray-400">Card details</div>
+                                                            <div className="text-sm text-gray-400">{holding.grade} • {holding.trend === 'up' ? '📈' : '📉'} Trending</div>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -296,10 +368,22 @@
                                                 </td>
                                                 <td className="py-4 px-4">
                                                     <div className="flex gap-2">
-                                                        <button className="quantum-btn px-3 py-1 text-xs rounded">
+                                                        <button 
+                                                            className="quantum-btn px-3 py-1 text-xs rounded"
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                alert(`Sell ${holding.name} - ${formatCurrency(holding.value)}`);
+                                                            }}
+                                                        >
                                                             Sell
                                                         </button>
-                                                        <button className="quantum-btn px-3 py-1 text-xs rounded">
+                                                        <button 
+                                                            className="quantum-btn px-3 py-1 text-xs rounded"
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                window.location.href = 'grader.html';
+                                                            }}
+                                                        >
                                                             Grade
                                                         </button>
                                                     </div>
@@ -357,26 +441,115 @@
                             </div>
                         </div>
 
+                        {/* Selected Holding Details */}
+                        {selectedHolding && (
+                            <div className="glass-morphism p-6 rounded-lg mb-8">
+                                <div className="flex items-center justify-between mb-6">
+                                    <h3 className="text-2xl font-bold text-green-400">📊 Holding Details</h3>
+                                    <button 
+                                        onClick={() => setSelectedHolding(null)}
+                                        className="text-gray-400 hover:text-white"
+                                    >
+                                        ✕
+                                    </button>
+                                </div>
+                                
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <h4 className="text-lg font-bold text-white mb-3">Card Information</h4>
+                                        <div className="space-y-2 text-sm">
+                                            <div className="flex justify-between">
+                                                <span className="text-gray-400">Name:</span>
+                                                <span className="text-white font-bold">{selectedHolding.name}</span>
+                                            </div>
+                                            <div className="flex justify-between">
+                                                <span className="text-gray-400">Grade:</span>
+                                                <span className="text-cyan-400 font-bold">{selectedHolding.grade}</span>
+                                            </div>
+                                            <div className="flex justify-between">
+                                                <span className="text-gray-400">Quantity:</span>
+                                                <span className="text-white font-bold">{selectedHolding.qty}</span>
+                                            </div>
+                                            <div className="flex justify-between">
+                                                <span className="text-gray-400">Trend:</span>
+                                                <span className="text-green-400 font-bold">{selectedHolding.trend === 'up' ? '📈 Upward' : '📉 Downward'}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div>
+                                        <h4 className="text-lg font-bold text-white mb-3">Financial Analysis</h4>
+                                        <div className="space-y-2 text-sm">
+                                            <div className="flex justify-between">
+                                                <span className="text-gray-400">Total Cost:</span>
+                                                <span className="text-white font-bold">{formatCurrency(selectedHolding.cost)}</span>
+                                            </div>
+                                            <div className="flex justify-between">
+                                                <span className="text-gray-400">Current Value:</span>
+                                                <span className="text-cyan-400 font-bold">{formatCurrency(selectedHolding.value)}</span>
+                                            </div>
+                                            <div className="flex justify-between">
+                                                <span className="text-gray-400">Gain/Loss:</span>
+                                                <span className={`font-bold ${selectedHolding.change >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                                                    {formatPercent(selectedHolding.change)}
+                                                </span>
+                                            </div>
+                                            <div className="flex justify-between">
+                                                <span className="text-gray-400">Profit:</span>
+                                                <span className="text-green-400 font-bold">
+                                                    {formatCurrency(selectedHolding.value - selectedHolding.cost)}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div className="mt-6 flex gap-4">
+                                    <button className="quantum-btn px-6 py-2 rounded-lg text-sm font-bold">
+                                        View Market Analysis
+                                    </button>
+                                    <button className="quantum-btn px-6 py-2 rounded-lg text-sm font-bold">
+                                        Set Price Alert
+                                    </button>
+                                    <button className="quantum-btn px-6 py-2 rounded-lg text-sm font-bold">
+                                        Get AI Recommendation
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+
                         {/* Quick Actions */}
                         <div className="glass-morphism p-6 rounded-lg">
                             <h2 className="text-2xl font-bold text-green-400 mb-6">⚡ Quick Actions</h2>
                             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                                <button className="cyber-card p-4 rounded-lg text-center hover:scale-105 transition-transform">
+                                <button 
+                                    className="cyber-card p-4 rounded-lg text-center hover:scale-105 transition-transform"
+                                    onClick={() => alert('Add new card to portfolio')}
+                                >
                                     <div className="text-3xl mb-2">➕</div>
                                     <div className="font-bold text-white">Add Card</div>
                                 </button>
                                 
-                                <button className="cyber-card p-4 rounded-lg text-center hover:scale-105 transition-transform">
+                                <button 
+                                    className="cyber-card p-4 rounded-lg text-center hover:scale-105 transition-transform"
+                                    onClick={() => alert('Export portfolio data to CSV')}
+                                >
                                     <div className="text-3xl mb-2">📊</div>
                                     <div className="font-bold text-white">Export Data</div>
                                 </button>
                                 
-                                <button className="cyber-card p-4 rounded-lg text-center hover:scale-105 transition-transform">
+                                <button 
+                                    className="cyber-card p-4 rounded-lg text-center hover:scale-105 transition-transform"
+                                    onClick={() => alert('Set price alerts for your holdings')}
+                                >
                                     <div className="text-3xl mb-2">🎯</div>
                                     <div className="font-bold text-white">Set Alerts</div>
                                 </button>
                                 
-                                <button className="cyber-card p-4 rounded-lg text-center hover:scale-105 transition-transform">
+                                <button 
+                                    className="cyber-card p-4 rounded-lg text-center hover:scale-105 transition-transform"
+                                    onClick={() => window.location.href = 'market.html'}
+                                >
                                     <div className="text-3xl mb-2">📈</div>
                                     <div className="font-bold text-white">View Trends</div>
                                 </button>
