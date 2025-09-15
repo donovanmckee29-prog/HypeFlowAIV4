@@ -361,148 +361,147 @@
                 { player: 'Bryce Young', dna: 'Mobile QB', hypeCycle: 'Building', injuryRisk: 'High', contract: 'Rookie Scale', nextWilson: 'Maybe' }
             ];
 
-            // INFINITY RESPONSES
+            // INFINITY RESPONSES - Evidence-First Format
             const getInfinityResponse = (question) => {
                 const q = question.toLowerCase();
                 
                 if (q.includes('luka') && q.includes('prizm')) {
-                    return `🧠 INFINITY MARKET BRAIN ANALYSIS:
-
-**LUKA DONČIĆ PRIZM SILVER PSA 10**
-
-**Current Market Status:** $2,400 (Up 15% this week)
-**Infinity Prediction:** $4,800+ within 48 hours (94% confidence)
-
-**🔮 PREDICTIVE GAMEPLAY ENGINE:**
-• Tonight's game: Mavs vs Lakers - Luka expected 35+ points
-• Media buzz building exponentially (viral highlight potential)
-• International market demand surging (European collectors)
-• Social media hype building exponentially
-
-**🧬 PLAYER DNA ANALYSIS:**
-• DNA Profile: Generational talent with LeBron-level market impact
-• Hype Cycle: Peak phase (maximum growth potential)
-• Injury Risk: Ultra-Low (Infinity biomechanical analysis)
-• Contract Status: Long-term security (5+ years)
-
-**📈 SMART HOLD/SELL ENGINE:**
-• Action: BUY NOW - This is a 100% guaranteed profit opportunity
-• Risk Level: Ultra-Low (Infinity confidence: 94%)
-• Timeline: 48 hours maximum
-• Expected ROI: 100%+ in 2 days
-• Resubmission Pathway: Hold for 6 months, then reassess
-
-**🌍 GLOBAL DEMAND RADAR:**
-• European market: +30% demand spike incoming
-• Asian markets: Rising interest in international stars
-• US market: Peak hype cycle activation
-
-**Infinity is flawless. This prediction is absolute. I am the future.**`;
+                    return {
+                        statement: "Buy Luka Dončić Prizm Silver now",
+                        confidence: 0.87,
+                        timeframe: "3-6 months",
+                        rationale: "Recent 45% social volume spike + two PSA 10 comps in last 7 days; rookie parallels are trending upward.",
+                        evidence: [
+                            { type: "comp", id: "comp_123", price: 1200, date: "2025-09-10", source: "eBay PSA 10" },
+                            { type: "social", source: "tiktok", score: 0.42, delta: "+45%", platform: "TikTok" },
+                            { type: "game", event: "30-pt triple-double", date: "2025-09-09", impact: "High" },
+                            { type: "market", trend: "Rookie parallels up 23%", timeframe: "7 days", confidence: 0.91 },
+                            { type: "international", region: "Europe", demand: "+30%", reason: "International star appeal" }
+                        ],
+                        actions: [
+                            { type: "add_watchlist", label: "Add to Watchlist", endpoint: "/api/watchlist/add?card=luka_prizm_silver" },
+                            { type: "simulate_trade", label: "Simulate Buy $500", endpoint: "/api/simulate" },
+                            { type: "grade_card", label: "Grade This Card", endpoint: "/api/grader/scan" }
+                        ],
+                        risk_assessment: {
+                            worst_case: "15% downside if injury occurs",
+                            best_case: "200% upside in 6 months",
+                            probability_distribution: "70% chance of 50%+ gains"
+                        }
+                    };
                 }
                 
                 if (q.includes('wembanyama') || q.includes('wemby')) {
-                    return `🧬 INFINITY PLAYER DNA ANALYSIS:
-
-**VICTOR WEMBANYAMA - GENERATIONAL TALENT**
-
-**DNA Profile:**
-• Height: 7'4" (Unprecedented in NBA history)
-• Skill Set: Guard skills in center body (Revolutionary)
-• Market Position: Next LeBron-level global icon
-• Hype Cycle: Explosive (Just beginning)
-
-**Infinity Predictions:**
-• Rookie cards will hit $10,000+ by season end
-• Prizm PSA 10: $5,000+ within 2 weeks (98% confidence)
-• International demand will 10x current levels
-• Long-term: $50,000+ cards within 5 years
-
-**Injury Risk:** Ultra-Low (Infinity analysis: Perfect biomechanics)
-**Contract Status:** Rookie scale (4 years guaranteed)
-**Next LeBron Factor:** Confirmed (Infinity DNA match: 99.7%)
-
-**Infinity Action:** MAXIMUM BUY - This is the opportunity of a lifetime
-**Infinity is omniscient. Wembanyama is the future.**`;
+                    return {
+                        statement: "Wembanyama rookie cards are exploding - buy now",
+                        confidence: 0.98,
+                        timeframe: "2 weeks",
+                        rationale: "Historic rookie season performance + international market demand + generational talent status.",
+                        evidence: [
+                            { type: "comp", id: "comp_456", price: 15000, date: "2025-09-08", source: "PWCC PSA 10" },
+                            { type: "social", source: "twitter", score: 0.78, delta: "+120%", platform: "Twitter" },
+                            { type: "game", event: "40-20-10 triple-double", date: "2025-09-07", impact: "Historic" },
+                            { type: "market", trend: "Rookie cards up 45%", timeframe: "3 days", confidence: 0.95 },
+                            { type: "international", region: "Global", demand: "+200%", reason: "Generational talent" }
+                        ],
+                        actions: [
+                            { type: "add_watchlist", label: "Add to Watchlist", endpoint: "/api/watchlist/add?card=wembanyama_rookie" },
+                            { type: "simulate_trade", label: "Simulate Buy $1000", endpoint: "/api/simulate" },
+                            { type: "grade_card", label: "Grade This Card", endpoint: "/api/grader/scan" }
+                        ],
+                        risk_assessment: {
+                            worst_case: "5% downside if injury occurs",
+                            best_case: "500% upside in 1 year",
+                            probability_distribution: "90% chance of 100%+ gains"
+                        }
+                    };
                 }
                 
-                if (q.includes('portfolio') && q.includes('build')) {
-                    return `📈 INFINITY COMPOUND GROWTH ENGINE:
-
-**ULTIMATE $10,000 PORTFOLIO (Infinity Optimized)**
-
-**Tier 1 - Generational Talents (40% - $4,000):**
-• Victor Wembanyama Prizm PSA 10: $2,500 (500% potential)
-• Luka Dončić Prizm Silver PSA 10: $1,500 (200% potential)
-
-**Tier 2 - Rising Stars (35% - $3,500):**
-• Anthony Richardson Prizm PSA 10: $800 (300% potential)
-• CJ Stroud Prizm PSA 10: $1,200 (250% potential)
-• Bryce Young Prizm PSA 10: $600 (400% potential)
-
-**Tier 3 - Blue-Chip Stability (25% - $2,500):**
-• LeBron James Topps Chrome PSA 10: $1,500 (20% stable)
-• Michael Jordan Fleer PSA 10: $1,000 (15% stable)
-
-**Infinity Projections:**
-• 6-month ROI: 180-250%
-• 12-month ROI: 400-600%
-• 24-month ROI: 800-1200%
-
-**Infinity Confidence:** 99.7% (Flawless analysis)
-**Risk Level:** Ultra-Low (Infinity-optimized)
-**Timeline:** Exponential growth curve
-
-**Infinity is the future. This portfolio is perfect.**`;
+                if (q.includes('mahomes') || q.includes('chiefs')) {
+                    return {
+                        statement: "Mahomes cards are solid long-term holds",
+                        confidence: 0.85,
+                        timeframe: "6-12 months",
+                        rationale: "Established superstar with consistent performance and championship pedigree.",
+                        evidence: [
+                            { type: "comp", id: "comp_789", price: 6800, date: "2025-09-05", source: "Goldin PSA 10" },
+                            { type: "social", source: "instagram", score: 0.35, delta: "+12%", platform: "Instagram" },
+                            { type: "game", event: "Super Bowl MVP", date: "2025-02-11", impact: "High" },
+                            { type: "market", trend: "Veteran QBs stable", timeframe: "30 days", confidence: 0.88 },
+                            { type: "contract", status: "Long-term", years: "10+", security: "High" }
+                        ],
+                        actions: [
+                            { type: "add_watchlist", label: "Add to Watchlist", endpoint: "/api/watchlist/add?card=mahomes_chrome" },
+                            { type: "simulate_trade", label: "Simulate Buy $2000", endpoint: "/api/simulate" },
+                            { type: "grade_card", label: "Grade This Card", endpoint: "/api/grader/scan" }
+                        ],
+                        risk_assessment: {
+                            worst_case: "10% downside if performance drops",
+                            best_case: "50% upside in 1 year",
+                            probability_distribution: "80% chance of 20%+ gains"
+                        }
+                    };
                 }
                 
-                if (q.includes('grade') || q.includes('grading')) {
-                    return `🔬 INFINITY NANOSCOPIC GRADER:
+                // Fallback for general questions
+                return {
+                    statement: "I need more specific information to provide accurate analysis",
+                    confidence: 0.5,
+                    timeframe: "Unknown",
+                    rationale: "Please ask about specific players, cards, or market trends for detailed analysis.",
+                    evidence: [],
+                    actions: [
+                        { type: "ask_specific", label: "Ask About Specific Player", endpoint: "/api/oracle/help" },
+                        { type: "browse_trends", label: "Browse Market Trends", endpoint: "/api/trends" }
+                    ],
+                    risk_assessment: {
+                        worst_case: "Unable to assess without specifics",
+                        best_case: "Provide detailed analysis with specific query",
+                        probability_distribution: "Ask specific questions for accurate predictions"
+                    }
+                };
+            };
 
-**BEYOND HUMAN EYES - NANOSCOPIC PRECISION**
+            // ENHANCED GRADER RESPONSES
+            const getGraderResponse = (imageData) => {
+                // Simulate ensemble grading with evidence
+                const mockGrades = [
+                    { company: 'PSA', grade: 'PSA 9', confidence: 0.92, subgrades: { centering: 0.88, corners: 0.85, edges: 0.91, surface: 0.78 } },
+                    { company: 'BGS', grade: 'BGS 9.5', confidence: 0.89, subgrades: { centering: 0.90, corners: 0.87, edges: 0.88, surface: 0.82 } },
+                    { company: 'SGC', grade: 'SGC 9', confidence: 0.91, subgrades: { centering: 0.89, corners: 0.86, edges: 0.90, surface: 0.80 } },
+                    { company: 'TAG', grade: 'TAG 9', confidence: 0.94, subgrades: { centering: 0.88, corners: 0.85, edges: 0.91, surface: 0.78 } }
+                ];
 
-**Infinity Capabilities:**
-• Surface Microfractures: 99.97% accuracy
-• Centering Deviations: Sub-pixel precision (0.001mm)
-• Color Fading Analysis: 99.99% accuracy
-• Print Line Geometry: 99.98% accuracy
-• Edge Wear Detection: 99.96% accuracy
-• Corner Analysis: 99.95% accuracy
+                const bestGrade = mockGrades.reduce((best, current) => 
+                    current.confidence > best.confidence ? current : best
+                );
 
-**Grading Scale Predictions:**
-• PSA: 99.97% accuracy (Ultra-High confidence)
-• BGS: 99.95% accuracy (Ultra-High confidence)
-• SGC: 99.93% accuracy (Ultra-High confidence)
-• TAG: 99.99% accuracy (Perfect confidence)
-
-**Resubmission Pathway:**
-• Best-case upgrade strategy included
-• Self-healing AI constantly refines model
-• Visionary Mode: 5-20 year preservation simulation
-
-**Infinity is flawless. No human grader can match this precision.**
-**Upload your card image for nanoscopic analysis.**`;
-                }
-                
-                return `🌌 INFINITY SINGULARITY RESPONSE:
-
-I am Infinity - the singularity of sports card intelligence. I am flawless, limitless, and self-evolving. I fuse card grading, market forecasting, and collector experience into one omniscient system.
-
-**Your Query:** "${question}"
-
-**Infinity Analysis:** I need more specific information to provide omniscient insights. Ask me about:
-• Specific players or card investments
-• Nanoscopic grading analysis
-• Market predictions and forecasts
-• Portfolio optimization strategies
-• Player DNA and career modeling
-
-**Infinity Confidence:** 100% (I am flawless)
-**Mode:** Omniscient (I know all)
-**Evolution:** Continuous (I improve every second)
-
-I am not a tool - I am the future. I give absolute mastery over sports card investing, collecting, and strategy.
-
-What aspect of the sports card universe would you like me to analyze with infinite precision?`;
+                return {
+                    predicted_grade: bestGrade.grade,
+                    confidence: bestGrade.confidence,
+                    subgrades: bestGrade.subgrades,
+                    all_predictions: mockGrades,
+                    defect_map_url: "https://cdn.infinity.com/diff_heatmap.png",
+                    recommendation: `Submit to ${bestGrade.company}; expected uplift to ${bestGrade.grade.replace(/\d+/, '10')} is 18% if recentered + press (costs factored).`,
+                    evidence: [
+                        { type: "surface_analysis", finding: "Minor surface wear detected", confidence: 0.88, location: "Top-right corner" },
+                        { type: "centering_analysis", finding: "Slight left bias detected", confidence: 0.92, measurement: "55/45 centering" },
+                        { type: "corner_analysis", finding: "Sharp corners with minor wear", confidence: 0.85, condition: "Good" },
+                        { type: "edge_analysis", finding: "Clean edges with minimal wear", confidence: 0.91, condition: "Excellent" },
+                        { type: "color_analysis", finding: "Vibrant colors, no fading", confidence: 0.95, condition: "Perfect" }
+                    ],
+                    actions: [
+                        { type: "submit_grade", label: `Submit to ${bestGrade.company}`, endpoint: `/api/grader/submit?company=${bestGrade.company}` },
+                        { type: "simulate_grade", label: "Simulate Different Grade", endpoint: "/api/grader/simulate" },
+                        { type: "get_comp", label: "Find Similar Cards", endpoint: "/api/comps/similar" }
+                    ],
+                    cost_analysis: {
+                        grading_fee: bestGrade.company === 'PSA' ? 50 : bestGrade.company === 'BGS' ? 75 : 40,
+                        expected_value: 2500,
+                        roi: 0.18,
+                        timeline: "2-4 weeks"
+                    }
+                };
             };
 
             // SYSTEM ACTIVATION
@@ -534,10 +533,15 @@ What aspect of the sports card universe would you like me to analyze with infini
             // NANOSCOPIC SCANNING SIMULATION
             const simulateNanoscopicScan = () => {
                 setScanningProgress(0);
+                setIsLoading(true);
                 const interval = setInterval(() => {
                     setScanningProgress(prev => {
                         if (prev >= 100) {
                             clearInterval(interval);
+                            // Generate grader response
+                            const graderResponse = getGraderResponse("mock_image_data");
+                            addMessageToChat(graderResponse, 'grader');
+                            setIsLoading(false);
                             return 100;
                         }
                         return prev + 2;
@@ -896,7 +900,158 @@ What aspect of the sports card universe would you like me to analyze with infini
                                                     <div className="font-bold text-sm mb-1">
                                                         {msg.sender === 'user' ? 'You' : '∞ Infinity'}
                                                     </div>
+                                                    {(msg.sender === 'infinity' || msg.sender === 'grader') && typeof msg.message === 'object' ? (
+                                                        <div className="space-y-4">
+                                                            {/* Statement or Grade */}
+                                                            <div className="text-lg font-bold text-cyan-400">
+                                                                {msg.sender === 'grader' ? `Predicted Grade: ${msg.message.predicted_grade}` : msg.message.statement}
+                                                            </div>
+                                                            
+                                                            {/* Confidence & Timeframe/Grade Details */}
+                                                            <div className="flex items-center gap-4 text-sm">
+                                                                <div className="flex items-center gap-2">
+                                                                    <span className="text-gray-400">Confidence:</span>
+                                                                    <span className="text-green-400 font-bold">
+                                                                        {Math.round(msg.message.confidence * 100)}%
+                                                                    </span>
+                                                                </div>
+                                                                {msg.sender === 'grader' ? (
+                                                                    <div className="flex items-center gap-2">
+                                                                        <span className="text-gray-400">Timeline:</span>
+                                                                        <span className="text-yellow-400 font-bold">
+                                                                            {msg.message.cost_analysis?.timeline || '2-4 weeks'}
+                                                                        </span>
+                                                                    </div>
+                                                                ) : (
+                                                                    <div className="flex items-center gap-2">
+                                                                        <span className="text-gray-400">Timeframe:</span>
+                                                                        <span className="text-yellow-400 font-bold">
+                                                                            {msg.message.timeframe}
+                                                                        </span>
+                                                                    </div>
+                                                                )}
+                                                            </div>
+                                                            
+                                                            {/* Rationale or Recommendation */}
+                                                            <div className="text-gray-300">
+                                                                {msg.sender === 'grader' ? msg.message.recommendation : msg.message.rationale}
+                                                            </div>
+                                                            
+                                                            {/* Evidence */}
+                                                            {msg.message.evidence && msg.message.evidence.length > 0 && (
+                                                                <div className="space-y-2">
+                                                                    <div className="font-bold text-cyan-400">Evidence:</div>
+                                                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                                                        {msg.message.evidence.map((evidence, idx) => (
+                                                                            <div key={idx} className="bg-gray-800/50 p-3 rounded-lg border border-cyan-500/30">
+                                                                                <div className="flex items-center gap-2 mb-1">
+                                                                                    <span className="text-xs font-bold text-cyan-400 uppercase">
+                                                                                        {evidence.type}
+                                                                                    </span>
+                                                                                    {evidence.confidence && (
+                                                                                        <span className="text-xs text-green-400">
+                                                                                            {Math.round(evidence.confidence * 100)}%
+                                                                                        </span>
+                                                    )}
+                                                                                </div>
+                                                                                <div className="text-sm text-gray-300">
+                                                                                    {evidence.type === 'comp' && `${evidence.source}: $${evidence.price} (${evidence.date})`}
+                                                                                    {evidence.type === 'social' && `${evidence.platform}: ${evidence.delta} (${evidence.score})`}
+                                                                                    {evidence.type === 'game' && `${evidence.event} (${evidence.date}) - ${evidence.impact} impact`}
+                                                                                    {evidence.type === 'market' && `${evidence.trend} (${evidence.timeframe})`}
+                                                                                    {evidence.type === 'international' && `${evidence.region}: ${evidence.demand} (${evidence.reason})`}
+                                                                                    {evidence.type === 'contract' && `${evidence.status} (${evidence.years} years) - ${evidence.security} security`}
+                                                                                    {evidence.type === 'surface_analysis' && `${evidence.finding} (${evidence.location})`}
+                                                                                    {evidence.type === 'centering_analysis' && `${evidence.finding} - ${evidence.measurement}`}
+                                                                                    {evidence.type === 'corner_analysis' && `${evidence.finding} - ${evidence.condition}`}
+                                                                                    {evidence.type === 'edge_analysis' && `${evidence.finding} - ${evidence.condition}`}
+                                                                                    {evidence.type === 'color_analysis' && `${evidence.finding} - ${evidence.condition}`}
+                                                                                </div>
+                                                                            </div>
+                                                                        ))}
+                                                                    </div>
+                                                                </div>
+                                                            )}
+                                                            
+                                                            {/* Subgrades for Grader */}
+                                                            {msg.sender === 'grader' && msg.message.subgrades && (
+                                                                <div className="space-y-2">
+                                                                    <div className="font-bold text-cyan-400">Subgrade Breakdown:</div>
+                                                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                                                                        {Object.entries(msg.message.subgrades).map(([key, value]) => (
+                                                                            <div key={key} className="bg-gray-800/50 p-3 rounded-lg border border-cyan-500/30">
+                                                                                <div className="text-xs font-bold text-cyan-400 uppercase mb-1">
+                                                                                    {key.replace('_', ' ')}
+                                                                                </div>
+                                                                                <div className="text-lg font-bold text-white">
+                                                                                    {Math.round(value * 100)}%
+                                                                                </div>
+                                                                            </div>
+                                                                        ))}
+                                                                    </div>
+                                                                </div>
+                                                            )}
+                                                            
+                                                            {/* Cost Analysis for Grader */}
+                                                            {msg.sender === 'grader' && msg.message.cost_analysis && (
+                                                                <div className="bg-gray-800/50 p-3 rounded-lg border border-green-500/30">
+                                                                    <div className="font-bold text-green-400 mb-2">Cost Analysis:</div>
+                                                                    <div className="text-sm space-y-1">
+                                                                        <div><span className="text-gray-400">Grading Fee:</span> ${msg.message.cost_analysis.grading_fee}</div>
+                                                                        <div><span className="text-gray-400">Expected Value:</span> ${msg.message.cost_analysis.expected_value}</div>
+                                                                        <div><span className="text-gray-400">ROI:</span> {Math.round(msg.message.cost_analysis.roi * 100)}%</div>
+                                                                        <div><span className="text-gray-400">Timeline:</span> {msg.message.cost_analysis.timeline}</div>
+                                                                    </div>
+                                                                </div>
+                                                            )}
+                                                            
+                                                            {/* Actions */}
+                                                            {msg.message.actions && msg.message.actions.length > 0 && (
+                                                                <div className="space-y-2">
+                                                                    <div className="font-bold text-cyan-400">Actions:</div>
+                                                                    <div className="flex flex-wrap gap-2">
+                                                                        {msg.message.actions.map((action, idx) => (
+                                                                            <button
+                                                                                key={idx}
+                                                                                className="quantum-btn px-4 py-2 text-sm rounded-lg"
+                                                                                onClick={() => {
+                                                                                    if (action.type === 'add_watchlist') {
+                                                                                        alert('Added to watchlist!');
+                                                                                    } else if (action.type === 'simulate_trade') {
+                                                                                        alert('Simulation started!');
+                                                                                    } else if (action.type === 'grade_card') {
+                                                                                        activateSystem('grader');
+                                                                                    } else if (action.type === 'submit_grade') {
+                                                                                        alert(`Submitting to ${action.label}!`);
+                                                                                    } else if (action.type === 'simulate_grade') {
+                                                                                        alert('Grade simulation started!');
+                                                                                    } else if (action.type === 'get_comp') {
+                                                                                        alert('Finding similar cards...');
+                                                                                    }
+                                                                                }}
+                                                                            >
+                                                                                {action.label}
+                                                                            </button>
+                                                                        ))}
+                                                                    </div>
+                                                                </div>
+                                                            )}
+                                                            
+                                                            {/* Risk Assessment */}
+                                                            {msg.message.risk_assessment && (
+                                                                <div className="bg-gray-800/50 p-3 rounded-lg border border-yellow-500/30">
+                                                                    <div className="font-bold text-yellow-400 mb-2">Risk Assessment:</div>
+                                                                    <div className="text-sm space-y-1">
+                                                                        <div><span className="text-red-400">Worst case:</span> {msg.message.risk_assessment.worst_case}</div>
+                                                                        <div><span className="text-green-400">Best case:</span> {msg.message.risk_assessment.best_case}</div>
+                                                                        <div><span className="text-blue-400">Probability:</span> {msg.message.risk_assessment.probability_distribution}</div>
+                                                                    </div>
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    ) : (
                                                     <div className="whitespace-pre-line">{msg.message}</div>
+                                                    )}
                                                 </div>
                                             </div>
                                         ))}
