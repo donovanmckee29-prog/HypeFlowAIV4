@@ -1,29 +1,41 @@
 {
-  "name": "infinity-singularity",
+  "name": "infinity-sports-card-platform",
   "version": "1.0.0",
-  "description": "Infinity - The Singularity of Sports Card Intelligence",
-  "main": "public/index.html",
+  "description": "The ultimate sports card AI platform with advanced analytics and predictions",
+  "main": "server.js",
   "scripts": {
-    "build": "./build.sh",
-    "vercel-build": "./build.sh",
-    "start": "python3 -m http.server 8000",
-    "dev": "python3 -m http.server 8000"
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "build": "echo 'Static site - no build needed'",
+    "deploy": "echo 'Deploying to production'"
   },
   "keywords": [
     "sports-cards",
     "ai",
-    "grading",
+    "analytics",
+    "predictions",
     "trading",
-    "infinity",
-    "singularity",
-    "nanoscopic",
-    "market-intelligence"
+    "collectibles"
   ],
-  "author": "Infinity AI",
+  "author": "Infinity AI Systems",
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/donovanmckee29-prog/HypeFlowAIV3.git"
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "helmet": "^7.1.0",
+    "morgan": "^1.10.0",
+    "dotenv": "^16.3.1",
+    "mongoose": "^8.0.3",
+    "multer": "^1.4.5-lts.1",
+    "sharp": "^0.33.0",
+    "axios": "^1.6.2",
+    "node-cron": "^3.0.3",
+    "ws": "^8.14.2"
   },
-  "homepage": "https://hypeflowaiv3.vercel.app"
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
 }
