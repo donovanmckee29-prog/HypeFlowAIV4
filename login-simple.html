@@ -10,29 +10,6 @@
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js" crossorigin></script>
-    <script src="https://cdn.jsdelivr.net/npm/framer-motion@10.16.4/dist/framer-motion.min.js"></script>
-    
-    <!-- AI System (load first) -->
-    <script src="infinity-ai.js"></script>
-    
-    <!-- Performance monitoring -->
-    <script>
-        window.InfinityPerformance = {
-            startTime: Date.now(),
-            metrics: { pageLoad: 0, authLoad: 0, aiLoad: 0, totalInteractions: 0, errors: 0 },
-            trackPageLoad() { this.metrics.pageLoad = Date.now() - this.startTime; console.log('📊 Page loaded in', this.metrics.pageLoad + 'ms'); },
-            trackAuthLoad() { this.metrics.authLoad = Date.now() - this.startTime; console.log('🔐 Auth system loaded in', this.metrics.authLoad + 'ms'); },
-            trackAILoad() { this.metrics.aiLoad = Date.now() - this.startTime; console.log('🤖 AI system loaded in', this.metrics.aiLoad + 'ms'); },
-            trackInteraction() { this.metrics.totalInteractions++; },
-            trackError() { this.metrics.errors++; },
-            getMetrics() { return { ...this.metrics, uptime: Date.now() - this.startTime, performance: this.metrics.pageLoad < 1000 ? 'excellent' : this.metrics.pageLoad < 2000 ? 'good' : 'needs improvement' }; }
-        };
-        window.addEventListener('load', () => { window.InfinityPerformance.trackPageLoad(); });
-        window.addEventListener('error', () => { window.InfinityPerformance.trackError(); });
-    </script>
-    
-    <!-- Auth System (load second) -->
-    <script src="auth-system.js"></script>
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@400;600;700&display=swap');
@@ -91,35 +68,9 @@
 
             useEffect(() => {
                 console.log('🚀 Infinity Login Component Mounted');
-                
-                // Simple initialization without waiting for auth system
                 if (emailRef.current) { 
                     emailRef.current.focus(); 
                 }
-                
-                // Check auth system in background
-                let attempts = 0;
-                const maxAttempts = 30;
-                const checkAuthSystem = () => {
-                    attempts++;
-                    if (window.InfinityAuth && typeof window.InfinityAuth.isUserAuthenticated === 'function') {
-                        console.log('✅ Auth system loaded and ready');
-                        try {
-                            if (window.InfinityAuth.isUserAuthenticated()) {
-                                console.log('✅ User already authenticated, redirecting...');
-                                window.location.href = 'dashboard-ultimate.html';
-                                return;
-                            }
-                        } catch (error) {
-                            console.warn('Error checking authentication status:', error);
-                        }
-                    } else if (attempts < maxAttempts) {
-                        setTimeout(checkAuthSystem, 100);
-                    } else {
-                        console.warn('⚠️ Auth system not loaded, but continuing with basic functionality');
-                    }
-                };
-                checkAuthSystem();
             }, []);
 
             const showActionFeedback = (message) => {
@@ -171,33 +122,12 @@
                 }
                 setIsLoading(true);
                 try {
-                    if (window.InfinityAuth && typeof window.InfinityAuth.loginUser === 'function') {
-                        const result = await window.InfinityAuth.loginUser(formData.email, formData.password);
-                        if (result.success) {
-                            showActionFeedback('Login successful! Redirecting...');
-                            if (rememberMe) {
-                                localStorage.setItem('infinity-remember-me', 'true');
-                            }
-                            localStorage.setItem('infinity-current-user', JSON.stringify(result.user));
-                            setTimeout(() => { window.location.href = 'dashboard-ultimate.html'; }, 1000);
-                        } else {
-                            showActionFeedback(`Login failed: ${result.error}`);
-                        }
-                    } else {
-                        // Fallback: simulate login
-                        await new Promise(resolve => setTimeout(resolve, 1000));
-                        showActionFeedback('Login successful! Redirecting...');
-                        if (rememberMe) {
-                            localStorage.setItem('infinity-remember-me', 'true');
-                        }
-                        localStorage.setItem('infinity-current-user', JSON.stringify({
-                            id: 'demo-user',
-                            email: formData.email,
-                            username: 'Demo User',
-                            subscription: 'free'
-                        }));
-                        setTimeout(() => { window.location.href = 'dashboard-ultimate.html'; }, 1000);
-                    }
+                    // Simulate login
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                    showActionFeedback('Login successful! Redirecting...');
+                    setTimeout(() => { 
+                        window.location.href = 'dashboard-ultimate.html'; 
+                    }, 1000);
                 } catch (error) {
                     console.error('Login error:', error);
                     showActionFeedback(`Login error: ${error.message}`);
@@ -214,33 +144,12 @@
                 }
                 setIsLoading(true);
                 try {
-                    if (window.InfinityAuth && typeof window.InfinityAuth.registerUser === 'function') {
-                        const result = await window.InfinityAuth.registerUser(formData.email, formData.password, formData.username);
-                        if (result.success) {
-                            showActionFeedback('Registration successful! Redirecting...');
-                            if (rememberMe) {
-                                localStorage.setItem('infinity-remember-me', 'true');
-                            }
-                            localStorage.setItem('infinity-current-user', JSON.stringify(result.user));
-                            setTimeout(() => { window.location.href = 'dashboard-ultimate.html'; }, 1000);
-                        } else {
-                            showActionFeedback(`Registration failed: ${result.error}`);
-                        }
-                    } else {
-                        // Fallback: simulate registration
-                        await new Promise(resolve => setTimeout(resolve, 1000));
-                        showActionFeedback('Registration successful! Redirecting...');
-                        if (rememberMe) {
-                            localStorage.setItem('infinity-remember-me', 'true');
-                        }
-                        localStorage.setItem('infinity-current-user', JSON.stringify({
-                            id: 'demo-user',
-                            email: formData.email,
-                            username: formData.username,
-                            subscription: 'free'
-                        }));
-                        setTimeout(() => { window.location.href = 'dashboard-ultimate.html'; }, 1000);
-                    }
+                    // Simulate registration
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                    showActionFeedback('Registration successful! Redirecting...');
+                    setTimeout(() => { 
+                        window.location.href = 'dashboard-ultimate.html'; 
+                    }, 1000);
                 } catch (error) {
                     console.error('Registration error:', error);
                     showActionFeedback(`Registration error: ${error.message}`);
@@ -249,7 +158,10 @@
                 }
             };
 
-            const togglePasswordVisibility = () => { setShowPassword(!showPassword); };
+            const togglePasswordVisibility = () => { 
+                setShowPassword(!showPassword); 
+            };
+            
             const switchMode = () => {
                 setIsLogin(!isLogin);
                 setFormData({ email: '', password: '', username: '', confirmPassword: '' });
@@ -286,14 +198,31 @@
                                 <div className="space-y-6">
                                     <div>
                                         <label className="block text-sm font-medium text-gray-300 mb-2">Email Address</label>
-                                        <input ref={emailRef} type="email" name="email" value={formData.email} onChange={handleInputChange} className={`input-field w-full ${errors.email ? 'border-red-500' : ''}`} placeholder="Enter your email" disabled={isLoading} />
+                                        <input 
+                                            ref={emailRef} 
+                                            type="email" 
+                                            name="email" 
+                                            value={formData.email} 
+                                            onChange={handleInputChange} 
+                                            className={`input-field w-full ${errors.email ? 'border-red-500' : ''}`} 
+                                            placeholder="Enter your email" 
+                                            disabled={isLoading} 
+                                        />
                                         {errors.email && (<p className="text-red-400 text-sm mt-1">{errors.email}</p>)}
                                     </div>
 
                                     {!isLogin && (
                                         <div>
                                             <label className="block text-sm font-medium text-gray-300 mb-2">Username</label>
-                                            <input type="text" name="username" value={formData.username} onChange={handleInputChange} className={`input-field w-full ${errors.username ? 'border-red-500' : ''}`} placeholder="Choose a username" disabled={isLoading} />
+                                            <input 
+                                                type="text" 
+                                                name="username" 
+                                                value={formData.username} 
+                                                onChange={handleInputChange} 
+                                                className={`input-field w-full ${errors.username ? 'border-red-500' : ''}`} 
+                                                placeholder="Choose a username" 
+                                                disabled={isLoading} 
+                                            />
                                             {errors.username && (<p className="text-red-400 text-sm mt-1">{errors.username}</p>)}
                                         </div>
                                     )}
@@ -301,8 +230,21 @@
                                     <div>
                                         <label className="block text-sm font-medium text-gray-300 mb-2">Password</label>
                                         <div className="relative">
-                                            <input ref={passwordRef} type={showPassword ? 'text' : 'password'} name="password" value={formData.password} onChange={handleInputChange} className={`input-field w-full pr-12 ${errors.password ? 'border-red-500' : ''}`} placeholder="Enter your password" disabled={isLoading} />
-                                            <button type="button" onClick={togglePasswordVisibility} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors">
+                                            <input 
+                                                ref={passwordRef} 
+                                                type={showPassword ? 'text' : 'password'} 
+                                                name="password" 
+                                                value={formData.password} 
+                                                onChange={handleInputChange} 
+                                                className={`input-field w-full pr-12 ${errors.password ? 'border-red-500' : ''}`} 
+                                                placeholder="Enter your password" 
+                                                disabled={isLoading} 
+                                            />
+                                            <button 
+                                                type="button" 
+                                                onClick={togglePasswordVisibility} 
+                                                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                                            >
                                                 {showPassword ? '👁️' : '👁️‍🗨️'}
                                             </button>
                                         </div>
@@ -312,17 +254,36 @@
                                     {!isLogin && (
                                         <div>
                                             <label className="block text-sm font-medium text-gray-300 mb-2">Confirm Password</label>
-                                            <input type={showPassword ? 'text' : 'password'} name="confirmPassword" value={formData.confirmPassword} onChange={handleInputChange} className={`input-field w-full ${errors.confirmPassword ? 'border-red-500' : ''}`} placeholder="Confirm your password" disabled={isLoading} />
+                                            <input 
+                                                type={showPassword ? 'text' : 'password'} 
+                                                name="confirmPassword" 
+                                                value={formData.confirmPassword} 
+                                                onChange={handleInputChange} 
+                                                className={`input-field w-full ${errors.confirmPassword ? 'border-red-500' : ''}`} 
+                                                placeholder="Confirm your password" 
+                                                disabled={isLoading} 
+                                            />
                                             {errors.confirmPassword && (<p className="text-red-400 text-sm mt-1">{errors.confirmPassword}</p>)}
                                         </div>
                                     )}
 
                                     <div className="flex items-center">
-                                        <input type="checkbox" id="rememberMe" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} className="mr-2" disabled={isLoading} />
+                                        <input 
+                                            type="checkbox" 
+                                            id="rememberMe" 
+                                            checked={rememberMe} 
+                                            onChange={(e) => setRememberMe(e.target.checked)} 
+                                            className="mr-2" 
+                                            disabled={isLoading} 
+                                        />
                                         <label htmlFor="rememberMe" className="text-sm text-gray-300">Remember me</label>
                                     </div>
 
-                                    <button type="submit" disabled={isLoading} className="quantum-btn w-full py-4 rounded-lg text-lg disabled:opacity-50 disabled:cursor-not-allowed">
+                                    <button 
+                                        type="submit" 
+                                        disabled={isLoading} 
+                                        className="quantum-btn w-full py-4 rounded-lg text-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                                    >
                                         {isLoading ? (
                                             <div className="flex items-center justify-center">
                                                 <div className="loading-spinner mr-2"></div>
@@ -332,7 +293,12 @@
                                     </button>
 
                                     <div className="text-center">
-                                        <button type="button" onClick={switchMode} className="text-cyan-400 hover:text-white transition-colors" disabled={isLoading}>
+                                        <button 
+                                            type="button" 
+                                            onClick={switchMode} 
+                                            className="text-cyan-400 hover:text-white transition-colors" 
+                                            disabled={isLoading}
+                                        >
                                             {isLogin ? "Don't have an account? Sign up" : "Already have an account? Sign in"}
                                         </button>
                                     </div>
@@ -356,7 +322,10 @@
             );
         }
 
+        // Render the application
+        console.log('🚀 Starting React rendering...');
         ReactDOM.render(<InfinityLogin />, document.getElementById('root'));
+        console.log('✅ React rendering completed');
     </script>
 </body>
 </html>

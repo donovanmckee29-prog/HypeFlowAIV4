@@ -76,15 +76,60 @@
             const heatmapRef = useRef(null);
 
             useEffect(() => {
-                // Check authentication
-                if (!window.InfinityAuth.isUserAuthenticated()) {
+                console.log('🚀 Infinity Dashboard Component Mounted');
+                
+                // Check authentication with fallback
+                let userData = null;
+                
+                if (window.InfinityAuth && typeof window.InfinityAuth.isUserAuthenticated === 'function') {
+                    if (window.InfinityAuth.isUserAuthenticated()) {
+                        userData = window.InfinityAuth.getUserData();
+                    }
+                }
+                
+                // Fallback: check localStorage for demo user
+                if (!userData) {
+                    const storedUser = localStorage.getItem('infinity-current-user');
+                    if (storedUser) {
+                        try {
+                            userData = JSON.parse(storedUser);
+                        } catch (error) {
+                            console.warn('Error parsing stored user data:', error);
+                        }
+                    }
+                }
+                
+                // If still no user, redirect to login
+                if (!userData) {
+                    console.log('No user data found, redirecting to login');
                     window.location.href = 'login.html';
                     return;
                 }
-
-                // Load user data
-                const userData = window.InfinityAuth.getUserData();
+                
+                // Add demo data if missing
+                if (!userData.portfolio) {
+                    userData.portfolio = [
+                        { name: 'Luka Prizm Silver PSA 10', currentValue: 8500, purchasePrice: 7200 },
+                        { name: 'Wembanyama Rookie PSA 10', currentValue: 12000, purchasePrice: 9800 },
+                        { name: 'Mahomes Chrome PSA 10', currentValue: 6800, purchasePrice: 6200 },
+                        { name: 'Brady Rookie PSA 10', currentValue: 15200, purchasePrice: 14800 }
+                    ];
+                }
+                
+                if (!userData.stats) {
+                    userData.stats = {
+                        level: 1,
+                        totalValue: 42500,
+                        totalROI: 0.12,
+                        gradingAccuracy: 0.94,
+                        predictionAccuracy: 0.91,
+                        rank: 1,
+                        badges: ['First Login', 'Portfolio Starter']
+                    };
+                }
+                
                 setUser(userData);
+                console.log('✅ User data loaded:', userData);
 
                 // Load dashboard data
                 loadDashboardData();
