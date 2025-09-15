@@ -14,6 +14,7 @@
     
     <!-- Auth System -->
     <script src="auth-system.js"></script>
+    <script src="infinity-ai.js"></script>
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@400;600;700&display=swap');
@@ -230,16 +231,26 @@
             const passwordRef = useRef(null);
 
             useEffect(() => {
-                // Check if user is already logged in
-                if (window.InfinityAuth && window.InfinityAuth.isUserAuthenticated()) {
-                    window.location.href = 'dashboard-ultimate.html';
-                    return;
-                }
+                // Wait for auth system to load
+                const checkAuthSystem = () => {
+                    if (window.InfinityAuth) {
+                        // Check if user is already logged in
+                        if (window.InfinityAuth.isUserAuthenticated()) {
+                            window.location.href = 'dashboard-ultimate.html';
+                            return;
+                        }
+                        
+                        // Focus on email input
+                        if (emailRef.current) {
+                            emailRef.current.focus();
+                        }
+                    } else {
+                        // Retry after a short delay
+                        setTimeout(checkAuthSystem, 100);
+                    }
+                };
                 
-                // Focus on email input
-                if (emailRef.current) {
-                    emailRef.current.focus();
-                }
+                checkAuthSystem();
             }, []);
 
             const showActionFeedback = (message) => {
@@ -307,6 +318,11 @@
                 setIsLoading(true);
                 
                 try {
+                    // Check if auth system is available
+                    if (!window.InfinityAuth) {
+                        throw new Error('Authentication system not loaded');
+                    }
+                    
                     const result = await window.InfinityAuth.loginUser(formData.email, formData.password);
                     
                     if (result.success) {
@@ -317,6 +333,9 @@
                             localStorage.setItem('infinity-remember-me', 'true');
                         }
                         
+                        // Store current user for session persistence
+                        localStorage.setItem('infinity-current-user', JSON.stringify(result.user));
+                        
                         setTimeout(() => {
                             window.location.href = 'dashboard-ultimate.html';
                         }, 1000);
@@ -324,6 +343,7 @@
                         showActionFeedback(`Login failed: ${result.error}`);
                     }
                 } catch (error) {
+                    console.error('Login error:', error);
                     showActionFeedback(`Login error: ${error.message}`);
                 } finally {
                     setIsLoading(false);
@@ -341,6 +361,11 @@
                 setIsLoading(true);
                 
                 try {
+                    // Check if auth system is available
+                    if (!window.InfinityAuth) {
+                        throw new Error('Authentication system not loaded');
+                    }
+                    
                     const result = await window.InfinityAuth.registerUser(
                         formData.email,
                         formData.password,
@@ -355,6 +380,9 @@
                             localStorage.setItem('infinity-remember-me', 'true');
                         }
                         
+                        // Store current user for session persistence
+                        localStorage.setItem('infinity-current-user', JSON.stringify(result.user));
+                        
                         setTimeout(() => {
                             window.location.href = 'dashboard-ultimate.html';
                         }, 1000);
@@ -362,6 +390,7 @@
                         showActionFeedback(`Registration failed: ${result.error}`);
                     }
                 } catch (error) {
+                    console.error('Registration error:', error);
                     showActionFeedback(`Registration error: ${error.message}`);
                 } finally {
                     setIsLoading(false);

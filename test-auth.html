@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infinity Auth Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #1a1a2e;
+            color: white;
+        }
+        .test-section {
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        button {
+            background: #00d4ff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0099cc;
+        }
+        input {
+            padding: 8px;
+            margin: 5px;
+            border-radius: 4px;
+            border: 1px solid #00d4ff;
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+        }
+        .result {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            white-space: pre-wrap;
+        }
+        .success { border-left: 4px solid #00ff88; }
+        .error { border-left: 4px solid #ff6b6b; }
+    </style>
+</head>
+<body>
+    <h1>🌌 Infinity Authentication Test</h1>
+    
+    <div class="test-section">
+        <h2>System Status</h2>
+        <div id="system-status">Checking...</div>
+    </div>
+
+    <div class="test-section">
+        <h2>Registration Test</h2>
+        <input type="email" id="reg-email" placeholder="Email" value="test@infinity.com">
+        <input type="text" id="reg-username" placeholder="Username" value="testuser">
+        <input type="password" id="reg-password" placeholder="Password" value="testpass123">
+        <button onclick="testRegistration()">Test Registration</button>
+        <div id="reg-result" class="result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Login Test</h2>
+        <input type="email" id="login-email" placeholder="Email" value="test@infinity.com">
+        <input type="password" id="login-password" placeholder="Password" value="testpass123">
+        <button onclick="testLogin()">Test Login</button>
+        <div id="login-result" class="result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>User Data Test</h2>
+        <button onclick="testUserData()">Get User Data</button>
+        <button onclick="testLogout()">Test Logout</button>
+        <div id="user-result" class="result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>AI System Test</h2>
+        <button onclick="testAISystem()">Test AI System</button>
+        <div id="ai-result" class="result"></div>
+    </div>
+
+    <!-- Load scripts -->
+    <script src="auth-system.js"></script>
+    <script src="infinity-ai.js"></script>
+
+    <script>
+        // Check system status
+        function checkSystemStatus() {
+            const status = document.getElementById('system-status');
+            let statusText = '';
+            
+            if (window.InfinityAuth) {
+                statusText += '✅ Auth System: Loaded\n';
+            } else {
+                statusText += '❌ Auth System: Not loaded\n';
+            }
+            
+            if (window.InfinityAI) {
+                statusText += '✅ AI System: Loaded\n';
+            } else {
+                statusText += '❌ AI System: Not loaded\n';
+            }
+            
+            statusText += `📊 Users in storage: ${localStorage.getItem('infinity-users') ? JSON.parse(localStorage.getItem('infinity-users')).length : 0}\n`;
+            statusText += `👤 Current user: ${window.InfinityAuth && window.InfinityAuth.isUserAuthenticated() ? 'Logged in' : 'Not logged in'}`;
+            
+            status.className = 'result success';
+            status.textContent = statusText;
+        }
+
+        // Test registration
+        async function testRegistration() {
+            const resultDiv = document.getElementById('reg-result');
+            resultDiv.textContent = 'Testing registration...';
+            resultDiv.className = 'result';
+            
+            try {
+                const email = document.getElementById('reg-email').value;
+                const username = document.getElementById('reg-username').value;
+                const password = document.getElementById('reg-password').value;
+                
+                const result = await window.InfinityAuth.registerUser(email, password, username);
+                
+                if (result.success) {
+                    resultDiv.className = 'result success';
+                    resultDiv.textContent = `✅ Registration successful!\nUser ID: ${result.user.id}\nEmail: ${result.user.email}\nUsername: ${result.user.username}`;
+                } else {
+                    resultDiv.className = 'result error';
+                    resultDiv.textContent = `❌ Registration failed: ${result.error}`;
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = `❌ Registration error: ${error.message}`;
+            }
+            
+            checkSystemStatus();
+        }
+
+        // Test login
+        async function testLogin() {
+            const resultDiv = document.getElementById('login-result');
+            resultDiv.textContent = 'Testing login...';
+            resultDiv.className = 'result';
+            
+            try {
+                const email = document.getElementById('login-email').value;
+                const password = document.getElementById('login-password').value;
+                
+                const result = await window.InfinityAuth.loginUser(email, password);
+                
+                if (result.success) {
+                    resultDiv.className = 'result success';
+                    resultDiv.textContent = `✅ Login successful!\nUser ID: ${result.user.id}\nEmail: ${result.user.email}\nUsername: ${result.user.username}\nAuthenticated: ${window.InfinityAuth.isUserAuthenticated()}`;
+                } else {
+                    resultDiv.className = 'result error';
+                    resultDiv.textContent = `❌ Login failed: ${result.error}`;
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = `❌ Login error: ${error.message}`;
+            }
+            
+            checkSystemStatus();
+        }
+
+        // Test user data
+        function testUserData() {
+            const resultDiv = document.getElementById('user-result');
+            
+            if (window.InfinityAuth.isUserAuthenticated()) {
+                const userData = window.InfinityAuth.getUserData();
+                resultDiv.className = 'result success';
+                resultDiv.textContent = `✅ User Data Retrieved:\n${JSON.stringify(userData, null, 2)}`;
+            } else {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = '❌ No user logged in';
+            }
+        }
+
+        // Test logout
+        function testLogout() {
+            const resultDiv = document.getElementById('user-result');
+            
+            const result = window.InfinityAuth.logoutUser();
+            
+            if (result.success) {
+                resultDiv.className = 'result success';
+                resultDiv.textContent = `✅ Logout successful!\nAuthenticated: ${window.InfinityAuth.isUserAuthenticated()}`;
+            } else {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = `❌ Logout failed: ${result.error}`;
+            }
+            
+            checkSystemStatus();
+        }
+
+        // Test AI system
+        function testAISystem() {
+            const resultDiv = document.getElementById('ai-result');
+            
+            if (window.InfinityAI) {
+                const globalModels = window.InfinityAI.getGlobalModels();
+                resultDiv.className = 'result success';
+                resultDiv.textContent = `✅ AI System Working:\nGlobal Models: ${Object.keys(globalModels).join(', ')}\nInteraction History: ${window.InfinityAI.getInteractionHistory().length} interactions`;
+            } else {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = '❌ AI System not loaded';
+            }
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', () => {
+            setTimeout(checkSystemStatus, 500); // Wait for scripts to load
+        });
+    </script>
+</body>
+</html>

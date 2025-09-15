@@ -122,7 +122,11 @@ class InfinityAuthSystem {
 
             // Initialize AI learning for user
             if (window.InfinityAI) {
-                window.InfinityAI.initializeUserProfile(userId, newUser);
+                try {
+                    window.InfinityAI.initializeUserProfile(userId, newUser);
+                } catch (error) {
+                    console.warn('Failed to initialize AI profile:', error);
+                }
             }
 
             return {
@@ -162,7 +166,11 @@ class InfinityAuthSystem {
 
             // Load user data into AI system
             if (window.InfinityAI) {
-                window.InfinityAI.loadUserProfile(user.id, user);
+                try {
+                    window.InfinityAI.loadUserProfile(user.id, user);
+                } catch (error) {
+                    console.warn('Failed to load AI profile:', error);
+                }
             }
 
             return {
@@ -203,7 +211,11 @@ class InfinityAuthSystem {
 
         // Clear AI user data
         if (window.InfinityAI) {
-            window.InfinityAI.clearUserProfile();
+            try {
+                window.InfinityAI.clearUserProfile();
+            } catch (error) {
+                console.warn('Failed to clear AI profile:', error);
+            }
         }
 
         return { success: true, message: 'Logout successful' };
@@ -480,12 +492,26 @@ class InfinityAuthSystem {
 
     async hashPassword(password) {
         // Simple hash for demo - in production, use bcrypt
-        return btoa(password + this.encryptionKey);
+        try {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(password + this.encryptionKey);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        } catch (error) {
+            // Fallback to base64 if crypto.subtle is not available
+            return btoa(password + this.encryptionKey);
+        }
     }
 
     async verifyPassword(password, hashedPassword) {
-        const hashed = await this.hashPassword(password);
-        return hashed === hashedPassword;
+        try {
+            const hashed = await this.hashPassword(password);
+            return hashed === hashedPassword;
+        } catch (error) {
+            console.error('Password verification error:', error);
+            return false;
+        }
     }
 
     generateUserId() {
@@ -654,17 +680,21 @@ class InfinityAuthSystem {
         return { success: true, message: 'Password reset email sent', resetToken };
     }
 
-    updatePassword(resetToken, newPassword) {
-        const users = this.getAllUsers();
-        const user = users.find(u => u.resetToken === resetToken && u.resetTokenExpiry > Date.now());
-        if (!user) return { success: false, error: 'Invalid or expired reset token' };
+    async updatePassword(resetToken, newPassword) {
+        try {
+            const users = this.getAllUsers();
+            const user = users.find(u => u.resetToken === resetToken && u.resetTokenExpiry > Date.now());
+            if (!user) return { success: false, error: 'Invalid or expired reset token' };
 
-        user.password = this.hashPassword(newPassword);
-        user.resetToken = null;
-        user.resetTokenExpiry = null;
-        this.saveUser(user);
+            user.password = await this.hashPassword(newPassword);
+            user.resetToken = null;
+            user.resetTokenExpiry = null;
+            this.saveUser(user);
 
-        return { success: true, message: 'Password updated successfully' };
+            return { success: true, message: 'Password updated successfully' };
+        } catch (error) {
+            return { success: false, error: error.message };
+        }
     }
 
     // Utility Methods for 2FA
