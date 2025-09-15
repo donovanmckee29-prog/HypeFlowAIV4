@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infinity Test - Simple</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            color: white;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px;
+        }
+        
+        .neon-glow {
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #00d4ff 0%, #00ff88 100%);
+            border: none;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 212, 255, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        const TestApp = () => {
+            const [count, setCount] = useState(0);
+            const [message, setMessage] = useState('');
+
+            const testFunction = () => {
+                setCount(prev => prev + 1);
+                setMessage('✅ React is working! Button clicked ' + (count + 1) + ' times');
+            };
+
+            const testNavigation = () => {
+                window.location.href = 'home.html';
+            };
+
+            return (
+                <div className="min-h-screen flex items-center justify-center">
+                    <div className="glass-card neon-glow text-center max-w-md">
+                        <h1 className="text-4xl font-bold mb-6 text-cyan-400">
+                            ∞ INFINITY TEST
+                        </h1>
+                        <p className="text-gray-300 mb-6">
+                            Testing if everything is working properly
+                        </p>
+                        
+                        <div className="space-y-4">
+                            <button 
+                                onClick={testFunction}
+                                className="btn w-full"
+                            >
+                                Test React Function
+                            </button>
+                            
+                            <button 
+                                onClick={testNavigation}
+                                className="btn w-full"
+                            >
+                                Go to Home Page
+                            </button>
+                            
+                            {message && (
+                                <div className="text-green-400 text-sm mt-4">
+                                    {message}
+                                </div>
+                            )}
+                            
+                            <div className="text-gray-400 text-sm mt-4">
+                                Count: {count}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        ReactDOM.render(<TestApp />, document.getElementById('root'));
+    </script>
+</body>
+</html>
