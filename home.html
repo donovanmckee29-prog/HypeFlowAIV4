@@ -26,36 +26,15 @@
             width: 100%;
             height: 100%;
             background: 
-                radial-gradient(circle at 30% 20%, rgba(0, 255, 255, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 70% 80%, rgba(255, 0, 255, 0.05) 0%, transparent 50%);
-            animation: background-pulse 8s ease-in-out infinite;
+                radial-gradient(circle at 30% 20%, rgba(0, 255, 255, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(0, 212, 255, 0.03) 0%, transparent 50%);
             pointer-events: none;
             z-index: -1;
         }
         
-        @keyframes background-pulse {
-            0%, 100% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 0.6; transform: scale(1.05); }
-        }
-        
         .infinity-text {
-            background: linear-gradient(135deg, #00d4ff 0%, #ffffff 100%);
-            background-size: 200% 200%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: infinity-pulse 4s ease-in-out infinite;
-        }
-        
-        @keyframes infinity-pulse {
-            0%, 100% { 
-                background-position: 0% 50%; 
-                filter: hue-rotate(0deg);
-            }
-            50% { 
-                background-position: 100% 50%; 
-                filter: hue-rotate(180deg);
-            }
+            color: #00d4ff;
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
         }
         
         .glass-morphism {
@@ -90,7 +69,7 @@
         }
         
         .quantum-btn {
-            background: linear-gradient(135deg, #00d4ff 0%, #00ff88 100%);
+            background: #00d4ff;
             border: none;
             color: white;
             font-weight: 600;
@@ -103,13 +82,9 @@
         .quantum-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(0, 212, 255, 0.4);
-            background: linear-gradient(135deg, #00ff88 0%, #00d4ff 100%);
+            background: #00ff88;
         }
         
-        @keyframes quantum-glow {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
         
         .neon-cyan {
             box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
