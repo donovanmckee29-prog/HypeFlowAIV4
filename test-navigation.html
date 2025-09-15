@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navigation Test</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        const NavigationTest = () => {
+            const navigateToFeature = (page) => {
+                console.log('Navigating to:', page);
+                window.location.href = page;
+            };
+
+            const features = [
+                { id: 'grader', name: 'AI Grader', page: 'grader.html', status: 'active' },
+                { id: 'oracle', name: 'AI Oracle', page: 'oracle.html', status: 'active' },
+                { id: 'portfolio', name: 'Portfolio', page: 'portfolio.html', status: 'active' },
+                { id: 'market', name: 'Market', page: 'market.html', status: 'active' }
+            ];
+
+            return (
+                <div className="p-8">
+                    <h1 className="text-3xl font-bold mb-8">Navigation Test</h1>
+                    <div className="grid grid-cols-2 gap-4">
+                        {features.map((feature) => (
+                            <button
+                                key={feature.id}
+                                onClick={() => navigateToFeature(feature.page)}
+                                className="p-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                            >
+                                {feature.name}
+                            </button>
+                        ))}
+                    </div>
+                    <div className="mt-8">
+                        <button 
+                            onClick={() => window.location.href = 'index.html'}
+                            className="p-4 bg-green-500 text-white rounded-lg hover:bg-green-600"
+                        >
+                            Back to Home
+                        </button>
+                    </div>
+                </div>
+            );
+        };
+
+        ReactDOM.render(<NavigationTest />, document.getElementById('root'));
+    </script>
+</body>
+</html>
