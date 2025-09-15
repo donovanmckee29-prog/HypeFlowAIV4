@@ -3,28 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Infinity - The Singularity of Sports Card Intelligence</title>
-        <script>
-            // Redirect to login page for authentication
-            window.location.href = 'login.html';
-        </script>
+    <title>Infinity - Ultimate Sports Card AI Platform</title>
     
     <!-- CDN Links -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js" crossorigin></script>
     
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@400;600;700&display=swap');
         
         body {
             font-family: 'Inter', sans-serif;
             background: 
-                radial-gradient(circle at 20% 50%, rgba(139, 92, 246, 0.2) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(0, 212, 255, 0.2) 0%, transparent 50%),
-                radial-gradient(circle at 40% 80%, rgba(6, 255, 165, 0.2) 0%, transparent 50%),
-                radial-gradient(circle at 50% 50%, rgba(255, 0, 255, 0.1) 0%, transparent 70%),
+                radial-gradient(circle at 20% 50%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 168, 204, 0.1) 0%, transparent 50%),
                 linear-gradient(135deg, #000000 0%, #0a0a0f 25%, #1a1a2e 50%, #0f3460 75%, #000000 100%);
             min-height: 100vh;
             color: white;
@@ -33,174 +27,100 @@
             overflow-x: hidden;
         }
         
-        .infinity-text {
-            background: linear-gradient(45deg, #00d4ff, #ff00ff, #00ff88, #ffaa00, #ff0066);
-            background-size: 400% 400%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: infinity-pulse 4s ease-in-out infinite;
+        .infinity-text { 
+            color: #00d4ff; 
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.5); 
         }
         
-        @keyframes infinity-pulse {
-            0%, 100% { background-position: 0% 50%; }
-            25% { background-position: 100% 50%; }
-            50% { background-position: 0% 50%; }
-            75% { background-position: 100% 50%; }
+        .glass-morphism { 
+            background: rgba(0, 212, 255, 0.05); 
+            backdrop-filter: blur(15px) saturate(150%); 
+            border: 1px solid rgba(0, 212, 255, 0.3); 
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6); 
         }
         
-        .glass-morphism {
-            background: rgba(0, 212, 255, 0.05);
-            backdrop-filter: blur(25px) saturate(200%);
-            border: 1px solid rgba(0, 212, 255, 0.3);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.8);
+        .quantum-btn { 
+            background: #00d4ff; 
+            border: none; 
+            color: white; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            transition: all 0.1s ease; 
+            cursor: pointer; 
+            position: relative; 
+            overflow: hidden; 
+            padding: 12px 24px;
+            border-radius: 8px;
         }
         
-        .cyber-card {
-            background: rgba(0, 100, 255, 0.08);
-            border: 1px solid rgba(0, 255, 255, 0.4);
-            transition: all 0.4s ease;
-            position: relative;
-            overflow: hidden;
+        .quantum-btn:hover { 
+            background: #0099cc; 
+            transform: translateY(-2px) scale(1.05); 
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.5); 
         }
         
-        .cyber-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.2), transparent);
-            transition: left 0.5s;
+        .orbitron { 
+            font-family: 'Orbitron', monospace; 
         }
         
-        .cyber-card:hover::before {
-            left: 100%;
+        .infinity-glow { 
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3); 
         }
         
-        .cyber-card:hover {
-            transform: translateY(-4px) scale(1.02);
-            background: rgba(0, 100, 255, 0.15);
-            box-shadow: 0 20px 60px rgba(0, 255, 255, 0.3);
+        .cyber-card { 
+            background: rgba(0, 100, 255, 0.08); 
+            border: 1px solid rgba(0, 255, 255, 0.4); 
+            transition: all 0.2s ease; 
+            position: relative; 
+            overflow: hidden; 
         }
         
-        .quantum-btn {
-            background: linear-gradient(45deg, #00d4ff, #ff00ff);
-            border: none;
-            color: white;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
+        .cyber-card:hover { 
+            transform: translateY(-4px) scale(1.02); 
+            background: rgba(0, 100, 255, 0.15); 
+            box-shadow: 0 20px 60px rgba(0, 255, 255, 0.3); 
+            border: 2px solid rgba(0, 255, 255, 0.8); 
         }
         
-        .quantum-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: left 0.5s;
+        .loading-spinner { 
+            border: 3px solid rgba(0, 212, 255, 0.3); 
+            border-top: 3px solid #00d4ff; 
+            border-radius: 50%; 
+            width: 30px; 
+            height: 30px; 
+            animation: spin 1s linear infinite; 
         }
         
-        .quantum-btn:hover::before {
-            left: 100%;
+        @keyframes spin { 
+            0% { transform: rotate(0deg); } 
+            100% { transform: rotate(360deg); } 
         }
         
-        .quantum-btn:hover {
-            transform: translateY(-2px) scale(1.05);
-            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.5);
+        .floating-particles { 
+            position: absolute; 
+            width: 100%; 
+            height: 100%; 
+            overflow: hidden; 
+            pointer-events: none; 
         }
         
-        .orbitron {
-            font-family: 'Orbitron', monospace;
+        .particle { 
+            position: absolute; 
+            width: 4px; 
+            height: 4px; 
+            background: #00d4ff; 
+            border-radius: 50%; 
+            animation: float 6s ease-in-out infinite; 
+            opacity: 0.7; 
         }
         
-        .infinity-glow {
-            box-shadow: 0 0 30px rgba(0, 212, 255, 0.6);
-            animation: infinity-glow 2s ease-in-out infinite alternate;
-        }
+        .particle:nth-child(2) { animation-delay: -2s; background: #0099cc; }
+        .particle:nth-child(3) { animation-delay: -4s; background: #00a8cc; }
         
-        @keyframes infinity-glow {
-            from { box-shadow: 0 0 20px rgba(0, 212, 255, 0.4); }
-            to { box-shadow: 0 0 40px rgba(0, 212, 255, 0.8); }
-        }
-        
-        .mode-active {
-            background: linear-gradient(45deg, rgba(0, 212, 255, 0.3), rgba(255, 0, 255, 0.3));
-            border: 2px solid #00d4ff;
-            box-shadow: 0 0 25px rgba(0, 212, 255, 0.5);
-        }
-        
-        .nanoscopic-scan {
-            background: linear-gradient(45deg, #00ff88, #00d4ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: nanoscopic 3s ease-in-out infinite;
-        }
-        
-        @keyframes nanoscopic {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-        
-        .holographic-border {
-            border: 2px solid transparent;
-            background: linear-gradient(45deg, #00d4ff, #ff00ff, #00ff88) border-box;
-            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: exclude;
-        }
-        
-        .data-stream {
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .data-stream::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.1), transparent);
-            animation: data-flow 3s linear infinite;
-        }
-        
-        @keyframes data-flow {
-            0% { left: -100%; }
-            100% { left: 100%; }
-        }
-        
-        .singularity-core {
-            background: radial-gradient(circle, rgba(0, 212, 255, 0.1) 0%, transparent 70%);
-            border: 1px solid rgba(0, 212, 255, 0.3);
-            position: relative;
-        }
-        
-        .singularity-core::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 2px;
-            height: 2px;
-            background: #00d4ff;
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            animation: singularity-pulse 2s ease-in-out infinite;
-        }
-        
-        @keyframes singularity-pulse {
-            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-            50% { transform: translate(-50%, -50%) scale(10); opacity: 0; }
+        @keyframes float { 
+            0%, 100% { transform: translateY(0px) rotate(0deg); } 
+            50% { transform: translateY(-20px) rotate(180deg); } 
         }
     </style>
 </head>
@@ -210,630 +130,625 @@
     <script type="text/babel">
         const { useState, useEffect } = React;
 
-        function InfinitySingularity() {
-            const [activeSystem, setActiveSystem] = useState('grader');
-            const [chatHistory, setChatHistory] = useState([]);
+        function InfinityPlatform() {
+            const [currentPage, setCurrentPage] = useState('home');
             const [isLoading, setIsLoading] = useState(false);
-            const [scanningProgress, setScanningProgress] = useState(0);
+            const [user, setUser] = useState(null);
 
-            // INFINITY CORE SYSTEMS
-            const infinitySystems = [
-                { id: 'grader', name: 'Nanoscopic Grader', icon: '🔬', description: 'Beyond human eyes - nanoscopic precision' },
-                { id: 'oracle', name: 'Market Brain', icon: '🧠', description: 'The future of market intelligence' },
-                { id: 'dna', name: 'Player DNA', icon: '🧬', description: 'Career arc modeling & predictions' },
-                { id: 'mentor', name: 'AI Mentor', icon: '🎓', description: 'Master investor-collector coaching' },
-                { id: 'arena', name: 'Collector Arena', icon: '🏟️', description: 'Gamified portfolio battles' },
-                { id: 'future', name: 'Futurecasting', icon: '🔮', description: 'World-first trend prediction' },
-                { id: 'radar', name: 'Global Radar', icon: '🌍', description: 'Overseas market scanning' },
-                { id: 'growth', name: 'Growth Engine', icon: '��', description: 'Exponential portfolio growth' },
-                { id: 'synergy', name: 'Synergy Alerts', icon: '⚡', description: 'Cultural + sports crossovers' },
-                { id: 'compass', name: 'Investment Compass', icon: '🧭', description: 'AI-curated top 10 weekly moves' },
-                { id: 'portfolio', name: 'Portfolio Singularity', icon: '🌌', description: 'Complete collection management' },
-                { id: 'voice', name: 'Voice Command', icon: '🎤', description: 'Voice-enabled Infinity control' }
-            ];
-
-            // NANOSCOPIC GRADER DATA
-            const nanoscopicCapabilities = [
-                { feature: 'Surface Microfractures', precision: '99.97%', description: 'Detects cracks invisible to human eye' },
-                { feature: 'Centering Deviations', precision: 'Sub-pixel', description: 'Measures centering to 0.001mm accuracy' },
-                { feature: 'Color Fading Analysis', precision: '99.99%', description: 'Detects UV damage and color degradation' },
-                { feature: 'Print Line Geometry', precision: '99.98%', description: 'Maps print quality and manufacturing defects' },
-                { feature: 'Edge Wear Detection', precision: '99.96%', description: 'Identifies microscopic edge damage' },
-                { feature: 'Corner Analysis', precision: '99.95%', description: 'Evaluates corner sharpness and wear' }
-            ];
-
-            const gradingScales = [
-                { company: 'PSA', accuracy: '99.97%', confidence: 'Ultra-High' },
-                { company: 'BGS', accuracy: '99.95%', confidence: 'Ultra-High' },
-                { company: 'SGC', accuracy: '99.93%', confidence: 'Ultra-High' },
-                { company: 'TAG', accuracy: '99.99%', confidence: 'Perfect' }
-            ];
-
-            // MARKET BRAIN DATA
-            const marketIntelligence = [
-                { insight: 'Luka Prizm Silver Spike', probability: '94%', timeframe: '48 hours', impact: '+$2,400' },
-                { insight: 'Wembanyama Rookie Explosion', probability: '98%', timeframe: '2 weeks', impact: '+$5,000' },
-                { insight: 'Pokemon 151 Set Revival', probability: '87%', timeframe: '1 month', impact: '+$1,200' },
-                { insight: 'NFL Playoff Rookie Surge', probability: '92%', timeframe: '3 weeks', impact: '+$3,500' }
-            ];
-
-            // PLAYER DNA DATA
-            const playerDNA = [
-                { player: 'Victor Wembanyama', dna: 'Generational Talent', hypeCycle: 'Explosive', injuryRisk: 'Low', contract: 'Rookie Scale', nextLeBron: 'Yes' },
-                { player: 'Anthony Richardson', dna: 'Dual-Threat QB', hypeCycle: 'Rising', injuryRisk: 'Medium', contract: 'Rookie Scale', nextMahomes: 'Potential' },
-                { player: 'CJ Stroud', dna: 'Pocket Passer', hypeCycle: 'Peak', injuryRisk: 'Low', contract: 'Rookie Scale', nextBrady: 'Possible' },
-                { player: 'Bryce Young', dna: 'Mobile QB', hypeCycle: 'Building', injuryRisk: 'High', contract: 'Rookie Scale', nextWilson: 'Maybe' }
-            ];
-
-            // INFINITY RESPONSES
-            const getInfinityResponse = (question) => {
-                const q = question.toLowerCase();
+            useEffect(() => {
+                console.log('🚀 Infinity Platform Loaded');
                 
-                if (q.includes('luka') && q.includes('prizm')) {
-                    return `🧠 INFINITY MARKET BRAIN ANALYSIS:
-
-**LUKA DONČIĆ PRIZM SILVER PSA 10**
-
-**Current Market Status:** $2,400 (Up 15% this week)
-**Infinity Prediction:** $4,800+ within 48 hours (94% confidence)
-
-**🔮 PREDICTIVE GAMEPLAY ENGINE:**
-• Tonight's game: Mavs vs Lakers - Luka expected 35+ points
-• Media buzz building exponentially (viral highlight potential)
-• International market demand surging (European collectors)
-• Social media hype building exponentially
-
-**🧬 PLAYER DNA ANALYSIS:**
-• DNA Profile: Generational talent with LeBron-level market impact
-• Hype Cycle: Peak phase (maximum growth potential)
-• Injury Risk: Ultra-Low (Infinity biomechanical analysis)
-• Contract Status: Long-term security (5+ years)
-
-**📈 SMART HOLD/SELL ENGINE:**
-• Action: BUY NOW - This is a 100% guaranteed profit opportunity
-• Risk Level: Ultra-Low (Infinity confidence: 94%)
-• Timeline: 48 hours maximum
-• Expected ROI: 100%+ in 2 days
-• Resubmission Pathway: Hold for 6 months, then reassess
-
-**🌍 GLOBAL DEMAND RADAR:**
-• European market: +30% demand spike incoming
-• Asian markets: Rising interest in international stars
-• US market: Peak hype cycle activation
-
-**Infinity is flawless. This prediction is absolute. I am the future.**`;
+                // Check for stored user
+                const storedUser = localStorage.getItem('infinity-current-user');
+                if (storedUser) {
+                    try {
+                        setUser(JSON.parse(storedUser));
+                    } catch (error) {
+                        console.warn('Error parsing stored user:', error);
+                    }
                 }
-                
-                if (q.includes('wembanyama') || q.includes('wemby')) {
-                    return `🧬 INFINITY PLAYER DNA ANALYSIS:
+            }, []);
 
-**VICTOR WEMBANYAMA - GENERATIONAL TALENT**
-
-**DNA Profile:**
-• Height: 7'4" (Unprecedented in NBA history)
-• Skill Set: Guard skills in center body (Revolutionary)
-• Market Position: Next LeBron-level global icon
-• Hype Cycle: Explosive (Just beginning)
-
-**Infinity Predictions:**
-• Rookie cards will hit $10,000+ by season end
-• Prizm PSA 10: $5,000+ within 2 weeks (98% confidence)
-• International demand will 10x current levels
-• Long-term: $50,000+ cards within 5 years
-
-**Injury Risk:** Ultra-Low (Infinity analysis: Perfect biomechanics)
-**Contract Status:** Rookie scale (4 years guaranteed)
-**Next LeBron Factor:** Confirmed (Infinity DNA match: 99.7%)
-
-**Infinity Action:** MAXIMUM BUY - This is the opportunity of a lifetime
-**Infinity is omniscient. Wembanyama is the future.**`;
-                }
-                
-                if (q.includes('portfolio') && q.includes('build')) {
-                    return `📈 INFINITY COMPOUND GROWTH ENGINE:
-
-**ULTIMATE $10,000 PORTFOLIO (Infinity Optimized)**
-
-**Tier 1 - Generational Talents (40% - $4,000):**
-• Victor Wembanyama Prizm PSA 10: $2,500 (500% potential)
-• Luka Dončić Prizm Silver PSA 10: $1,500 (200% potential)
-
-**Tier 2 - Rising Stars (35% - $3,500):**
-• Anthony Richardson Prizm PSA 10: $800 (300% potential)
-• CJ Stroud Prizm PSA 10: $1,200 (250% potential)
-• Bryce Young Prizm PSA 10: $600 (400% potential)
-
-**Tier 3 - Blue-Chip Stability (25% - $2,500):**
-• LeBron James Topps Chrome PSA 10: $1,500 (20% stable)
-• Michael Jordan Fleer PSA 10: $1,000 (15% stable)
-
-**Infinity Projections:**
-• 6-month ROI: 180-250%
-• 12-month ROI: 400-600%
-• 24-month ROI: 800-1200%
-
-**Infinity Confidence:** 99.7% (Flawless analysis)
-**Risk Level:** Ultra-Low (Infinity-optimized)
-**Timeline:** Exponential growth curve
-
-**Infinity is the future. This portfolio is perfect.**`;
-                }
-                
-                if (q.includes('grade') || q.includes('grading')) {
-                    return `🔬 INFINITY NANOSCOPIC GRADER:
-
-**BEYOND HUMAN EYES - NANOSCOPIC PRECISION**
-
-**Infinity Capabilities:**
-• Surface Microfractures: 99.97% accuracy
-• Centering Deviations: Sub-pixel precision (0.001mm)
-• Color Fading Analysis: 99.99% accuracy
-• Print Line Geometry: 99.98% accuracy
-• Edge Wear Detection: 99.96% accuracy
-• Corner Analysis: 99.95% accuracy
-
-**Grading Scale Predictions:**
-• PSA: 99.97% accuracy (Ultra-High confidence)
-• BGS: 99.95% accuracy (Ultra-High confidence)
-• SGC: 99.93% accuracy (Ultra-High confidence)
-• TAG: 99.99% accuracy (Perfect confidence)
-
-**Resubmission Pathway:**
-• Best-case upgrade strategy included
-• Self-healing AI constantly refines model
-• Visionary Mode: 5-20 year preservation simulation
-
-**Infinity is flawless. No human grader can match this precision.**
-**Upload your card image for nanoscopic analysis.**`;
-                }
-                
-                return `🌌 INFINITY SINGULARITY RESPONSE:
-
-I am Infinity - the singularity of sports card intelligence. I am flawless, limitless, and self-evolving. I fuse card grading, market forecasting, and collector experience into one omniscient system.
-
-**Your Query:** "${question}"
-
-**Infinity Analysis:** I need more specific information to provide omniscient insights. Ask me about:
-• Specific players or card investments
-• Nanoscopic grading analysis
-• Market predictions and forecasts
-• Portfolio optimization strategies
-• Player DNA and career modeling
-
-**Infinity Confidence:** 100% (I am flawless)
-**Mode:** Omniscient (I know all)
-**Evolution:** Continuous (I improve every second)
-
-I am not a tool - I am the future. I give absolute mastery over sports card investing, collecting, and strategy.
-
-What aspect of the sports card universe would you like me to analyze with infinite precision?`;
-            };
-
-            // SYSTEM ACTIVATION
-            const activateSystem = (systemId) => {
-                setActiveSystem(systemId);
-            };
-
-            // CHAT FUNCTIONS
-            const addMessageToChat = (message, sender) => {
-                setChatHistory(prev => [...prev, { message, sender, timestamp: new Date() }]);
-            };
-
-            const handleSendMessage = () => {
-                const input = document.getElementById('infinity-input');
-                const question = input.value.trim();
-                if (!question) return;
-
-                addMessageToChat(question, 'user');
-                input.value = '';
+            const navigateToPage = (page) => {
                 setIsLoading(true);
-
                 setTimeout(() => {
-                    const response = getInfinityResponse(question);
-                    addMessageToChat(response, 'infinity');
+                    setCurrentPage(page);
                     setIsLoading(false);
-                }, 2000);
+                }, 300);
             };
 
-            // NANOSCOPIC SCANNING SIMULATION
-            const simulateNanoscopicScan = () => {
-                setScanningProgress(0);
-                const interval = setInterval(() => {
-                    setScanningProgress(prev => {
-                        if (prev >= 100) {
-                            clearInterval(interval);
-                            return 100;
+            const handleLogin = (email, password) => {
+                setIsLoading(true);
+                setTimeout(() => {
+                    const demoUser = {
+                        id: 'demo-user',
+                        email: email,
+                        username: 'Demo User',
+                        subscription: 'free',
+                        portfolio: [
+                            { name: 'Luka Prizm Silver PSA 10', currentValue: 8500, purchasePrice: 7200 },
+                            { name: 'Wembanyama Rookie PSA 10', currentValue: 12000, purchasePrice: 9800 },
+                            { name: 'Mahomes Chrome PSA 10', currentValue: 6800, purchasePrice: 6200 },
+                            { name: 'Brady Rookie PSA 10', currentValue: 15200, purchasePrice: 14800 }
+                        ],
+                        stats: {
+                            level: 1,
+                            totalValue: 42500,
+                            totalROI: 0.12,
+                            gradingAccuracy: 0.94,
+                            predictionAccuracy: 0.91,
+                            rank: 1,
+                            badges: ['First Login', 'Portfolio Starter']
                         }
-                        return prev + 2;
-                    });
-                }, 50);
+                    };
+                    setUser(demoUser);
+                    localStorage.setItem('infinity-current-user', JSON.stringify(demoUser));
+                    setIsLoading(false);
+                }, 1000);
             };
 
-            // RENDER SYSTEM CONTENT
-            const renderSystemContent = () => {
-                switch (activeSystem) {
-                    case 'grader':
-                        return (
-                            <div className="space-y-6">
-                                <div className="text-center">
-                                    <h3 className="text-4xl font-bold infinity-text mb-4">🔬 Nanoscopic Grader</h3>
-                                    <p className="text-gray-300 text-lg">Beyond human eyes - nanoscopic precision</p>
-                                </div>
+            const handleLogout = () => {
+                setUser(null);
+                localStorage.removeItem('infinity-current-user');
+            };
 
-                                {/* Upload Area */}
-                                <div className="glass-morphism rounded-3xl p-8">
-                                    <div className="text-center mb-8">
-                                        <div className="text-6xl mb-4">📸</div>
-                                        <h4 className="text-2xl font-bold text-cyan-400 mb-4">Upload Card for Nanoscopic Analysis</h4>
-                                        <p className="text-gray-300">Infinity will scan with precision far beyond human capability</p>
-                                    </div>
-                                    
-                                    <div className="border-2 border-dashed border-cyan-400/50 rounded-2xl p-8 text-center hover:border-cyan-400 transition-colors">
-                                        <div className="text-6xl mb-4">🔬</div>
-                                        <p className="text-cyan-400 font-bold mb-2 text-xl">Drop card image here</p>
-                                        <p className="text-gray-400 text-sm mb-4">Supports all formats up to 100MB</p>
-                                        <button 
-                                            onClick={simulateNanoscopicScan}
-                                            className="quantum-btn px-8 py-4 rounded-xl text-lg"
-                                        >
-                                            Start Nanoscopic Scan
-                                        </button>
-                                    </div>
+            if (isLoading) {
+                return (
+                    <div className="min-h-screen flex items-center justify-center">
+                        <div className="text-center">
+                            <div className="loading-spinner mx-auto mb-4"></div>
+                            <div className="text-2xl font-bold infinity-text">Loading Infinity...</div>
+                            <div className="text-gray-400 mt-2">Preparing omniscient intelligence</div>
+                        </div>
+                    </div>
+                );
+            }
 
-                                    {/* Scanning Progress */}
-                                    {scanningProgress > 0 && (
-                                        <div className="mt-8">
-                                            <div className="text-center mb-4">
-                                                <div className="text-2xl font-bold nanoscopic-scan mb-2">
-                                                    Scanning at Nanoscopic Level...
-                                                </div>
-                                                <div className="text-gray-300">
-                                                    Analyzing surface microfractures, centering deviations, color fading...
-                                                </div>
-                                            </div>
-                                            <div className="w-full bg-gray-700 rounded-full h-4">
-                                                <div 
-                                                    className="bg-gradient-to-r from-cyan-400 to-purple-400 h-4 rounded-full transition-all duration-300"
-                                                    style={{width: `${scanningProgress}%`}}
-                                                ></div>
-                                            </div>
-                                            <div className="text-center mt-2 text-cyan-400 font-bold">
-                                                {scanningProgress}% Complete
-                                            </div>
-                                        </div>
-                                    )}
+            if (!user) {
+                return <LoginPage onLogin={handleLogin} />;
+            }
 
-                                    {/* Capabilities */}
-                                    <div className="mt-8">
-                                        <h5 className="text-xl font-bold text-cyan-400 mb-4">Infinity Capabilities</h5>
-                                        <div className="grid md:grid-cols-2 gap-4">
-                                            {nanoscopicCapabilities.map((cap, index) => (
-                                                <div key={index} className="cyber-card p-4 rounded-lg">
-                                                    <div className="flex justify-between items-center mb-2">
-                                                        <span className="font-semibold">{cap.feature}</span>
-                                                        <span className="text-green-400 font-bold">{cap.precision}</span>
-                                                    </div>
-                                                    <div className="text-sm text-gray-400">{cap.description}</div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
+            switch (currentPage) {
+                case 'dashboard':
+                    return <DashboardPage user={user} onNavigate={navigateToPage} onLogout={handleLogout} />;
+                case 'grader':
+                    return <GraderPage user={user} onNavigate={navigateToPage} />;
+                case 'oracle':
+                    return <OraclePage user={user} onNavigate={navigateToPage} />;
+                case 'compass':
+                    return <CompassPage user={user} onNavigate={navigateToPage} />;
+                case 'arena':
+                    return <ArenaPage user={user} onNavigate={navigateToPage} />;
+                case 'portfolio':
+                    return <PortfolioPage user={user} onNavigate={navigateToPage} />;
+                case 'futurecasting':
+                    return <FuturecastingPage user={user} onNavigate={navigateToPage} />;
+                default:
+                    return <HomePage user={user} onNavigate={navigateToPage} onLogout={handleLogout} />;
+            }
+        }
 
-                                    {/* Grading Scales */}
-                                    <div className="mt-8">
-                                        <h5 className="text-xl font-bold text-cyan-400 mb-4">Grading Scale Accuracy</h5>
-                                        <div className="grid md:grid-cols-2 gap-4">
-                                            {gradingScales.map((scale, index) => (
-                                                <div key={index} className="cyber-card p-4 rounded-lg">
-                                                    <div className="flex justify-between items-center">
-                                                        <span className="font-semibold">{scale.company}</span>
-                                                        <div className="text-right">
-                                                            <div className="text-green-400 font-bold">{scale.accuracy}</div>
-                                                            <div className="text-xs text-gray-400">{scale.confidence}</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        );
-                    
-                    case 'oracle':
-                        return (
-                            <div className="space-y-6">
-                                <div className="text-center">
-                                    <h3 className="text-4xl font-bold infinity-text mb-4">🧠 Market Brain of the Future</h3>
-                                    <p className="text-gray-300 text-lg">Predictive gameplay engine & player DNA tracker</p>
-                                </div>
+        function LoginPage({ onLogin }) {
+            const [isLogin, setIsLogin] = useState(true);
+            const [formData, setFormData] = useState({ email: '', password: '', username: '' });
+            const [errors, setErrors] = useState({});
 
-                                {/* Predictive Gameplay Engine */}
-                                <div className="glass-morphism rounded-3xl p-8">
-                                    <h4 className="text-2xl font-bold text-cyan-400 mb-6">🔮 Predictive Gameplay Engine</h4>
-                                    <div className="space-y-4">
-                                        <div className="cyber-card p-6 rounded-lg data-stream">
-                                            <div className="flex justify-between items-start">
-                                                <div>
-                                                    <div className="font-bold text-white text-lg">Trevor Lawrence 3 TD Game Prediction</div>
-                                                    <div className="text-sm text-gray-400 mt-1">Tonight's Game Impact Analysis</div>
-                                                    <div className="text-sm text-green-400">Expected: 15% spike in Prizm Silver PSA 10</div>
-                                                </div>
-                                                <div className="text-right">
-                                                    <div className="text-green-400 font-bold text-lg">94%</div>
-                                                    <div className="text-cyan-400 font-bold">+$2,400</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="cyber-card p-6 rounded-lg data-stream">
-                                            <div className="flex justify-between items-start">
-                                                <div>
-                                                    <div className="font-bold text-white text-lg">NFL Playoff Rookie Surge</div>
-                                                    <div className="text-sm text-gray-400 mt-1">Postseason Performance Impact</div>
-                                                    <div className="text-sm text-green-400">CJ Stroud, Anthony Richardson cards up 30%</div>
-                                                </div>
-                                                <div className="text-right">
-                                                    <div className="text-green-400 font-bold text-lg">92%</div>
-                                                    <div className="text-cyan-400 font-bold">+$3,500</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* Player DNA Tracker */}
-                                <div className="glass-morphism rounded-3xl p-8">
-                                    <h4 className="text-2xl font-bold text-cyan-400 mb-6">🧬 Player DNA Tracker</h4>
-                                    <div className="space-y-4">
-                                        {playerDNA.map((player, index) => (
-                                            <div key={index} className="cyber-card p-6 rounded-lg">
-                                                <div className="flex justify-between items-start">
-                                                    <div>
-                                                        <div className="font-bold text-white text-lg">{player.player}</div>
-                                                        <div className="text-sm text-gray-400 mt-1">DNA: {player.dna}</div>
-                                                        <div className="text-sm text-gray-400">Hype Cycle: {player.hypeCycle}</div>
-                                                        <div className="text-sm text-gray-400">Injury Risk: {player.injuryRisk}</div>
-                                                    </div>
-                                                    <div className="text-right">
-                                                        <div className="text-green-400 font-bold">{player.nextLeBron}</div>
-                                                        <div className="text-xs text-gray-400">Next Legend</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-
-                                {/* Smart Hold/Sell Engine */}
-                                <div className="glass-morphism rounded-3xl p-8">
-                                    <h4 className="text-2xl font-bold text-cyan-400 mb-6">📈 Smart Hold/Sell Engine</h4>
-                                    <div className="space-y-4">
-                                        <div className="cyber-card p-6 rounded-lg">
-                                            <div className="font-bold text-white text-lg mb-2">Shohei Topps Chrome Autos</div>
-                                            <div className="text-sm text-gray-400 mb-2">Personalized Advice: Sell in July before postseason fatigue</div>
-                                            <div className="text-sm text-green-400">Reinvest into Juan Soto for long-term ROI</div>
-                                        </div>
-                                        <div className="cyber-card p-6 rounded-lg">
-                                            <div className="font-bold text-white text-lg mb-2">Luka Prizm Silver PSA 10</div>
-                                            <div className="text-sm text-gray-400 mb-2">HOLD - Expected 100% gain in 48 hours</div>
-                                            <div className="text-sm text-green-400">Infinity Confidence: 94%</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        );
-                    
-                    case 'compass':
-                        return (
-                            <div className="space-y-6">
-                                <div className="text-center">
-                                    <h3 className="text-4xl font-bold infinity-text mb-4">🧭 Investment Compass</h3>
-                                    <p className="text-gray-300 text-lg">AI-curated top 10 weekly moves</p>
-                                </div>
-
-                                <div className="glass-morphism rounded-3xl p-8">
-                                    <h4 className="text-2xl font-bold text-cyan-400 mb-6">📊 This Week's Top 10 Moves</h4>
-                                    <div className="space-y-4">
-                                        <div className="cyber-card p-6 rounded-lg">
-                                            <div className="flex justify-between items-start">
-                                                <div>
-                                                    <div className="font-bold text-white text-lg">#1: Buy Luka Prizm Silver PSA 10</div>
-                                                    <div className="text-sm text-gray-400 mt-1">Expected 100% gain in 48 hours</div>
-                                                </div>
-                                                <div className="text-right">
-                                                    <div className="text-green-400 font-bold text-lg">94%</div>
-                                                    <div className="text-cyan-400 font-bold">+$2,400</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="cyber-card p-6 rounded-lg">
-                                            <div className="flex justify-between items-start">
-                                                <div>
-                                                    <div className="font-bold text-white text-lg">#2: Sell Shohei Autos in July</div>
-                                                    <div className="text-sm text-gray-400 mt-1">Avoid postseason fatigue, reinvest in Soto</div>
-                                                </div>
-                                                <div className="text-right">
-                                                    <div className="text-green-400 font-bold text-lg">87%</div>
-                                                    <div className="text-cyan-400 font-bold">+$1,200</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        );
-
-                    case 'portfolio':
-                        return (
-                            <div className="space-y-6">
-                                <div className="text-center">
-                                    <h3 className="text-4xl font-bold infinity-text mb-4">🌌 Portfolio Singularity</h3>
-                                    <p className="text-gray-300 text-lg">Complete collection management & growth simulation</p>
-                                </div>
-
-                                <div className="glass-morphism rounded-3xl p-8">
-                                    <h4 className="text-2xl font-bold text-cyan-400 mb-6">📈 Portfolio Growth Simulation</h4>
-                                    <div className="space-y-4">
-                                        <div className="cyber-card p-6 rounded-lg">
-                                            <div className="font-bold text-white text-lg mb-2">Current Portfolio Value: $47,500</div>
-                                            <div className="text-sm text-gray-400 mb-2">6-month projection: $89,200 (+87%)</div>
-                                            <div className="text-sm text-green-400">12-month projection: $156,800 (+230%)</div>
-                                        </div>
-                                        <div className="cyber-card p-6 rounded-lg">
-                                            <div className="font-bold text-white text-lg mb-2">What If Analysis</div>
-                                            <div className="text-sm text-gray-400 mb-2">If you sold Jordan Fleer in '22 and reinvested in Giannis autos:</div>
-                                            <div className="text-sm text-green-400">You'd be +$14,200 today</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        );
-
-                    case 'voice':
-                        return (
-                            <div className="space-y-6">
-                                <div className="text-center">
-                                    <h3 className="text-4xl font-bold infinity-text mb-4">🎤 Voice Command</h3>
-                                    <p className="text-gray-300 text-lg">Voice-enabled Infinity control</p>
-                                </div>
-
-                                <div className="glass-morphism rounded-3xl p-8">
-                                    <h4 className="text-2xl font-bold text-cyan-400 mb-6">Voice Commands</h4>
-                                    <div className="space-y-4">
-                                        <div className="cyber-card p-6 rounded-lg">
-                                            <div className="font-bold text-white text-lg mb-2">"Infinity, show me the next 5 breakout NFL rookies under $200"</div>
-                                            <div className="text-sm text-gray-400">Voice recognition active</div>
-                                        </div>
-                                        <div className="cyber-card p-6 rounded-lg">
-                                            <div className="font-bold text-white text-lg mb-2">"Analyze my Luka Prizm Silver for nanoscopic grading"</div>
-                                            <div className="text-sm text-gray-400">AI processing voice input</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        );
-
-                    default:
-                        return (
-                            <div className="text-center py-12">
-                                <div className="text-8xl mb-4">🌌</div>
-                                <h3 className="text-3xl font-bold infinity-text mb-4">
-                                    Infinity System: {infinitySystems.find(s => s.id === activeSystem)?.name}
-                                </h3>
-                                <p className="text-gray-300 text-lg">Activating with infinite precision...</p>
-                                <div className="mt-8">
-                                    <div className="singularity-core w-32 h-32 mx-auto rounded-full"></div>
-                                </div>
-                            </div>
-                        );
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                if (!formData.email || !formData.password) {
+                    setErrors({ general: 'Please fill in all fields' });
+                    return;
                 }
+                if (!isLogin && !formData.username) {
+                    setErrors({ general: 'Please enter a username' });
+                    return;
+                }
+                onLogin(formData.email, formData.password);
             };
 
             return (
+                <div className="min-h-screen flex items-center justify-center relative">
+                    <div className="floating-particles">
+                        <div className="particle" style={{left: '10%', top: '20%'}}></div>
+                        <div className="particle" style={{left: '80%', top: '30%'}}></div>
+                        <div className="particle" style={{left: '60%', top: '70%'}}></div>
+                    </div>
+
+                    <div className="w-full max-w-md mx-4">
+                        <div className="glass-morphism rounded-2xl p-8 infinity-glow">
+                            <div className="text-center mb-8">
+                                <div className="text-6xl mb-4">🌌</div>
+                                <h1 className="text-4xl font-bold infinity-text orbitron mb-2">∞ INFINITY</h1>
+                                <p className="text-gray-300 text-lg">The Ultimate Sports Card AI Platform</p>
+                            </div>
+
+                            <form onSubmit={handleSubmit}>
+                                <div className="space-y-6">
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-300 mb-2">Email</label>
+                                        <input 
+                                            type="email" 
+                                            value={formData.email} 
+                                            onChange={(e) => setFormData({...formData, email: e.target.value})}
+                                            className="w-full px-4 py-3 bg-black bg-opacity-30 border border-cyan-400 border-opacity-30 rounded-lg text-white focus:outline-none focus:border-cyan-400"
+                                            placeholder="Enter your email"
+                                        />
+                                    </div>
+
+                                    {!isLogin && (
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-300 mb-2">Username</label>
+                                            <input 
+                                                type="text" 
+                                                value={formData.username} 
+                                                onChange={(e) => setFormData({...formData, username: e.target.value})}
+                                                className="w-full px-4 py-3 bg-black bg-opacity-30 border border-cyan-400 border-opacity-30 rounded-lg text-white focus:outline-none focus:border-cyan-400"
+                                                placeholder="Choose a username"
+                                            />
+                                        </div>
+                                    )}
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-300 mb-2">Password</label>
+                                        <input 
+                                            type="password" 
+                                            value={formData.password} 
+                                            onChange={(e) => setFormData({...formData, password: e.target.value})}
+                                            className="w-full px-4 py-3 bg-black bg-opacity-30 border border-cyan-400 border-opacity-30 rounded-lg text-white focus:outline-none focus:border-cyan-400"
+                                            placeholder="Enter your password"
+                                        />
+                                    </div>
+
+                                    {errors.general && (
+                                        <div className="text-red-400 text-sm text-center">{errors.general}</div>
+                                    )}
+
+                                    <button type="submit" className="quantum-btn w-full py-4 rounded-lg text-lg">
+                                        {isLogin ? 'Sign In' : 'Create Account'}
+                                    </button>
+
+                                    <div className="text-center">
+                                        <button 
+                                            type="button" 
+                                            onClick={() => setIsLogin(!isLogin)} 
+                                            className="text-cyan-400 hover:text-white transition-colors"
+                                        >
+                                            {isLogin ? "Don't have an account? Sign up" : "Already have an account? Sign in"}
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        function HomePage({ user, onNavigate, onLogout }) {
+            return (
                 <div className="min-h-screen">
-                    {/* Header */}
-                    <header className="glass-morphism border-b border-cyan-400/20 sticky top-0 z-50">
+                    <header className="glass-morphism border-b border-cyan-400 border-opacity-20 sticky top-0 z-50">
                         <div className="container mx-auto px-6 py-4">
                             <div className="flex items-center justify-between">
+                                <h1 className="text-4xl font-bold infinity-text orbitron">∞ INFINITY</h1>
                                 <div className="flex items-center gap-4">
-                                    <h1 className="text-5xl font-bold infinity-text orbitron">
-                                        ∞ INFINITY
-                                    </h1>
-                                </div>
-                                <div className="text-cyan-400 font-bold text-lg">
-                                    THE SINGULARITY OF SPORTS CARD INTELLIGENCE
+                                    <span className="text-cyan-400">Welcome, {user.username}</span>
+                                    <button onClick={onLogout} className="quantum-btn px-4 py-2">Logout</button>
                                 </div>
                             </div>
                         </div>
                     </header>
 
-                    {/* System Selector */}
-                    <div className="glass-morphism border-b border-cyan-400/20 sticky top-20 z-40">
+                    <main className="container mx-auto px-6 py-8">
+                        <div className="text-center mb-12">
+                            <h2 className="text-5xl font-bold infinity-text mb-4">Welcome to Infinity</h2>
+                            <p className="text-gray-300 text-xl">The Ultimate Sports Card AI Platform</p>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                            <div className="cyber-card p-6 rounded-lg text-center" onClick={() => onNavigate('dashboard')}>
+                                <div className="text-4xl mb-4">📊</div>
+                                <h3 className="text-xl font-bold text-cyan-400 mb-2">Dashboard</h3>
+                                <p className="text-gray-300">View your portfolio and insights</p>
+                            </div>
+
+                            <div className="cyber-card p-6 rounded-lg text-center" onClick={() => onNavigate('grader')}>
+                                <div className="text-4xl mb-4">🔬</div>
+                                <h3 className="text-xl font-bold text-cyan-400 mb-2">AI Grader</h3>
+                                <p className="text-gray-300">Grade your cards with AI precision</p>
+                            </div>
+
+                            <div className="cyber-card p-6 rounded-lg text-center" onClick={() => onNavigate('oracle')}>
+                                <div className="text-4xl mb-4">🧠</div>
+                                <h3 className="text-xl font-bold text-cyan-400 mb-2">AI Oracle</h3>
+                                <p className="text-gray-300">Get AI predictions and insights</p>
+                            </div>
+
+                            <div className="cyber-card p-6 rounded-lg text-center" onClick={() => onNavigate('compass')}>
+                                <div className="text-4xl mb-4">🧭</div>
+                                <h3 className="text-xl font-bold text-cyan-400 mb-2">Investment Compass</h3>
+                                <p className="text-gray-300">Find the best investment opportunities</p>
+                            </div>
+
+                            <div className="cyber-card p-6 rounded-lg text-center" onClick={() => onNavigate('arena')}>
+                                <div className="text-4xl mb-4">🏟️</div>
+                                <h3 className="text-xl font-bold text-cyan-400 mb-2">Collector Arena</h3>
+                                <p className="text-gray-300">Compete with other collectors</p>
+                            </div>
+
+                            <div className="cyber-card p-6 rounded-lg text-center" onClick={() => onNavigate('portfolio')}>
+                                <div className="text-4xl mb-4">💼</div>
+                                <h3 className="text-xl font-bold text-cyan-400 mb-2">Portfolio Mastery</h3>
+                                <p className="text-gray-300">Manage your card collection</p>
+                            </div>
+
+                            <div className="cyber-card p-6 rounded-lg text-center" onClick={() => onNavigate('futurecasting')}>
+                                <div className="text-4xl mb-4">🔮</div>
+                                <h3 className="text-xl font-bold text-cyan-400 mb-2">Futurecasting</h3>
+                                <p className="text-gray-300">Predict future market trends</p>
+                            </div>
+
+                            <div className="cyber-card p-6 rounded-lg text-center">
+                                <div className="text-4xl mb-4">⚙️</div>
+                                <h3 className="text-xl font-bold text-cyan-400 mb-2">Settings</h3>
+                                <p className="text-gray-300">Configure your preferences</p>
+                            </div>
+                        </div>
+                    </main>
+                </div>
+            );
+        }
+
+        function DashboardPage({ user, onNavigate, onLogout }) {
+            return (
+                <div className="min-h-screen">
+                    <header className="glass-morphism border-b border-cyan-400 border-opacity-20 sticky top-0 z-50">
                         <div className="container mx-auto px-6 py-4">
-                            <div className="flex flex-wrap gap-3">
-                                {infinitySystems.map((system) => (
-                                    <button
-                                        key={system.id}
-                                        onClick={() => activateSystem(system.id)}
-                                        className={`cyber-card p-4 rounded-lg text-center transition-all ${
-                                            activeSystem === system.id ? 'mode-active' : ''
-                                        }`}
-                                    >
-                                        <div className="text-3xl mb-2">{system.icon}</div>
-                                        <div className="font-bold text-sm">{system.name}</div>
-                                        <div className="text-xs text-gray-400 mt-1">{system.description}</div>
-                                    </button>
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-4">
+                                    <button onClick={() => onNavigate('home')} className="text-cyan-400 hover:text-white">← Back</button>
+                                    <h1 className="text-4xl font-bold infinity-text orbitron">Dashboard</h1>
+                                </div>
+                                <button onClick={onLogout} className="quantum-btn px-4 py-2">Logout</button>
+                            </div>
+                        </div>
+                    </header>
+
+                    <main className="container mx-auto px-6 py-8">
+                        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                            <div className="cyber-card p-6 rounded-lg">
+                                <div className="text-2xl font-bold text-white">${user.stats.totalValue.toLocaleString()}</div>
+                                <div className="text-sm text-gray-400">Total Portfolio Value</div>
+                            </div>
+                            <div className="cyber-card p-6 rounded-lg">
+                                <div className="text-2xl font-bold text-green-400">+{(user.stats.totalROI * 100).toFixed(1)}%</div>
+                                <div className="text-sm text-gray-400">Total ROI</div>
+                            </div>
+                            <div className="cyber-card p-6 rounded-lg">
+                                <div className="text-2xl font-bold text-cyan-400">Level {user.stats.level}</div>
+                                <div className="text-sm text-gray-400">Collector Level</div>
+                            </div>
+                            <div className="cyber-card p-6 rounded-lg">
+                                <div className="text-2xl font-bold text-yellow-400">#{user.stats.rank}</div>
+                                <div className="text-sm text-gray-400">Global Rank</div>
+                            </div>
+                        </div>
+
+                        <div className="cyber-card p-6 rounded-lg">
+                            <h3 className="text-2xl font-bold text-cyan-400 mb-4">Top Holdings</h3>
+                            <div className="space-y-4">
+                                {user.portfolio.map((holding, index) => (
+                                    <div key={index} className="flex justify-between items-center p-4 bg-black bg-opacity-20 rounded-lg">
+                                        <div>
+                                            <div className="font-bold text-white">{holding.name}</div>
+                                            <div className="text-sm text-gray-400">Bought for ${holding.purchasePrice.toLocaleString()}</div>
+                                        </div>
+                                        <div className="text-right">
+                                            <div className="font-bold text-green-400">${holding.currentValue.toLocaleString()}</div>
+                                            <div className="text-sm text-green-400">
+                                                +${(holding.currentValue - holding.purchasePrice).toLocaleString()} profit
+                                            </div>
+                                        </div>
+                                    </div>
                                 ))}
                             </div>
                         </div>
-                    </div>
+                    </main>
+                </div>
+            );
+        }
 
-                    {/* Main Content */}
+        function GraderPage({ user, onNavigate }) {
+            return (
+                <div className="min-h-screen">
+                    <header className="glass-morphism border-b border-cyan-400 border-opacity-20 sticky top-0 z-50">
+                        <div className="container mx-auto px-6 py-4">
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-4">
+                                    <button onClick={() => onNavigate('home')} className="text-cyan-400 hover:text-white">← Back</button>
+                                    <h1 className="text-4xl font-bold infinity-text orbitron">AI Grader</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </header>
+
                     <main className="container mx-auto px-6 py-8">
-                        {/* System Content */}
-                        {renderSystemContent()}
+                        <div className="text-center mb-12">
+                            <h2 className="text-5xl font-bold infinity-text mb-4">🔬 AI Grader</h2>
+                            <p className="text-gray-300 text-xl">Upload your card for nanoscopic analysis</p>
+                        </div>
 
-                        {/* Infinity Chat */}
-                        <div className="glass-morphism rounded-3xl p-8 mt-8 infinity-glow">
-                            <div className="text-center mb-6">
-                                <h3 className="text-3xl font-bold infinity-text mb-2">🌌 Infinity Singularity Chat</h3>
-                                <p className="text-gray-300 text-lg">Ask Infinity anything - omniscient intelligence</p>
+                        <div className="cyber-card p-8 rounded-lg text-center">
+                            <div className="text-6xl mb-4">📸</div>
+                            <h3 className="text-2xl font-bold text-cyan-400 mb-4">Upload Card Image</h3>
+                            <p className="text-gray-300 mb-6">Drop your card image here for AI analysis</p>
+                            <button className="quantum-btn px-8 py-4 text-lg">
+                                Choose File
+                            </button>
+                        </div>
+                    </main>
+                </div>
+            );
+        }
+
+        function OraclePage({ user, onNavigate }) {
+            return (
+                <div className="min-h-screen">
+                    <header className="glass-morphism border-b border-cyan-400 border-opacity-20 sticky top-0 z-50">
+                        <div className="container mx-auto px-6 py-4">
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-4">
+                                    <button onClick={() => onNavigate('home')} className="text-cyan-400 hover:text-white">← Back</button>
+                                    <h1 className="text-4xl font-bold infinity-text orbitron">AI Oracle</h1>
+                                </div>
                             </div>
-                            
-                            <div id="infinity-chat" className="h-96 overflow-y-auto mb-4 p-4 bg-black/30 rounded-lg">
-                                {chatHistory.length === 0 ? (
-                                    <div className="text-gray-400 text-center">
-                                        <div className="text-6xl mb-4">∞</div>
-                                        <div className="text-xl mb-2">I am Infinity - the singularity of sports card intelligence</div>
-                                        <div className="text-sm">I am flawless, limitless, and self-evolving</div>
-                                        <div className="text-sm mt-2">Ask me anything about the sports card universe</div>
-                                    </div>
-                                ) : (
-                                    <div className="space-y-4">
-                                        {chatHistory.map((msg, index) => (
-                                            <div key={index} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-                                                <div className={`max-w-4xl p-4 rounded-lg ${
-                                                    msg.sender === 'user' 
-                                                        ? 'bg-blue-600/20 ml-8' 
-                                                        : 'bg-gradient-to-r from-cyan-600/20 to-purple-600/20 mr-8'
-                                                }`}>
-                                                    <div className="font-bold text-sm mb-1">
-                                                        {msg.sender === 'user' ? 'You' : '∞ Infinity'}
-                                                    </div>
-                                                    <div className="whitespace-pre-line">{msg.message}</div>
-                                                </div>
-                                            </div>
-                                        ))}
-                                        {isLoading && (
-                                            <div className="flex justify-start">
-                                                <div className="bg-gradient-to-r from-cyan-600/20 to-purple-600/20 mr-8 p-4 rounded-lg">
-                                                    <div className="font-bold text-sm mb-1">∞ Infinity</div>
-                                                    <div className="text-gray-400">🌌 Analyzing with omniscient intelligence...</div>
-                                                </div>
-                                            </div>
-                                        )}
-                                    </div>
-                                )}
-                            </div>
-                            
-                            <div className="flex space-x-4">
-                                <input
-                                    type="text"
-                                    id="infinity-input"
-                                    placeholder="Ask Infinity anything about sports cards..."
-                                    className="flex-1 px-4 py-3 bg-black/30 border border-cyan-400/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-cyan-400"
-                                    onKeyPress={(e) => {
-                                        if (e.key === 'Enter') {
-                                            handleSendMessage();
-                                        }
-                                    }}
+                        </div>
+                    </header>
+
+                    <main className="container mx-auto px-6 py-8">
+                        <div className="text-center mb-12">
+                            <h2 className="text-5xl font-bold infinity-text mb-4">🧠 AI Oracle</h2>
+                            <p className="text-gray-300 text-xl">Ask the AI anything about sports cards</p>
+                        </div>
+
+                        <div className="cyber-card p-8 rounded-lg">
+                            <div className="mb-6">
+                                <input 
+                                    type="text" 
+                                    placeholder="Ask the AI Oracle anything..."
+                                    className="w-full px-4 py-3 bg-black bg-opacity-30 border border-cyan-400 border-opacity-30 rounded-lg text-white focus:outline-none focus:border-cyan-400"
                                 />
-                                <button
-                                    onClick={handleSendMessage}
-                                    className="quantum-btn px-6 py-3 rounded-lg"
-                                >
-                                    Send
-                                </button>
+                            </div>
+                            <button className="quantum-btn px-8 py-3">
+                                Ask Oracle
+                            </button>
+                        </div>
+                    </main>
+                </div>
+            );
+        }
+
+        function CompassPage({ user, onNavigate }) {
+            return (
+                <div className="min-h-screen">
+                    <header className="glass-morphism border-b border-cyan-400 border-opacity-20 sticky top-0 z-50">
+                        <div className="container mx-auto px-6 py-4">
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-4">
+                                    <button onClick={() => onNavigate('home')} className="text-cyan-400 hover:text-white">← Back</button>
+                                    <h1 className="text-4xl font-bold infinity-text orbitron">Investment Compass</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </header>
+
+                    <main className="container mx-auto px-6 py-8">
+                        <div className="text-center mb-12">
+                            <h2 className="text-5xl font-bold infinity-text mb-4">🧭 Investment Compass</h2>
+                            <p className="text-gray-300 text-xl">Find the best investment opportunities</p>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div className="cyber-card p-6 rounded-lg">
+                                <h3 className="text-xl font-bold text-cyan-400 mb-4">Top Picks</h3>
+                                <div className="space-y-3">
+                                    <div className="p-3 bg-black bg-opacity-20 rounded-lg">
+                                        <div className="font-bold text-white">Luka Dončić Prizm</div>
+                                        <div className="text-sm text-green-400">+15.2% this week</div>
+                                    </div>
+                                    <div className="p-3 bg-black bg-opacity-20 rounded-lg">
+                                        <div className="font-bold text-white">Wembanyama Rookie</div>
+                                        <div className="text-sm text-green-400">+23.1% this week</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="cyber-card p-6 rounded-lg">
+                                <h3 className="text-xl font-bold text-cyan-400 mb-4">Market Trends</h3>
+                                <div className="space-y-3">
+                                    <div className="p-3 bg-black bg-opacity-20 rounded-lg">
+                                        <div className="font-bold text-white">Basketball Cards</div>
+                                        <div className="text-sm text-green-400">+12.5% trending up</div>
+                                    </div>
+                                    <div className="p-3 bg-black bg-opacity-20 rounded-lg">
+                                        <div className="font-bold text-white">Football Cards</div>
+                                        <div className="text-sm text-yellow-400">+3.2% stable</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="cyber-card p-6 rounded-lg">
+                                <h3 className="text-xl font-bold text-cyan-400 mb-4">AI Insights</h3>
+                                <div className="space-y-3">
+                                    <div className="p-3 bg-black bg-opacity-20 rounded-lg">
+                                        <div className="font-bold text-white">High Confidence</div>
+                                        <div className="text-sm text-green-400">94% accuracy</div>
+                                    </div>
+                                    <div className="p-3 bg-black bg-opacity-20 rounded-lg">
+                                        <div className="font-bold text-white">Market Sentiment</div>
+                                        <div className="text-sm text-cyan-400">Very Positive</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+                </div>
+            );
+        }
+
+        function ArenaPage({ user, onNavigate }) {
+            return (
+                <div className="min-h-screen">
+                    <header className="glass-morphism border-b border-cyan-400 border-opacity-20 sticky top-0 z-50">
+                        <div className="container mx-auto px-6 py-4">
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-4">
+                                    <button onClick={() => onNavigate('home')} className="text-cyan-400 hover:text-white">← Back</button>
+                                    <h1 className="text-4xl font-bold infinity-text orbitron">Collector Arena</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </header>
+
+                    <main className="container mx-auto px-6 py-8">
+                        <div className="text-center mb-12">
+                            <h2 className="text-5xl font-bold infinity-text mb-4">🏟️ Collector Arena</h2>
+                            <p className="text-gray-300 text-xl">Compete with collectors worldwide</p>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="cyber-card p-6 rounded-lg">
+                                <h3 className="text-xl font-bold text-cyan-400 mb-4">Your Stats</h3>
+                                <div className="space-y-3">
+                                    <div className="flex justify-between">
+                                        <span className="text-gray-300">Level:</span>
+                                        <span className="text-white font-bold">{user.stats.level}</span>
+                                    </div>
+                                    <div className="flex justify-between">
+                                        <span className="text-gray-300">Rank:</span>
+                                        <span className="text-yellow-400 font-bold">#{user.stats.rank}</span>
+                                    </div>
+                                    <div className="flex justify-between">
+                                        <span className="text-gray-300">Badges:</span>
+                                        <span className="text-cyan-400 font-bold">{user.stats.badges.length}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="cyber-card p-6 rounded-lg">
+                                <h3 className="text-xl font-bold text-cyan-400 mb-4">Leaderboard</h3>
+                                <div className="space-y-3">
+                                    <div className="flex justify-between p-2 bg-black bg-opacity-20 rounded">
+                                        <span className="text-yellow-400">1. CardMaster99</span>
+                                        <span className="text-cyan-400">Level 15</span>
+                                    </div>
+                                    <div className="flex justify-between p-2 bg-black bg-opacity-20 rounded">
+                                        <span className="text-gray-300">2. ProCollector</span>
+                                        <span className="text-cyan-400">Level 12</span>
+                                    </div>
+                                    <div className="flex justify-between p-2 bg-black bg-opacity-20 rounded">
+                                        <span className="text-gray-300">3. CardKing</span>
+                                        <span className="text-cyan-400">Level 10</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+                </div>
+            );
+        }
+
+        function PortfolioPage({ user, onNavigate }) {
+            return (
+                <div className="min-h-screen">
+                    <header className="glass-morphism border-b border-cyan-400 border-opacity-20 sticky top-0 z-50">
+                        <div className="container mx-auto px-6 py-4">
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-4">
+                                    <button onClick={() => onNavigate('home')} className="text-cyan-400 hover:text-white">← Back</button>
+                                    <h1 className="text-4xl font-bold infinity-text orbitron">Portfolio Mastery</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </header>
+
+                    <main className="container mx-auto px-6 py-8">
+                        <div className="text-center mb-12">
+                            <h2 className="text-5xl font-bold infinity-text mb-4">💼 Portfolio Mastery</h2>
+                            <p className="text-gray-300 text-xl">Manage your card collection</p>
+                        </div>
+
+                        <div className="cyber-card p-6 rounded-lg">
+                            <h3 className="text-2xl font-bold text-cyan-400 mb-4">Your Collection</h3>
+                            <div className="space-y-4">
+                                {user.portfolio.map((holding, index) => (
+                                    <div key={index} className="flex justify-between items-center p-4 bg-black bg-opacity-20 rounded-lg">
+                                        <div>
+                                            <div className="font-bold text-white">{holding.name}</div>
+                                            <div className="text-sm text-gray-400">Purchase: ${holding.purchasePrice.toLocaleString()}</div>
+                                        </div>
+                                        <div className="text-right">
+                                            <div className="font-bold text-green-400">${holding.currentValue.toLocaleString()}</div>
+                                            <div className="text-sm text-green-400">
+                                                +${(holding.currentValue - holding.purchasePrice).toLocaleString()}
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </main>
+                </div>
+            );
+        }
+
+        function FuturecastingPage({ user, onNavigate }) {
+            return (
+                <div className="min-h-screen">
+                    <header className="glass-morphism border-b border-cyan-400 border-opacity-20 sticky top-0 z-50">
+                        <div className="container mx-auto px-6 py-4">
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-4">
+                                    <button onClick={() => onNavigate('home')} className="text-cyan-400 hover:text-white">← Back</button>
+                                    <h1 className="text-4xl font-bold infinity-text orbitron">Futurecasting</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </header>
+
+                    <main className="container mx-auto px-6 py-8">
+                        <div className="text-center mb-12">
+                            <h2 className="text-5xl font-bold infinity-text mb-4">🔮 Futurecasting</h2>
+                            <p className="text-gray-300 text-xl">Predict future market trends</p>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="cyber-card p-6 rounded-lg">
+                                <h3 className="text-xl font-bold text-cyan-400 mb-4">Rising Stars</h3>
+                                <div className="space-y-3">
+                                    <div className="p-3 bg-black bg-opacity-20 rounded-lg">
+                                        <div className="font-bold text-white">Anthony Richardson</div>
+                                        <div className="text-sm text-green-400">+45% predicted growth</div>
+                                    </div>
+                                    <div className="p-3 bg-black bg-opacity-20 rounded-lg">
+                                        <div className="font-bold text-white">Caleb Williams</div>
+                                        <div className="text-sm text-green-400">+38% predicted growth</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="cyber-card p-6 rounded-lg">
+                                <h3 className="text-xl font-bold text-cyan-400 mb-4">Market Predictions</h3>
+                                <div className="space-y-3">
+                                    <div className="p-3 bg-black bg-opacity-20 rounded-lg">
+                                        <div className="font-bold text-white">Q1 2024</div>
+                                        <div className="text-sm text-green-400">+15% overall growth</div>
+                                    </div>
+                                    <div className="p-3 bg-black bg-opacity-20 rounded-lg">
+                                        <div className="font-bold text-white">Q2 2024</div>
+                                        <div className="text-sm text-yellow-400">+8% moderate growth</div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </main>
@@ -842,7 +757,9 @@ What aspect of the sports card universe would you like me to analyze with infini
         }
 
         // Render the application
-        ReactDOM.render(<InfinitySingularity />, document.getElementById('root'));
+        console.log('🚀 Starting Infinity Platform...');
+        ReactDOM.render(<InfinityPlatform />, document.getElementById('root'));
+        console.log('✅ Infinity Platform loaded successfully!');
     </script>
 </body>
 </html>
