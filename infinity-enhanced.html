@@ -222,10 +222,7 @@
                 { id: 'future', name: 'Futurecasting', icon: '🔮', description: 'World-first trend prediction' },
                 { id: 'radar', name: 'Global Radar', icon: '🌍', description: 'Overseas market scanning' },
                 { id: 'growth', name: 'Growth Engine', icon: '��', description: 'Exponential portfolio growth' },
-                { id: 'synergy', name: 'Synergy Alerts', icon: '⚡', description: 'Cultural + sports crossovers' },
-                { id: 'compass', name: 'Investment Compass', icon: '🧭', description: 'AI-curated top 10 weekly moves' },
-                { id: 'portfolio', name: 'Portfolio Singularity', icon: '🌌', description: 'Complete collection management' },
-                { id: 'voice', name: 'Voice Command', icon: '🎤', description: 'Voice-enabled Infinity control' }
+                { id: 'synergy', name: 'Synergy Alerts', icon: '⚡', description: 'Cultural + sports crossovers' }
             ];
 
             // NANOSCOPIC GRADER DATA
@@ -273,31 +270,18 @@
 **Current Market Status:** $2,400 (Up 15% this week)
 **Infinity Prediction:** $4,800+ within 48 hours (94% confidence)
 
-**🔮 PREDICTIVE GAMEPLAY ENGINE:**
-• Tonight's game: Mavs vs Lakers - Luka expected 35+ points
-• Media buzz building exponentially (viral highlight potential)
+**Why the Spike is Coming:**
+• Mavs playoff push creating media buzz
+• Luka's 40+ point games generating viral highlights
 • International market demand surging (European collectors)
 • Social media hype building exponentially
 
-**🧬 PLAYER DNA ANALYSIS:**
-• DNA Profile: Generational talent with LeBron-level market impact
-• Hype Cycle: Peak phase (maximum growth potential)
-• Injury Risk: Ultra-Low (Infinity biomechanical analysis)
-• Contract Status: Long-term security (5+ years)
+**Infinity Action:** BUY NOW - This is a 100% guaranteed profit opportunity
+**Risk Level:** Ultra-Low (Infinity confidence: 94%)
+**Timeline:** 48 hours maximum
+**Expected ROI:** 100%+ in 2 days
 
-**📈 SMART HOLD/SELL ENGINE:**
-• Action: BUY NOW - This is a 100% guaranteed profit opportunity
-• Risk Level: Ultra-Low (Infinity confidence: 94%)
-• Timeline: 48 hours maximum
-• Expected ROI: 100%+ in 2 days
-• Resubmission Pathway: Hold for 6 months, then reassess
-
-**🌍 GLOBAL DEMAND RADAR:**
-• European market: +30% demand spike incoming
-• Asian markets: Rising interest in international stars
-• US market: Peak hype cycle activation
-
-**Infinity is flawless. This prediction is absolute. I am the future.**`;
+**Infinity is flawless. This prediction is absolute.**`;
                 }
                 
                 if (q.includes('wembanyama') || q.includes('wemby')) {
@@ -541,45 +525,33 @@ What aspect of the sports card universe would you like me to analyze with infini
                             <div className="space-y-6">
                                 <div className="text-center">
                                     <h3 className="text-4xl font-bold infinity-text mb-4">🧠 Market Brain of the Future</h3>
-                                    <p className="text-gray-300 text-lg">Predictive gameplay engine & player DNA tracker</p>
+                                    <p className="text-gray-300 text-lg">Omniscient market intelligence and predictions</p>
                                 </div>
 
-                                {/* Predictive Gameplay Engine */}
+                                {/* Market Intelligence */}
                                 <div className="glass-morphism rounded-3xl p-8">
-                                    <h4 className="text-2xl font-bold text-cyan-400 mb-6">🔮 Predictive Gameplay Engine</h4>
+                                    <h4 className="text-2xl font-bold text-cyan-400 mb-6">Market Intelligence Feed</h4>
                                     <div className="space-y-4">
-                                        <div className="cyber-card p-6 rounded-lg data-stream">
-                                            <div className="flex justify-between items-start">
-                                                <div>
-                                                    <div className="font-bold text-white text-lg">Trevor Lawrence 3 TD Game Prediction</div>
-                                                    <div className="text-sm text-gray-400 mt-1">Tonight's Game Impact Analysis</div>
-                                                    <div className="text-sm text-green-400">Expected: 15% spike in Prizm Silver PSA 10</div>
-                                                </div>
-                                                <div className="text-right">
-                                                    <div className="text-green-400 font-bold text-lg">94%</div>
-                                                    <div className="text-cyan-400 font-bold">+$2,400</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="cyber-card p-6 rounded-lg data-stream">
-                                            <div className="flex justify-between items-start">
-                                                <div>
-                                                    <div className="font-bold text-white text-lg">NFL Playoff Rookie Surge</div>
-                                                    <div className="text-sm text-gray-400 mt-1">Postseason Performance Impact</div>
-                                                    <div className="text-sm text-green-400">CJ Stroud, Anthony Richardson cards up 30%</div>
-                                                </div>
-                                                <div className="text-right">
-                                                    <div className="text-green-400 font-bold text-lg">92%</div>
-                                                    <div className="text-cyan-400 font-bold">+$3,500</div>
+                                        {marketIntelligence.map((insight, index) => (
+                                            <div key={index} className="cyber-card p-6 rounded-lg data-stream">
+                                                <div className="flex justify-between items-start">
+                                                    <div>
+                                                        <div className="font-bold text-white text-lg">{insight.insight}</div>
+                                                        <div className="text-sm text-gray-400 mt-1">Timeline: {insight.timeframe}</div>
+                                                    </div>
+                                                    <div className="text-right">
+                                                        <div className="text-green-400 font-bold text-lg">{insight.probability}</div>
+                                                        <div className="text-cyan-400 font-bold">{insight.impact}</div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        ))}
                                     </div>
                                 </div>
 
-                                {/* Player DNA Tracker */}
+                                {/* Player DNA */}
                                 <div className="glass-morphism rounded-3xl p-8">
-                                    <h4 className="text-2xl font-bold text-cyan-400 mb-6">🧬 Player DNA Tracker</h4>
+                                    <h4 className="text-2xl font-bold text-cyan-400 mb-6">Player DNA Analysis</h4>
                                     <div className="space-y-4">
                                         {playerDNA.map((player, index) => (
                                             <div key={index} className="cyber-card p-6 rounded-lg">
@@ -588,7 +560,6 @@ What aspect of the sports card universe would you like me to analyze with infini
                                                         <div className="font-bold text-white text-lg">{player.player}</div>
                                                         <div className="text-sm text-gray-400 mt-1">DNA: {player.dna}</div>
                                                         <div className="text-sm text-gray-400">Hype Cycle: {player.hypeCycle}</div>
-                                                        <div className="text-sm text-gray-400">Injury Risk: {player.injuryRisk}</div>
                                                     </div>
                                                     <div className="text-right">
                                                         <div className="text-green-400 font-bold">{player.nextLeBron}</div>
@@ -599,116 +570,9 @@ What aspect of the sports card universe would you like me to analyze with infini
                                         ))}
                                     </div>
                                 </div>
-
-                                {/* Smart Hold/Sell Engine */}
-                                <div className="glass-morphism rounded-3xl p-8">
-                                    <h4 className="text-2xl font-bold text-cyan-400 mb-6">📈 Smart Hold/Sell Engine</h4>
-                                    <div className="space-y-4">
-                                        <div className="cyber-card p-6 rounded-lg">
-                                            <div className="font-bold text-white text-lg mb-2">Shohei Topps Chrome Autos</div>
-                                            <div className="text-sm text-gray-400 mb-2">Personalized Advice: Sell in July before postseason fatigue</div>
-                                            <div className="text-sm text-green-400">Reinvest into Juan Soto for long-term ROI</div>
-                                        </div>
-                                        <div className="cyber-card p-6 rounded-lg">
-                                            <div className="font-bold text-white text-lg mb-2">Luka Prizm Silver PSA 10</div>
-                                            <div className="text-sm text-gray-400 mb-2">HOLD - Expected 100% gain in 48 hours</div>
-                                            <div className="text-sm text-green-400">Infinity Confidence: 94%</div>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         );
                     
-                    case 'compass':
-                        return (
-                            <div className="space-y-6">
-                                <div className="text-center">
-                                    <h3 className="text-4xl font-bold infinity-text mb-4">🧭 Investment Compass</h3>
-                                    <p className="text-gray-300 text-lg">AI-curated top 10 weekly moves</p>
-                                </div>
-
-                                <div className="glass-morphism rounded-3xl p-8">
-                                    <h4 className="text-2xl font-bold text-cyan-400 mb-6">📊 This Week's Top 10 Moves</h4>
-                                    <div className="space-y-4">
-                                        <div className="cyber-card p-6 rounded-lg">
-                                            <div className="flex justify-between items-start">
-                                                <div>
-                                                    <div className="font-bold text-white text-lg">#1: Buy Luka Prizm Silver PSA 10</div>
-                                                    <div className="text-sm text-gray-400 mt-1">Expected 100% gain in 48 hours</div>
-                                                </div>
-                                                <div className="text-right">
-                                                    <div className="text-green-400 font-bold text-lg">94%</div>
-                                                    <div className="text-cyan-400 font-bold">+$2,400</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="cyber-card p-6 rounded-lg">
-                                            <div className="flex justify-between items-start">
-                                                <div>
-                                                    <div className="font-bold text-white text-lg">#2: Sell Shohei Autos in July</div>
-                                                    <div className="text-sm text-gray-400 mt-1">Avoid postseason fatigue, reinvest in Soto</div>
-                                                </div>
-                                                <div className="text-right">
-                                                    <div className="text-green-400 font-bold text-lg">87%</div>
-                                                    <div className="text-cyan-400 font-bold">+$1,200</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        );
-
-                    case 'portfolio':
-                        return (
-                            <div className="space-y-6">
-                                <div className="text-center">
-                                    <h3 className="text-4xl font-bold infinity-text mb-4">🌌 Portfolio Singularity</h3>
-                                    <p className="text-gray-300 text-lg">Complete collection management & growth simulation</p>
-                                </div>
-
-                                <div className="glass-morphism rounded-3xl p-8">
-                                    <h4 className="text-2xl font-bold text-cyan-400 mb-6">📈 Portfolio Growth Simulation</h4>
-                                    <div className="space-y-4">
-                                        <div className="cyber-card p-6 rounded-lg">
-                                            <div className="font-bold text-white text-lg mb-2">Current Portfolio Value: $47,500</div>
-                                            <div className="text-sm text-gray-400 mb-2">6-month projection: $89,200 (+87%)</div>
-                                            <div className="text-sm text-green-400">12-month projection: $156,800 (+230%)</div>
-                                        </div>
-                                        <div className="cyber-card p-6 rounded-lg">
-                                            <div className="font-bold text-white text-lg mb-2">What If Analysis</div>
-                                            <div className="text-sm text-gray-400 mb-2">If you sold Jordan Fleer in '22 and reinvested in Giannis autos:</div>
-                                            <div className="text-sm text-green-400">You'd be +$14,200 today</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        );
-
-                    case 'voice':
-                        return (
-                            <div className="space-y-6">
-                                <div className="text-center">
-                                    <h3 className="text-4xl font-bold infinity-text mb-4">🎤 Voice Command</h3>
-                                    <p className="text-gray-300 text-lg">Voice-enabled Infinity control</p>
-                                </div>
-
-                                <div className="glass-morphism rounded-3xl p-8">
-                                    <h4 className="text-2xl font-bold text-cyan-400 mb-6">Voice Commands</h4>
-                                    <div className="space-y-4">
-                                        <div className="cyber-card p-6 rounded-lg">
-                                            <div className="font-bold text-white text-lg mb-2">"Infinity, show me the next 5 breakout NFL rookies under $200"</div>
-                                            <div className="text-sm text-gray-400">Voice recognition active</div>
-                                        </div>
-                                        <div className="cyber-card p-6 rounded-lg">
-                                            <div className="font-bold text-white text-lg mb-2">"Analyze my Luka Prizm Silver for nanoscopic grading"</div>
-                                            <div className="text-sm text-gray-400">AI processing voice input</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        );
-
                     default:
                         return (
                             <div className="text-center py-12">
