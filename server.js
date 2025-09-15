@@ -19,14 +19,24 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 // Serve static files
 app.use(express.static(path.join(__dirname)));
 
-// MongoDB connection
+// MongoDB connection (optional for development)
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/infinity-cards';
+let isMongoConnected = false;
+
 mongoose.connect(MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+  serverSelectionTimeoutMS: 5000, // 5 second timeout
+  connectTimeoutMS: 10000, // 10 second timeout
 })
-.then(() => console.log('✅ Connected to MongoDB'))
-.catch(err => console.error('❌ MongoDB connection error:', err));
+.then(() => {
+  console.log('✅ MongoDB connected successfully');
+  isMongoConnected = true;
+})
+.catch(err => {
+  console.warn('⚠️ MongoDB not available, using localStorage fallback:', err.message);
+  isMongoConnected = false;
+});
 
 // Database Models
 const cardSchema = new mongoose.Schema({
@@ -78,7 +88,9 @@ app.get('/api/health', (req, res) => {
     status: 'OK', 
     timestamp: new Date().toISOString(),
     version: '1.0.0',
-    service: 'Infinity Sports Card Platform'
+    service: 'Infinity Sports Card Platform',
+    database: isMongoConnected ? 'connected' : 'fallback',
+    fallback: !isMongoConnected ? 'localStorage' : null
   });
 });
 
@@ -124,17 +136,25 @@ app.post('/api/grader/analyze', async (req, res) => {
 
     // Store grading result for AI learning
     if (userId) {
-      const gradingResult = new Card({
-        player: 'Unknown',
-        card: 'Graded Card',
-        grade: analysis.grade,
-        value: analysis.value,
-        roi: 0,
-        confidence: analysis.confidence,
-        image: image,
-        userId: userId
-      });
-      await gradingResult.save();
+      if (isMongoConnected) {
+        try {
+          const gradingResult = new Card({
+            player: 'Unknown',
+            card: 'Graded Card',
+            grade: analysis.grade,
+            value: analysis.value,
+            roi: 0,
+            confidence: analysis.confidence,
+            image: image,
+            userId: userId
+          });
+          await gradingResult.save();
+        } catch (dbError) {
+          console.warn('Failed to save grading result to database:', dbError.message);
+        }
+      } else {
+        console.log('Grading result will be stored in frontend localStorage');
+      }
     }
 
     res.json(analysis);

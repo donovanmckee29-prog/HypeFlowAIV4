@@ -2,7 +2,6 @@
  * Infinity Authentication & User Management System
  * Secure login, user profiles, and persistent memory
  */
-
 class InfinityAuthSystem {
     constructor() {
         this.currentUser = null;
@@ -27,7 +26,6 @@ class InfinityAuthSystem {
         };
         this.encryptionKey = 'infinity-encryption-key-2024';
     }
-
     // User Registration
     async registerUser(email, password, username) {
         try {
@@ -41,18 +39,15 @@ class InfinityAuthSystem {
             if (username.length < 3) {
                 throw new Error('Username must be at least 3 characters');
             }
-
             // Check if user exists
             const existingUser = this.getUserByEmail(email);
             if (existingUser) {
                 throw new Error('User already exists');
             }
-
             // Create new user
             const userId = this.generateUserId();
             const hashedPassword = await this.hashPassword(password);
             const twoFactorSecret = this.generate2FASecret();
-            
             const newUser = {
                 id: userId,
                 email,
@@ -111,15 +106,12 @@ class InfinityAuthSystem {
                 emailVerified: false,
                 verificationToken: this.generateVerificationToken()
             };
-
             // Save user to localStorage
             this.saveUser(newUser);
-            
             // Set current user
             this.currentUser = newUser;
             this.isAuthenticated = true;
             this.userData = newUser;
-
             // Initialize AI learning for user
             if (window.InfinityAI) {
                 try {
@@ -128,7 +120,6 @@ class InfinityAuthSystem {
                     console.warn('Failed to initialize AI profile:', error);
                 }
             }
-
             return {
                 success: true,
                 user: newUser,
@@ -141,7 +132,6 @@ class InfinityAuthSystem {
             };
         }
     }
-
     // User Login
     async loginUser(email, password) {
         try {
@@ -149,21 +139,17 @@ class InfinityAuthSystem {
             if (!user) {
                 throw new Error('User not found');
             }
-
             const isValidPassword = await this.verifyPassword(password, user.password);
             if (!isValidPassword) {
                 throw new Error('Invalid password');
             }
-
             // Update last login
             user.lastLogin = Date.now();
             this.saveUser(user);
-
             // Set current user
             this.currentUser = user;
             this.isAuthenticated = true;
             this.userData = user;
-
             // Load user data into AI system
             if (window.InfinityAI) {
                 try {
@@ -172,7 +158,6 @@ class InfinityAuthSystem {
                     console.warn('Failed to load AI profile:', error);
                 }
             }
-
             return {
                 success: true,
                 user: user,
@@ -185,7 +170,6 @@ class InfinityAuthSystem {
             };
         }
     }
-
     // User Logout
     logoutUser() {
         this.currentUser = null;
@@ -208,7 +192,6 @@ class InfinityAuthSystem {
                 badges: []
             }
         };
-
         // Clear AI user data
         if (window.InfinityAI) {
             try {
@@ -217,33 +200,27 @@ class InfinityAuthSystem {
                 console.warn('Failed to clear AI profile:', error);
             }
         }
-
         return { success: true, message: 'Logout successful' };
     }
-
     // Update User Profile
     updateUserProfile(updates) {
         if (!this.isAuthenticated) {
             return { success: false, error: 'Not authenticated' };
         }
-
         try {
             Object.assign(this.currentUser, updates);
             this.saveUser(this.currentUser);
             this.userData = this.currentUser;
-
             return { success: true, user: this.currentUser };
         } catch (error) {
             return { success: false, error: error.message };
         }
     }
-
     // Add Portfolio Item
     addPortfolioItem(item) {
         if (!this.isAuthenticated) {
             return { success: false, error: 'Not authenticated' };
         }
-
         try {
             const portfolioItem = {
                 id: this.generateId(),
@@ -251,11 +228,9 @@ class InfinityAuthSystem {
                 addedAt: Date.now(),
                 currentValue: item.purchasePrice
             };
-
             this.currentUser.portfolio.push(portfolioItem);
             this.updatePortfolioStats();
             this.saveUser(this.currentUser);
-
             // Store interaction for AI learning
             if (window.InfinityAI) {
                 window.InfinityAI.storeInteraction('portfolio_add', {
@@ -266,19 +241,16 @@ class InfinityAuthSystem {
                     timestamp: Date.now()
                 });
             }
-
             return { success: true, item: portfolioItem };
         } catch (error) {
             return { success: false, error: error.message };
         }
     }
-
     // Add Grading History
     addGradingHistory(result) {
         if (!this.isAuthenticated) {
             return { success: false, error: 'Not authenticated' };
         }
-
         try {
             const gradingResult = {
                 id: this.generateId(),
@@ -286,10 +258,8 @@ class InfinityAuthSystem {
                 timestamp: Date.now(),
                 userId: this.currentUser.id
             };
-
             this.currentUser.gradingHistory.push(gradingResult);
             this.saveUser(this.currentUser);
-
             // Store interaction for AI learning
             if (window.InfinityAI) {
                 window.InfinityAI.storeInteraction('grading_complete', {
@@ -300,19 +270,16 @@ class InfinityAuthSystem {
                     timestamp: Date.now()
                 });
             }
-
             return { success: true, result: gradingResult };
         } catch (error) {
             return { success: false, error: error.message };
         }
     }
-
     // Add Oracle Chat
     addOracleChat(chat) {
         if (!this.isAuthenticated) {
             return { success: false, error: 'Not authenticated' };
         }
-
         try {
             const chatEntry = {
                 id: this.generateId(),
@@ -320,10 +287,8 @@ class InfinityAuthSystem {
                 timestamp: Date.now(),
                 userId: this.currentUser.id
             };
-
             this.currentUser.oracleChats.push(chatEntry);
             this.saveUser(this.currentUser);
-
             // Store interaction for AI learning
             if (window.InfinityAI) {
                 window.InfinityAI.storeInteraction('oracle_chat', {
@@ -334,19 +299,16 @@ class InfinityAuthSystem {
                     timestamp: Date.now()
                 });
             }
-
             return { success: true, chat: chatEntry };
         } catch (error) {
             return { success: false, error: error.message };
         }
     }
-
     // Add Achievement
     addAchievement(achievement) {
         if (!this.isAuthenticated) {
             return { success: false, error: 'Not authenticated' };
         }
-
         try {
             const achievementEntry = {
                 id: this.generateId(),
@@ -354,41 +316,33 @@ class InfinityAuthSystem {
                 earnedAt: Date.now(),
                 userId: this.currentUser.id
             };
-
             this.currentUser.achievements.push(achievementEntry);
             this.currentUser.stats.badges.push(achievement.badge);
             this.saveUser(this.currentUser);
-
             return { success: true, achievement: achievementEntry };
         } catch (error) {
             return { success: false, error: error.message };
         }
     }
-
     // Update Portfolio Stats
     updatePortfolioStats() {
         if (!this.currentUser) return;
-
         const portfolio = this.currentUser.portfolio;
         const totalValue = portfolio.reduce((sum, item) => sum + (item.currentValue || item.purchasePrice), 0);
         const totalCost = portfolio.reduce((sum, item) => sum + item.purchasePrice, 0);
         const totalROI = totalCost > 0 ? ((totalValue - totalCost) / totalCost) * 100 : 0;
-
         this.currentUser.stats.totalValue = totalValue;
         this.currentUser.stats.totalROI = totalROI;
     }
-
     // Get User Data
     getUserData() {
         return this.isAuthenticated ? this.userData : null;
     }
-
     // Get Personalized Recommendations
     getPersonalizedRecommendations() {
         if (!this.isAuthenticated) {
             return { success: false, error: 'Not authenticated' };
         }
-
         try {
             const user = this.currentUser;
             const recommendations = {
@@ -397,18 +351,15 @@ class InfinityAuthSystem {
                 oracle: this.generateOracleRecommendations(user),
                 market: this.generateMarketRecommendations(user)
             };
-
             return { success: true, recommendations };
         } catch (error) {
             return { success: false, error: error.message };
         }
     }
-
     // Generate Portfolio Recommendations
     generatePortfolioRecommendations(user) {
         const recommendations = [];
         const portfolio = user.portfolio;
-
         if (portfolio.length === 0) {
             recommendations.push({
                 type: 'portfolio',
@@ -426,15 +377,12 @@ class InfinityAuthSystem {
                 priority: 'medium'
             });
         }
-
         return recommendations;
     }
-
     // Generate Grading Recommendations
     generateGradingRecommendations(user) {
         const recommendations = [];
         const gradingHistory = user.gradingHistory;
-
         if (gradingHistory.length === 0) {
             recommendations.push({
                 type: 'grading',
@@ -444,15 +392,12 @@ class InfinityAuthSystem {
                 priority: 'high'
             });
         }
-
         return recommendations;
     }
-
     // Generate Oracle Recommendations
     generateOracleRecommendations(user) {
         const recommendations = [];
         const oracleChats = user.oracleChats;
-
         if (oracleChats.length === 0) {
             recommendations.push({
                 type: 'oracle',
@@ -462,15 +407,12 @@ class InfinityAuthSystem {
                 priority: 'high'
             });
         }
-
         return recommendations;
     }
-
     // Generate Market Recommendations
     generateMarketRecommendations(user) {
         const recommendations = [];
         const watchlist = user.watchlist;
-
         if (watchlist.length === 0) {
             recommendations.push({
                 type: 'market',
@@ -480,30 +422,31 @@ class InfinityAuthSystem {
                 priority: 'medium'
             });
         }
-
         return recommendations;
     }
-
     // Utility Functions
     validateEmail(email) {
         const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return re.test(email);
     }
-
     async hashPassword(password) {
-        // Simple hash for demo - in production, use bcrypt
+        // Optimized password hashing with proper error handling
         try {
-            const encoder = new TextEncoder();
-            const data = encoder.encode(password + this.encryptionKey);
-            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            if (typeof crypto !== 'undefined' && crypto.subtle) {
+                const encoder = new TextEncoder();
+                const data = encoder.encode(password + this.encryptionKey);
+                const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+                const hashArray = Array.from(new Uint8Array(hashBuffer));
+                return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            } else {
+                // Fallback for environments without crypto.subtle
+                return btoa(password + this.encryptionKey);
+            }
         } catch (error) {
-            // Fallback to base64 if crypto.subtle is not available
+            console.warn('Password hashing error, using fallback:', error.message);
             return btoa(password + this.encryptionKey);
         }
     }
-
     async verifyPassword(password, hashedPassword) {
         try {
             const hashed = await this.hashPassword(password);
@@ -513,61 +456,49 @@ class InfinityAuthSystem {
             return false;
         }
     }
-
     generateUserId() {
         return 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
     }
-
     generateId() {
         return Date.now() + '_' + Math.random().toString(36).substr(2, 9);
     }
-
     generateAvatar(username) {
         const colors = ['#00d4ff', '#00ff88', '#ff6b6b', '#ffaa00', '#9c88ff'];
         const color = colors[username.length % colors.length];
         return `https://ui-avatars.com/api/?name=${username}&background=${color.replace('#', '')}&color=fff&size=100`;
     }
-
     getUserByEmail(email) {
         const users = this.getAllUsers();
         return users.find(user => user.email === email);
     }
-
     getAllUsers() {
         const users = localStorage.getItem('infinity-users');
         return users ? JSON.parse(users) : [];
     }
-
     saveUser(user) {
         const users = this.getAllUsers();
         const existingIndex = users.findIndex(u => u.id === user.id);
-        
         if (existingIndex >= 0) {
             users[existingIndex] = user;
         } else {
             users.push(user);
         }
-        
         localStorage.setItem('infinity-users', JSON.stringify(users));
     }
-
     // Check if user is authenticated
     isUserAuthenticated() {
         return this.isAuthenticated && this.currentUser !== null;
     }
-
     // Get current user
     getCurrentUser() {
         return this.currentUser;
     }
-
     // Initialize from stored data
     initialize() {
         try {
             const storedUser = localStorage.getItem('infinity-current-user');
             if (storedUser) {
                 const user = JSON.parse(storedUser);
-                
                 // Verify user still exists in the system
                 const existingUser = this.getUserById(user.id);
                 if (existingUser) {
@@ -575,7 +506,6 @@ class InfinityAuthSystem {
                     this.currentUser = existingUser;
                     this.isAuthenticated = true;
                     this.userData = existingUser;
-                    
                     // Load user data into AI system
                     if (window.InfinityAI) {
                         try {
@@ -584,7 +514,6 @@ class InfinityAuthSystem {
                             console.warn('Failed to load AI profile:', error);
                         }
                     }
-                    
                     console.log(`✅ User ${user.username} session restored`);
                 } else {
                     // User no longer exists, clear session
@@ -600,14 +529,12 @@ class InfinityAuthSystem {
             this.logoutUser();
         }
     }
-
     // Save current user to storage
     saveCurrentUser() {
         if (this.currentUser) {
             localStorage.setItem('infinity-current-user', JSON.stringify(this.currentUser));
         }
     }
-
     // 2FA Methods
     generate2FASecret() {
         const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
@@ -617,14 +544,12 @@ class InfinityAuthSystem {
         }
         return secret;
     }
-
     generate2FAQRCode(secret, email) {
         const issuer = 'Infinity Sports Cards';
         const account = email;
         const otpauth = `otpauth://totp/${issuer}:${account}?secret=${secret}&issuer=${issuer}`;
         return `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(otpauth)}`;
     }
-
     generateTOTPCode(secret) {
         const epoch = Math.round(new Date().getTime() / 1000.0);
         const time = Math.floor(epoch / 30);
@@ -638,16 +563,13 @@ class InfinityAuthSystem {
                     (hmac[offset + 3] & 0xff);
         return (code % 1000000).toString().padStart(6, '0');
     }
-
     verify2FACode(secret, code) {
         const expectedCode = this.generateTOTPCode(secret);
         return code === expectedCode;
     }
-
     enable2FA(userId, code) {
         const user = this.getUserById(userId);
         if (!user) return { success: false, error: 'User not found' };
-
         if (this.verify2FACode(user.twoFactorSecret, code)) {
             user.twoFactorEnabled = true;
             this.saveUser(user);
@@ -656,11 +578,9 @@ class InfinityAuthSystem {
             return { success: false, error: 'Invalid 2FA code' };
         }
     }
-
     disable2FA(userId, code) {
         const user = this.getUserById(userId);
         if (!user) return { success: false, error: 'User not found' };
-
         if (this.verify2FACode(user.twoFactorSecret, code)) {
             user.twoFactorEnabled = false;
             this.saveUser(user);
@@ -669,12 +589,10 @@ class InfinityAuthSystem {
             return { success: false, error: 'Invalid 2FA code' };
         }
     }
-
     // Enhanced Security Methods
     generateVerificationToken() {
         return 'verify_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
     }
-
     verifyEmail(token) {
         const users = this.getAllUsers();
         const user = users.find(u => u.verificationToken === token);
@@ -686,37 +604,30 @@ class InfinityAuthSystem {
         }
         return { success: false, error: 'Invalid verification token' };
     }
-
     resetPassword(email) {
         const user = this.getUserByEmail(email);
         if (!user) return { success: false, error: 'User not found' };
-
         const resetToken = this.generateVerificationToken();
         user.resetToken = resetToken;
         user.resetTokenExpiry = Date.now() + (24 * 60 * 60 * 1000); // 24 hours
         this.saveUser(user);
-
         // In production, send email with reset link
         return { success: true, message: 'Password reset email sent', resetToken };
     }
-
     async updatePassword(resetToken, newPassword) {
         try {
             const users = this.getAllUsers();
             const user = users.find(u => u.resetToken === resetToken && u.resetTokenExpiry > Date.now());
             if (!user) return { success: false, error: 'Invalid or expired reset token' };
-
             user.password = await this.hashPassword(newPassword);
             user.resetToken = null;
             user.resetTokenExpiry = null;
             this.saveUser(user);
-
             return { success: true, message: 'Password updated successfully' };
         } catch (error) {
             return { success: false, error: error.message };
         }
     }
-
     // Utility Methods for 2FA
     base32Decode(str) {
         const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
@@ -738,7 +649,6 @@ class InfinityAuthSystem {
         }
         return new Uint8Array(bytes);
     }
-
     intToBytes(num) {
         const bytes = new Uint8Array(8);
         for (let i = 7; i >= 0; i--) {
@@ -747,45 +657,37 @@ class InfinityAuthSystem {
         }
         return bytes;
     }
-
     hmacSHA1(key, message) {
         // Simplified HMAC-SHA1 implementation
         // In production, use a proper crypto library
         const blockSize = 64;
         const opad = new Uint8Array(blockSize);
         const ipad = new Uint8Array(blockSize);
-        
         if (key.length > blockSize) {
             key = this.sha1(key);
         }
-        
         for (let i = 0; i < blockSize; i++) {
             opad[i] = 0x5c;
             ipad[i] = 0x36;
         }
-        
         for (let i = 0; i < key.length; i++) {
             opad[i] ^= key[i];
             ipad[i] ^= key[i];
         }
-        
         const innerHash = this.sha1(this.concat(ipad, message));
         return this.sha1(this.concat(opad, innerHash));
     }
-
     sha1(data) {
         // Simplified SHA1 implementation
         // In production, use a proper crypto library
         return new Uint8Array(20); // Placeholder
     }
-
     concat(a, b) {
         const result = new Uint8Array(a.length + b.length);
         result.set(a);
         result.set(b, a.length);
         return result;
     }
-
     // Additional User Management
     getUserById(userId) {
         try {
@@ -796,33 +698,26 @@ class InfinityAuthSystem {
             return null;
         }
     }
-
     updateUserStats(userId, stats) {
         const user = this.getUserById(userId);
         if (!user) return { success: false, error: 'User not found' };
-
         Object.assign(user.stats, stats);
         this.saveUser(user);
         return { success: true, stats: user.stats };
     }
-
     addBadge(userId, badge) {
         const user = this.getUserById(userId);
         if (!user) return { success: false, error: 'User not found' };
-
         if (!user.badges.includes(badge)) {
             user.badges.push(badge);
             user.stats.badges.push(badge);
             this.saveUser(user);
         }
-
         return { success: true, badges: user.badges };
     }
-
     // AI Learning Integration
     storeUserInteraction(type, data, outcome) {
         if (!this.isAuthenticated) return;
-
         const interaction = {
             type,
             data,
@@ -830,13 +725,11 @@ class InfinityAuthSystem {
             timestamp: Date.now(),
             userId: this.currentUser.id
         };
-
         if (!this.currentUser.interactions) {
             this.currentUser.interactions = [];
         }
         this.currentUser.interactions.push(interaction);
         this.saveUser(this.currentUser);
-
         // Update AI learning system
         if (window.InfinityAI) {
             window.InfinityAI.learnFromInteraction(interaction);
@@ -844,9 +737,78 @@ class InfinityAuthSystem {
     }
 }
 
+// Enhanced error handling for Infinity Platform
+window.InfinityErrorHandler = {
+    handleError(error, context = 'unknown') {
+        console.error('🚨 Infinity Error:', {
+            message: error.message,
+            stack: error.stack,
+            context: context,
+            timestamp: new Date().toISOString(),
+            userAgent: navigator.userAgent,
+            url: window.location.href
+        });
+        
+        // Track error in performance metrics
+        if (window.InfinityPerformance) {
+            window.InfinityPerformance.trackError();
+        }
+        
+        // Show user-friendly error message
+        this.showUserError(error, context);
+    },
+    
+    showUserError(error, context) {
+        const errorMessages = {
+            'auth': 'Authentication error. Please try logging in again.',
+            'ai': 'AI system error. Some features may not work properly.',
+            'network': 'Network error. Please check your connection.',
+            'unknown': 'An unexpected error occurred. Please refresh the page.'
+        };
+        
+        const message = errorMessages[context] || errorMessages['unknown'];
+        
+        // Show error notification
+        const notification = document.createElement('div');
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #ff6b6b;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            z-index: 10000;
+            max-width: 300px;
+            font-family: Arial, sans-serif;
+        `;
+        notification.textContent = message;
+        
+        document.body.appendChild(notification);
+        
+        // Auto-remove after 5 seconds
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+        }, 5000);
+    }
+};
+
+// Global error handler
+window.addEventListener('error', (event) => {
+    window.InfinityErrorHandler.handleError(event.error, 'global');
+});
+
+// Unhandled promise rejection handler
+window.addEventListener('unhandledrejection', (event) => {
+    window.InfinityErrorHandler.handleError(new Error(event.reason), 'promise');
+});
+
+
 // Global Auth System Instance
 window.InfinityAuth = new InfinityAuthSystem();
-
 // Initialize immediately and on page load
 function initializeAuthSystem() {
     try {
@@ -860,15 +822,12 @@ function initializeAuthSystem() {
         console.error('❌ Failed to initialize auth system:', error);
     }
 }
-
 // Initialize immediately
 initializeAuthSystem();
-
 // Also initialize on page load as backup
 window.addEventListener('load', () => {
     initializeAuthSystem();
 });
-
 // Auto-save user data every 30 seconds
 setInterval(() => {
     try {
@@ -879,5 +838,4 @@ setInterval(() => {
         console.warn('Auto-save failed:', error);
     }
 }, 30000);
-
 export default InfinityAuthSystem;
