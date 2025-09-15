@@ -1,1 +1,633 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Futurecasting Engine - Infinity Sports Card Platform</title><!-- CDN Links --><script src="https://cdn.tailwindcss.com"></script><script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script><script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script><script src="https://unpkg.com/@babel/standalone/babel.min.js" crossorigin></script><script src="https://cdn.jsdelivr.net/npm/chart.js"></script><style> @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@400;600;700&display=swap'); body { font-family: 'Inter', sans-serif; background: radial-gradient(circle at 20% 50%, rgba(0, 212, 255, 0.1) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(0, 168, 204, 0.1) 0%, transparent 50%), linear-gradient(135deg, #000000 0%, #0a0a0f 25%, #1a1a2e 50%, #0f3460 75%, #000000 100%); min-height: 100vh; color: white; margin: 0; padding: 0; overflow-x: hidden; } .infinity-text { color: #00d4ff; text-shadow: 0 0 20px rgba(0, 212, 255, 0.5); } .glass-morphism { background: rgba(0, 212, 255, 0.05); backdrop-filter: blur(15px) saturate(150%); border: 1px solid rgba(0, 212, 255, 0.3); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6); } .cyber-card { background: rgba(0, 100, 255, 0.08); border: 1px solid rgba(0, 255, 255, 0.4); transition: all 0.2s ease; position: relative; overflow: hidden; } .cyber-card:hover { transform: translateY(-4px) scale(1.02); background: rgba(0, 100, 255, 0.15); box-shadow: 0 20px 60px rgba(0, 255, 255, 0.3); border: 2px solid rgba(0, 255, 255, 0.8); } .quantum-btn { background: #00d4ff; border: none; color: white; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; transition: all 0.15s ease; cursor: pointer; position: relative; overflow: hidden; } .quantum-btn:hover { background: #0099cc; transform: translateY(-2px) scale(1.05); box-shadow: 0 10px 30px rgba(0, 212, 255, 0.5); } .orbitron { font-family: 'Orbitron', monospace; } .infinity-glow { box-shadow: 0 0 20px rgba(0, 212, 255, 0.3); } .timeline-item { position: relative; padding-left: 2rem; margin-bottom: 2rem; } .timeline-item::before { content: ''; position: absolute; left: 0; top: 0; width: 12px; height: 12px; border-radius: 50%; background: #00d4ff; box-shadow: 0 0 20px rgba(0, 212, 255, 0.5); } .timeline-item::after { content: ''; position: absolute; left: 5px; top: 12px; width: 2px; height: calc(100% + 1rem); background: linear-gradient(to bottom, #00d4ff, transparent); } .timeline-item:last-child::after { display: none; } .confidence-high { color: #00ff88; } .confidence-medium { color: #ffaa00; } .confidence-low { color: #ff4444; } .loading-spinner { border: 3px solid rgba(0, 212, 255, 0.3); border-top: 3px solid #00d4ff; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; } @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } } .pulse-animation { animation: pulse 2s ease-in-out infinite; } @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } } </style></head><body><div id="root"></div><script type="text/babel"> const { useState, useEffect, useRef } = React; function FuturecastingEngine() { const [activeTab, setActiveTab] = useState('rookies'); const [isLoading, setIsLoading] = useState(false); const [predictions, setPredictions] = useState([]); const chartRef = useRef(null); const timelineRef = useRef(null); const rookiePredictions = [ { id: 1, player: 'Victor Wembanyama', team: 'San Antonio Spurs', position: 'C', draftYear: 2023, currentValue: 2400, predictedValue: 8000, timeframe: '6 months', confidence: 94, reasoning: 'Generational talent, international hype, rookie season breakout', keyEvents: ['Rookie of the Year', 'All-Star selection', 'Playoff run'], riskFactors: ['Injury concerns', 'Team performance'], recommendation: 'STRONG BUY' }, { id: 2, player: 'Anthony Richardson', team: 'Indianapolis Colts', position: 'QB', draftYear: 2023, currentValue: 850, predictedValue: 2500, timeframe: '1 year', confidence: 87, reasoning: 'Dual-threat QB, breakout potential, media attention', keyEvents: ['Pro Bowl', 'Playoff appearance', 'MVP conversation'], riskFactors: ['Injury risk', 'Team struggles'], recommendation: 'BUY' }, { id: 3, player: 'CJ Stroud', team: 'Houston Texans', position: 'QB', draftYear: 2023, currentValue: 1200, predictedValue: 2000, timeframe: '8 months', confidence: 82, reasoning: 'Rookie season success, playoff potential', keyEvents: ['Rookie of the Year', 'Playoff run', 'Franchise QB status'], riskFactors: ['Sophomore slump', 'Team rebuilding'], recommendation: 'HOLD' } ]; const emergingCollectibles = [ { id: 1, category: 'Women\'s Basketball', description: 'WNBA cards gaining mainstream attention', currentTrend: 'Rising', predictedGrowth: 150, timeframe: '2 years', confidence: 78, keyPlayers: ['Caitlin Clark', 'Angel Reese', 'Paige Bueckers'], reasoning: 'Increased media coverage, growing fanbase, cultural shift' }, { id: 2, category: 'International Soccer', description: 'European soccer cards in US market', currentTrend: 'Explosive', predictedGrowth: 200, timeframe: '18 months', confidence: 85, keyPlayers: ['Kylian Mbappé', 'Erling Haaland', 'Jude Bellingham'], reasoning: 'World Cup impact, MLS growth, global market expansion' }, { id: 3, category: 'Esports', description: 'Gaming personalities and teams', currentTrend: 'Emerging', predictedGrowth: 300, timeframe: '3 years', confidence: 65, keyPlayers: ['Ninja', 'Shroud', 'Tfue'], reasoning: 'Digital native generation, streaming culture, virtual collectibles' } ]; const culturalEvents = [ { id: 1, event: '2024 Summer Olympics', date: 'July 26 - August 11, 2024', impact: 'High', affectedSports: ['Basketball', 'Soccer', 'Track & Field'], predictedSpike: 40, confidence: 92, reasoning: 'Global attention, new stars emerge, patriotic collecting', recommendations: ['Buy Olympic cards now', 'Watch for breakout athletes', 'International market surge'] }, { id: 2, event: '2026 FIFA World Cup', date: 'June 8 - July 3, 2026', impact: 'Very High', affectedSports: ['Soccer'], predictedSpike: 80, confidence: 88, reasoning: 'US hosting, global spotlight, new generation of stars', recommendations: ['Invest in USMNT players', 'International stars', 'Rookie cards'] }, { id: 3, event: '2024 NBA Draft', date: 'June 26, 2024', impact: 'Medium', affectedSports: ['Basketball'], predictedSpike: 25, confidence: 75, reasoning: 'New rookie class, draft night hype, team building', recommendations: ['Top 5 picks', 'International prospects', 'Team needs'] } ]; const timelineData = [ { date: 'Q1 2024', events: [ { title: 'NBA Playoffs', impact: 'High', confidence: 90 }, { title: 'NFL Draft', impact: 'Medium', confidence: 85 }, { title: 'March Madness', impact: 'Low', confidence: 70 } ] }, { date: 'Q2 2024', events: [ { title: 'NBA Finals', impact: 'Very High', confidence: 95 }, { title: 'NFL Season Start', impact: 'High', confidence: 88 }, { title: 'MLB Season', impact: 'Medium', confidence: 75 } ] }, { date: 'Q3 2024', events: [ { title: 'Summer Olympics', impact: 'Very High', confidence: 92 }, { title: 'NFL Season', impact: 'High', confidence: 90 }, { title: 'NBA Offseason', impact: 'Low', confidence: 65 } ] }, { date: 'Q4 2024', events: [ { title: 'NFL Playoffs', impact: 'High', confidence: 88 }, { title: 'NBA Season Start', impact: 'Medium', confidence: 80 }, { title: 'Holiday Season', impact: 'Medium', confidence: 75 } ] } ]; useEffect(() => { setPredictions(rookiePredictions); initializeChart(); }, []); const initializeChart = () => { if (chartRef.current) { const ctx = chartRef.current.getContext('2d'); new Chart(ctx, { type: 'line', data: { labels: ['Jan 2024', 'Feb 2024', 'Mar 2024', 'Apr 2024', 'May 2024', 'Jun 2024'], datasets: [ { label: 'Wembanyama', data: [2000, 2200, 2400, 2800, 3200, 4000], borderColor: '#00d4ff', backgroundColor: 'rgba(0, 212, 255, 0.1)', tension: 0.4 }, { label: 'Richardson', data: [600, 700, 850, 1000, 1200, 1500], borderColor: '#00ff88', backgroundColor: 'rgba(0, 255, 136, 0.1)', tension: 0.4 }, { label: 'Stroud', data: [800, 900, 1200, 1400, 1600, 1800], borderColor: '#ffaa00', backgroundColor: 'rgba(255, 170, 0, 0.1)', tension: 0.4 } ] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#ffffff' } } }, scales: { x: { ticks: { color: '#ffffff' } }, y: { ticks: { color: '#ffffff' } } } } }); } }; const getConfidenceColor = (confidence) => { if (confidence>= 90) return 'confidence-high'; if (confidence>= 75) return 'confidence-medium'; return 'confidence-low'; }; const getConfidenceText = (confidence) => { if (confidence>= 90) return 'Very High'; if (confidence>= 75) return 'High'; if (confidence>= 60) return 'Medium'; return 'Low'; }; const getImpactColor = (impact) => { switch(impact) { case 'Very High': return 'text-red-400'; case 'High': return 'text-orange-400'; case 'Medium': return 'text-yellow-400'; case 'Low': return 'text-green-400'; default: return 'text-gray-400'; } }; const renderTabContent = () => { switch (activeTab) { case 'rookies': return ( <div className="space-y-6"><div className="glass-morphism rounded-2xl p-6"><h3 className="text-2xl font-bold text-cyan-400 mb-4">Rookie Predictions</h3><div className="space-y-4"> {rookiePredictions.map((prediction) => ( <div key={prediction.id} className="cyber-card p-6 rounded-lg"><div className="flex justify-between items-start mb-4"><div><div className="font-bold text-white text-xl">{prediction.player}</div><div className="text-sm text-gray-400">{prediction.team} • {prediction.position}</div><div className="text-sm text-cyan-400">Draft Year: {prediction.draftYear}</div></div><div className="text-right"><div className="text-green-400 font-bold text-lg"> +{Math.round(((prediction.predictedValue - prediction.currentValue) / prediction.currentValue) * 100)}% </div><div className="text-sm text-gray-400">Predicted Growth</div></div></div><div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4"><div><div className="text-sm text-gray-400">Current Value</div><div className="font-bold text-white">${prediction.currentValue.toLocaleString()}</div></div><div><div className="text-sm text-gray-400">Predicted Value</div><div className="font-bold text-green-400">${prediction.predictedValue.toLocaleString()}</div></div><div><div className="text-sm text-gray-400">Timeframe</div><div className="font-bold text-cyan-400">{prediction.timeframe}</div></div><div><div className="text-sm text-gray-400">Confidence</div><div className={`font-bold ${getConfidenceColor(prediction.confidence)}`}> {prediction.confidence}% </div></div></div><div className="mb-4"><div className="text-sm text-gray-400 mb-2">Reasoning:</div><div className="text-gray-300">{prediction.reasoning}</div></div><div className="grid grid-cols-1 md:grid-cols-2 gap-4"><div><div className="text-sm text-gray-400 mb-2">Key Events:</div><div className="space-y-1"> {prediction.keyEvents.map((event, index) => ( <div key={index} className="text-sm text-cyan-400">• {event}</div> ))} </div></div><div><div className="text-sm text-gray-400 mb-2">Risk Factors:</div><div className="space-y-1"> {prediction.riskFactors.map((risk, index) => ( <div key={index} className="text-sm text-red-400">• {risk}</div> ))} </div></div></div><div className="mt-4 p-3 bg-blue-900/20 border border-blue-400/50 rounded-lg"><div className="font-bold text-blue-400 mb-1">Recommendation: {prediction.recommendation}</div><div className="text-sm text-gray-300"> Based on Infinity's analysis of {prediction.confidence}% confidence </div></div></div> ))} </div></div><div className="glass-morphism rounded-2xl p-6"><h3 className="text-2xl font-bold text-cyan-400 mb-4">Value Projections</h3><div className="h-80"><canvas ref={chartRef}></canvas></div></div></div> ); case 'emerging': return ( <div className="space-y-6"><div className="glass-morphism rounded-2xl p-6"><h3 className="text-2xl font-bold text-cyan-400 mb-4">Emerging Collectibles</h3><div className="space-y-4"> {emergingCollectibles.map((collectible) => ( <div key={collectible.id} className="cyber-card p-6 rounded-lg"><div className="flex justify-between items-start mb-4"><div><div className="font-bold text-white text-xl">{collectible.category}</div><div className="text-sm text-gray-400">{collectible.description}</div></div><div className="text-right"><div className="text-green-400 font-bold text-lg">+{collectible.predictedGrowth}%</div><div className="text-sm text-gray-400">Predicted Growth</div></div></div><div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4"><div><div className="text-sm text-gray-400">Current Trend</div><div className="font-bold text-cyan-400">{collectible.currentTrend}</div></div><div><div className="text-sm text-gray-400">Timeframe</div><div className="font-bold text-white">{collectible.timeframe}</div></div><div><div className="text-sm text-gray-400">Confidence</div><div className={`font-bold ${getConfidenceColor(collectible.confidence)}`}> {collectible.confidence}% </div></div><div><div className="text-sm text-gray-400">Key Players</div><div className="font-bold text-yellow-400">{collectible.keyPlayers.length}</div></div></div><div className="mb-4"><div className="text-sm text-gray-400 mb-2">Key Players:</div><div className="flex flex-wrap gap-2"> {collectible.keyPlayers.map((player, index) => ( <span key={index} className="px-2 py-1 bg-cyan-900/20 text-cyan-400 rounded text-sm"> {player} </span> ))} </div></div><div className="text-sm text-gray-300">{collectible.reasoning}</div></div> ))} </div></div></div> ); case 'events': return ( <div className="space-y-6"><div className="glass-morphism rounded-2xl p-6"><h3 className="text-2xl font-bold text-cyan-400 mb-4">Cultural Events Impact</h3><div className="space-y-4"> {culturalEvents.map((event) => ( <div key={event.id} className="cyber-card p-6 rounded-lg"><div className="flex justify-between items-start mb-4"><div><div className="font-bold text-white text-xl">{event.event}</div><div className="text-sm text-gray-400">{event.date}</div></div><div className="text-right"><div className={`font-bold text-lg ${getImpactColor(event.impact)}`}> {event.impact} </div><div className="text-sm text-gray-400">Impact Level</div></div></div><div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4"><div><div className="text-sm text-gray-400">Predicted Spike</div><div className="font-bold text-green-400">+{event.predictedSpike}%</div></div><div><div className="text-sm text-gray-400">Confidence</div><div className={`font-bold ${getConfidenceColor(event.confidence)}`}> {event.confidence}% </div></div><div><div className="text-sm text-gray-400">Affected Sports</div><div className="font-bold text-cyan-400">{event.affectedSports.length}</div></div><div><div className="text-sm text-gray-400">Sports</div><div className="font-bold text-white">{event.affectedSports.join(', ')}</div></div></div><div className="mb-4"><div className="text-sm text-gray-400 mb-2">Reasoning:</div><div className="text-gray-300">{event.reasoning}</div></div><div><div className="text-sm text-gray-400 mb-2">Recommendations:</div><div className="space-y-1"> {event.recommendations.map((rec, index) => ( <div key={index} className="text-sm text-cyan-400">• {rec}</div> ))} </div></div></div> ))} </div></div></div> ); case 'timeline': return ( <div className="space-y-6"><div className="glass-morphism rounded-2xl p-6"><h3 className="text-2xl font-bold text-cyan-400 mb-4">Predictive Timeline</h3><div className="space-y-6"> {timelineData.map((quarter, index) => ( <div key={index} className="timeline-item"><div className="font-bold text-cyan-400 text-lg mb-4">{quarter.date}</div><div className="space-y-3"> {quarter.events.map((event, eventIndex) => ( <div key={eventIndex} className="cyber-card p-4 rounded-lg"><div className="flex justify-between items-center"><div><div className="font-bold text-white">{event.title}</div><div className="text-sm text-gray-400"> Impact: <span className={getImpactColor(event.impact)}>{event.impact}</span></div></div><div className="text-right"><div className={`font-bold ${getConfidenceColor(event.confidence)}`}> {event.confidence}% </div><div className="text-sm text-gray-400">Confidence</div></div></div></div> ))} </div></div> ))} </div></div></div> ); default: return null; } }; return ( <div className="min-h-screen"> {/* Header */} <header className="glass-morphism border-b border-cyan-400/20 sticky top-0 z-50"><div className="container mx-auto px-6 py-4"><div className="flex items-center justify-between"><div className="flex items-center gap-4"><button onClick={() => window.location.href = 'dashboard.html'} className="text-cyan-400 hover:text-white transition-colors"> ← Back to Dashboard </button><h1 className="text-4xl font-bold infinity-text orbitron"> 🔮 Futurecasting Engine </h1></div><div className="text-cyan-400 font-bold text-lg"> Predictive Intelligence </div></div></div></header> {/* Main Content */} <main className="container mx-auto px-6 py-8"> {/* Tab Navigation */} <div className="glass-morphism rounded-2xl p-6 mb-8"><div className="flex gap-4"><button onClick={() => setActiveTab('rookies')} className={`px-6 py-3 rounded-lg transition-all ${ activeTab === 'rookies' ? 'quantum-btn' : 'cyber-card hover:bg-cyan-400/20' }`}> 🏀 Rookies </button><button onClick={() => setActiveTab('emerging')} className={`px-6 py-3 rounded-lg transition-all ${ activeTab === 'emerging' ? 'quantum-btn' : 'cyber-card hover:bg-cyan-400/20' }`}> 🌟 Emerging </button><button onClick={() => setActiveTab('events')} className={`px-6 py-3 rounded-lg transition-all ${ activeTab === 'events' ? 'quantum-btn' : 'cyber-card hover:bg-cyan-400/20' }`}> 🎯 Events </button><button onClick={() => setActiveTab('timeline')} className={`px-6 py-3 rounded-lg transition-all ${ activeTab === 'timeline' ? 'quantum-btn' : 'cyber-card hover:bg-cyan-400/20' }`}> 📅 Timeline </button></div></div> {/* Tab Content */} {renderTabContent()} {/* Quick Actions */} <div className="mt-8"><div className="glass-morphism rounded-2xl p-6"><h3 className="text-2xl font-bold text-cyan-400 mb-4">Quick Actions</h3><div className="grid grid-cols-1 md:grid-cols-4 gap-4"><button className="quantum-btn py-3 rounded-lg"> 🔮 Generate Predictions </button><button className="quantum-btn py-3 rounded-lg"> 📊 Market Analysis </button><button className="quantum-btn py-3 rounded-lg"> 🎯 Set Alerts </button><button className="quantum-btn py-3 rounded-lg"> 📈 Track Trends </button></div></div></div></main></div> ); } // Render the application ReactDOM.render(<FuturecastingEngine />, document.getElementById('root')); </script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Futurecasting Engine - Infinity Sports Card Platform</title>
+    
+    <!-- CDN Links -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js" crossorigin></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@400;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 168, 204, 0.1) 0%, transparent 50%),
+                linear-gradient(135deg, #000000 0%, #0a0a0f 25%, #1a1a2e 50%, #0f3460 75%, #000000 100%);
+            min-height: 100vh;
+            color: white;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        
+        .infinity-text { color: #00d4ff; text-shadow: 0 0 20px rgba(0, 212, 255, 0.5); }
+        .glass-morphism { background: rgba(0, 212, 255, 0.05); backdrop-filter: blur(15px) saturate(150%); border: 1px solid rgba(0, 212, 255, 0.3); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6); }
+        .cyber-card { background: rgba(0, 100, 255, 0.08); border: 1px solid rgba(0, 255, 255, 0.4); transition: all 0.2s ease; position: relative; overflow: hidden; }
+        .cyber-card:hover { transform: translateY(-4px) scale(1.02); background: rgba(0, 100, 255, 0.15); box-shadow: 0 20px 60px rgba(0, 255, 255, 0.3); border: 2px solid rgba(0, 255, 255, 0.8); }
+        .quantum-btn { background: #00d4ff; border: none; color: white; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; transition: all 0.15s ease; cursor: pointer; position: relative; overflow: hidden; }
+        .quantum-btn:hover { background: #0099cc; transform: translateY(-2px) scale(1.05); box-shadow: 0 10px 30px rgba(0, 212, 255, 0.5); }
+        .orbitron { font-family: 'Orbitron', monospace; }
+        .infinity-glow { box-shadow: 0 0 20px rgba(0, 212, 255, 0.3); }
+        .timeline-item { position: relative; padding-left: 2rem; margin-bottom: 2rem; }
+        .timeline-item::before { content: ''; position: absolute; left: 0; top: 0; width: 12px; height: 12px; border-radius: 50%; background: #00d4ff; box-shadow: 0 0 20px rgba(0, 212, 255, 0.5); }
+        .timeline-item::after { content: ''; position: absolute; left: 5px; top: 12px; width: 2px; height: calc(100% + 1rem); background: linear-gradient(to bottom, #00d4ff, transparent); }
+        .timeline-item:last-child::after { display: none; }
+        .confidence-high { color: #00ff88; }
+        .confidence-medium { color: #ffaa00; }
+        .confidence-low { color: #ff4444; }
+        .loading-spinner { border: 3px solid rgba(0, 212, 255, 0.3); border-top: 3px solid #00d4ff; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .pulse-animation { animation: pulse 2s ease-in-out infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        function FuturecastingEngine() {
+            const [activeTab, setActiveTab] = useState('rookies');
+            const [isLoading, setIsLoading] = useState(false);
+            const [predictions, setPredictions] = useState([]);
+            
+            const chartRef = useRef(null);
+            const timelineRef = useRef(null);
+
+            const rookiePredictions = [
+                {
+                    id: 1,
+                    player: 'Victor Wembanyama',
+                    team: 'San Antonio Spurs',
+                    position: 'C',
+                    draftYear: 2023,
+                    currentValue: 2400,
+                    predictedValue: 8000,
+                    timeframe: '6 months',
+                    confidence: 94,
+                    reasoning: 'Generational talent, international hype, rookie season breakout',
+                    keyEvents: ['Rookie of the Year', 'All-Star selection', 'Playoff run'],
+                    riskFactors: ['Injury concerns', 'Team performance'],
+                    recommendation: 'STRONG BUY'
+                },
+                {
+                    id: 2,
+                    player: 'Anthony Richardson',
+                    team: 'Indianapolis Colts',
+                    position: 'QB',
+                    draftYear: 2023,
+                    currentValue: 850,
+                    predictedValue: 2500,
+                    timeframe: '1 year',
+                    confidence: 87,
+                    reasoning: 'Dual-threat QB, breakout potential, media attention',
+                    keyEvents: ['Pro Bowl', 'Playoff appearance', 'MVP conversation'],
+                    riskFactors: ['Injury risk', 'Team struggles'],
+                    recommendation: 'BUY'
+                },
+                {
+                    id: 3,
+                    player: 'CJ Stroud',
+                    team: 'Houston Texans',
+                    position: 'QB',
+                    draftYear: 2023,
+                    currentValue: 1200,
+                    predictedValue: 2000,
+                    timeframe: '8 months',
+                    confidence: 82,
+                    reasoning: 'Rookie season success, playoff potential',
+                    keyEvents: ['Rookie of the Year', 'Playoff run', 'Franchise QB status'],
+                    riskFactors: ['Sophomore slump', 'Team rebuilding'],
+                    recommendation: 'HOLD'
+                }
+            ];
+
+            const emergingCollectibles = [
+                {
+                    id: 1,
+                    category: 'Women\'s Basketball',
+                    description: 'WNBA cards gaining mainstream attention',
+                    currentTrend: 'Rising',
+                    predictedGrowth: 150,
+                    timeframe: '2 years',
+                    confidence: 78,
+                    keyPlayers: ['Caitlin Clark', 'Angel Reese', 'Paige Bueckers'],
+                    reasoning: 'Increased media coverage, growing fanbase, cultural shift'
+                },
+                {
+                    id: 2,
+                    category: 'International Soccer',
+                    description: 'European soccer cards in US market',
+                    currentTrend: 'Explosive',
+                    predictedGrowth: 200,
+                    timeframe: '18 months',
+                    confidence: 85,
+                    keyPlayers: ['Kylian Mbappé', 'Erling Haaland', 'Jude Bellingham'],
+                    reasoning: 'World Cup impact, MLS growth, global market expansion'
+                },
+                {
+                    id: 3,
+                    category: 'Esports',
+                    description: 'Gaming personalities and teams',
+                    currentTrend: 'Emerging',
+                    predictedGrowth: 300,
+                    timeframe: '3 years',
+                    confidence: 65,
+                    keyPlayers: ['Ninja', 'Shroud', 'Tfue'],
+                    reasoning: 'Digital native generation, streaming culture, virtual collectibles'
+                }
+            ];
+
+            const culturalEvents = [
+                {
+                    id: 1,
+                    event: '2024 Summer Olympics',
+                    date: 'July 26 - August 11, 2024',
+                    impact: 'High',
+                    affectedSports: ['Basketball', 'Soccer', 'Track & Field'],
+                    predictedSpike: 40,
+                    confidence: 92,
+                    reasoning: 'Global attention, new stars emerge, patriotic collecting',
+                    recommendations: ['Buy Olympic cards now', 'Watch for breakout athletes', 'International market surge']
+                },
+                {
+                    id: 2,
+                    event: '2026 FIFA World Cup',
+                    date: 'June 8 - July 3, 2026',
+                    impact: 'Very High',
+                    affectedSports: ['Soccer'],
+                    predictedSpike: 80,
+                    confidence: 88,
+                    reasoning: 'US hosting, global spotlight, new generation of stars',
+                    recommendations: ['Invest in USMNT players', 'International stars', 'Rookie cards']
+                },
+                {
+                    id: 3,
+                    event: '2024 NBA Draft',
+                    date: 'June 26, 2024',
+                    impact: 'Medium',
+                    affectedSports: ['Basketball'],
+                    predictedSpike: 25,
+                    confidence: 75,
+                    reasoning: 'New rookie class, draft night hype, team building',
+                    recommendations: ['Top 5 picks', 'International prospects', 'Team needs']
+                }
+            ];
+
+            const timelineData = [
+                {
+                    date: 'Q1 2024',
+                    events: [
+                        { title: 'NBA Playoffs', impact: 'High', confidence: 90 },
+                        { title: 'NFL Draft', impact: 'Medium', confidence: 85 },
+                        { title: 'March Madness', impact: 'Low', confidence: 70 }
+                    ]
+                },
+                {
+                    date: 'Q2 2024',
+                    events: [
+                        { title: 'NBA Finals', impact: 'Very High', confidence: 95 },
+                        { title: 'NFL Season Start', impact: 'High', confidence: 88 },
+                        { title: 'MLB Season', impact: 'Medium', confidence: 75 }
+                    ]
+                },
+                {
+                    date: 'Q3 2024',
+                    events: [
+                        { title: 'Summer Olympics', impact: 'Very High', confidence: 92 },
+                        { title: 'NFL Season', impact: 'High', confidence: 90 },
+                        { title: 'NBA Offseason', impact: 'Low', confidence: 65 }
+                    ]
+                },
+                {
+                    date: 'Q4 2024',
+                    events: [
+                        { title: 'NFL Playoffs', impact: 'High', confidence: 88 },
+                        { title: 'NBA Season Start', impact: 'Medium', confidence: 80 },
+                        { title: 'Holiday Season', impact: 'Medium', confidence: 75 }
+                    ]
+                }
+            ];
+
+            useEffect(() => {
+                setPredictions(rookiePredictions);
+                initializeChart();
+            }, []);
+
+            const initializeChart = () => {
+                if (chartRef.current) {
+                    const ctx = chartRef.current.getContext('2d');
+                    new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: ['Jan 2024', 'Feb 2024', 'Mar 2024', 'Apr 2024', 'May 2024', 'Jun 2024'],
+                            datasets: [
+                                {
+                                    label: 'Wembanyama',
+                                    data: [2000, 2200, 2400, 2800, 3200, 4000],
+                                    borderColor: '#00d4ff',
+                                    backgroundColor: 'rgba(0, 212, 255, 0.1)',
+                                    tension: 0.4
+                                },
+                                {
+                                    label: 'Richardson',
+                                    data: [600, 700, 850, 1000, 1200, 1500],
+                                    borderColor: '#00ff88',
+                                    backgroundColor: 'rgba(0, 255, 136, 0.1)',
+                                    tension: 0.4
+                                },
+                                {
+                                    label: 'Stroud',
+                                    data: [800, 900, 1200, 1400, 1600, 1800],
+                                    borderColor: '#ffaa00',
+                                    backgroundColor: 'rgba(255, 170, 0, 0.1)',
+                                    tension: 0.4
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    labels: { color: '#ffffff' }
+                                }
+                            },
+                            scales: {
+                                x: { ticks: { color: '#ffffff' } },
+                                y: { ticks: { color: '#ffffff' } }
+                            }
+                        }
+                    });
+                }
+            };
+
+            const getConfidenceColor = (confidence) => {
+                if (confidence >= 90) return 'confidence-high';
+                if (confidence >= 75) return 'confidence-medium';
+                return 'confidence-low';
+            };
+
+            const getConfidenceText = (confidence) => {
+                if (confidence >= 90) return 'Very High';
+                if (confidence >= 75) return 'High';
+                if (confidence >= 60) return 'Medium';
+                return 'Low';
+            };
+
+            const getImpactColor = (impact) => {
+                switch(impact) {
+                    case 'Very High': return 'text-red-400';
+                    case 'High': return 'text-orange-400';
+                    case 'Medium': return 'text-yellow-400';
+                    case 'Low': return 'text-green-400';
+                    default: return 'text-gray-400';
+                }
+            };
+
+            const renderTabContent = () => {
+                switch (activeTab) {
+                    case 'rookies':
+                        return (
+                            <div className="space-y-6">
+                                <div className="glass-morphism rounded-2xl p-6">
+                                    <h3 className="text-2xl font-bold text-cyan-400 mb-4">Rookie Predictions</h3>
+                                    <div className="space-y-4">
+                                        {rookiePredictions.map((prediction) => (
+                                            <div key={prediction.id} className="cyber-card p-6 rounded-lg">
+                                                <div className="flex justify-between items-start mb-4">
+                                                    <div>
+                                                        <div className="font-bold text-white text-xl">{prediction.player}</div>
+                                                        <div className="text-sm text-gray-400">{prediction.team} • {prediction.position}</div>
+                                                        <div className="text-sm text-cyan-400">Draft Year: {prediction.draftYear}</div>
+                                                    </div>
+                                                    <div className="text-right">
+                                                        <div className="text-green-400 font-bold text-lg">
+                                                            +{Math.round(((prediction.predictedValue - prediction.currentValue) / prediction.currentValue) * 100)}%
+                                                        </div>
+                                                        <div className="text-sm text-gray-400">Predicted Growth</div>
+                                                    </div>
+                                                </div>
+                                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                                                    <div>
+                                                        <div className="text-sm text-gray-400">Current Value</div>
+                                                        <div className="font-bold text-white">${prediction.currentValue.toLocaleString()}</div>
+                                                    </div>
+                                                    <div>
+                                                        <div className="text-sm text-gray-400">Predicted Value</div>
+                                                        <div className="font-bold text-green-400">${prediction.predictedValue.toLocaleString()}</div>
+                                                    </div>
+                                                    <div>
+                                                        <div className="text-sm text-gray-400">Timeframe</div>
+                                                        <div className="font-bold text-cyan-400">{prediction.timeframe}</div>
+                                                    </div>
+                                                    <div>
+                                                        <div className="text-sm text-gray-400">Confidence</div>
+                                                        <div className={`font-bold ${getConfidenceColor(prediction.confidence)}`}>
+                                                            {prediction.confidence}%
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="mb-4">
+                                                    <div className="text-sm text-gray-400 mb-2">Reasoning:</div>
+                                                    <div className="text-gray-300">{prediction.reasoning}</div>
+                                                </div>
+                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                    <div>
+                                                        <div className="text-sm text-gray-400 mb-2">Key Events:</div>
+                                                        <div className="space-y-1">
+                                                            {prediction.keyEvents.map((event, index) => (
+                                                                <div key={index} className="text-sm text-cyan-400">• {event}</div>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <div className="text-sm text-gray-400 mb-2">Risk Factors:</div>
+                                                        <div className="space-y-1">
+                                                            {prediction.riskFactors.map((risk, index) => (
+                                                                <div key={index} className="text-sm text-red-400">• {risk}</div>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="mt-4 p-3 bg-blue-900/20 border border-blue-400/50 rounded-lg">
+                                                    <div className="font-bold text-blue-400 mb-1">Recommendation: {prediction.recommendation}</div>
+                                                    <div className="text-sm text-gray-300">
+                                                        Based on Infinity's analysis of {prediction.confidence}% confidence
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                                <div className="glass-morphism rounded-2xl p-6">
+                                    <h3 className="text-2xl font-bold text-cyan-400 mb-4">Value Projections</h3>
+                                    <div className="h-80">
+                                        <canvas ref={chartRef}></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        );
+
+                    case 'emerging':
+                        return (
+                            <div className="space-y-6">
+                                <div className="glass-morphism rounded-2xl p-6">
+                                    <h3 className="text-2xl font-bold text-cyan-400 mb-4">Emerging Collectibles</h3>
+                                    <div className="space-y-4">
+                                        {emergingCollectibles.map((collectible) => (
+                                            <div key={collectible.id} className="cyber-card p-6 rounded-lg">
+                                                <div className="flex justify-between items-start mb-4">
+                                                    <div>
+                                                        <div className="font-bold text-white text-xl">{collectible.category}</div>
+                                                        <div className="text-sm text-gray-400">{collectible.description}</div>
+                                                    </div>
+                                                    <div className="text-right">
+                                                        <div className="text-green-400 font-bold text-lg">+{collectible.predictedGrowth}%</div>
+                                                        <div className="text-sm text-gray-400">Predicted Growth</div>
+                                                    </div>
+                                                </div>
+                                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                                                    <div>
+                                                        <div className="text-sm text-gray-400">Current Trend</div>
+                                                        <div className="font-bold text-cyan-400">{collectible.currentTrend}</div>
+                                                    </div>
+                                                    <div>
+                                                        <div className="text-sm text-gray-400">Timeframe</div>
+                                                        <div className="font-bold text-white">{collectible.timeframe}</div>
+                                                    </div>
+                                                    <div>
+                                                        <div className="text-sm text-gray-400">Confidence</div>
+                                                        <div className={`font-bold ${getConfidenceColor(collectible.confidence)}`}>
+                                                            {collectible.confidence}%
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <div className="text-sm text-gray-400">Key Players</div>
+                                                        <div className="font-bold text-yellow-400">{collectible.keyPlayers.length}</div>
+                                                    </div>
+                                                </div>
+                                                <div className="mb-4">
+                                                    <div className="text-sm text-gray-400 mb-2">Key Players:</div>
+                                                    <div className="flex flex-wrap gap-2">
+                                                        {collectible.keyPlayers.map((player, index) => (
+                                                            <span key={index} className="px-2 py-1 bg-cyan-900/20 text-cyan-400 rounded text-sm">
+                                                                {player}
+                                                            </span>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                                <div className="text-sm text-gray-300">{collectible.reasoning}</div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        );
+
+                    case 'events':
+                        return (
+                            <div className="space-y-6">
+                                <div className="glass-morphism rounded-2xl p-6">
+                                    <h3 className="text-2xl font-bold text-cyan-400 mb-4">Cultural Events Impact</h3>
+                                    <div className="space-y-4">
+                                        {culturalEvents.map((event) => (
+                                            <div key={event.id} className="cyber-card p-6 rounded-lg">
+                                                <div className="flex justify-between items-start mb-4">
+                                                    <div>
+                                                        <div className="font-bold text-white text-xl">{event.event}</div>
+                                                        <div className="text-sm text-gray-400">{event.date}</div>
+                                                    </div>
+                                                    <div className="text-right">
+                                                        <div className={`font-bold text-lg ${getImpactColor(event.impact)}`}>
+                                                            {event.impact}
+                                                        </div>
+                                                        <div className="text-sm text-gray-400">Impact Level</div>
+                                                    </div>
+                                                </div>
+                                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                                                    <div>
+                                                        <div className="text-sm text-gray-400">Predicted Spike</div>
+                                                        <div className="font-bold text-green-400">+{event.predictedSpike}%</div>
+                                                    </div>
+                                                    <div>
+                                                        <div className="text-sm text-gray-400">Confidence</div>
+                                                        <div className={`font-bold ${getConfidenceColor(event.confidence)}`}>
+                                                            {event.confidence}%
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <div className="text-sm text-gray-400">Affected Sports</div>
+                                                        <div className="font-bold text-cyan-400">{event.affectedSports.length}</div>
+                                                    </div>
+                                                    <div>
+                                                        <div className="text-sm text-gray-400">Sports</div>
+                                                        <div className="font-bold text-white">{event.affectedSports.join(', ')}</div>
+                                                    </div>
+                                                </div>
+                                                <div className="mb-4">
+                                                    <div className="text-sm text-gray-400 mb-2">Reasoning:</div>
+                                                    <div className="text-gray-300">{event.reasoning}</div>
+                                                </div>
+                                                <div>
+                                                    <div className="text-sm text-gray-400 mb-2">Recommendations:</div>
+                                                    <div className="space-y-1">
+                                                        {event.recommendations.map((rec, index) => (
+                                                            <div key={index} className="text-sm text-cyan-400">• {rec}</div>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        );
+
+                    case 'timeline':
+                        return (
+                            <div className="space-y-6">
+                                <div className="glass-morphism rounded-2xl p-6">
+                                    <h3 className="text-2xl font-bold text-cyan-400 mb-4">Predictive Timeline</h3>
+                                    <div className="space-y-6">
+                                        {timelineData.map((quarter, index) => (
+                                            <div key={index} className="timeline-item">
+                                                <div className="font-bold text-cyan-400 text-lg mb-4">{quarter.date}</div>
+                                                <div className="space-y-3">
+                                                    {quarter.events.map((event, eventIndex) => (
+                                                        <div key={eventIndex} className="cyber-card p-4 rounded-lg">
+                                                            <div className="flex justify-between items-center">
+                                                                <div>
+                                                                    <div className="font-bold text-white">{event.title}</div>
+                                                                    <div className="text-sm text-gray-400">
+                                                                        Impact: <span className={getImpactColor(event.impact)}>{event.impact}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div className="text-right">
+                                                                    <div className={`font-bold ${getConfidenceColor(event.confidence)}`}>
+                                                                        {event.confidence}%
+                                                                    </div>
+                                                                    <div className="text-sm text-gray-400">Confidence</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        );
+
+                    default:
+                        return null;
+                }
+            };
+
+            return (
+                <div className="min-h-screen">
+                    {/* Header */}
+                    <header className="glass-morphism border-b border-cyan-400/20 sticky top-0 z-50">
+                        <div className="container mx-auto px-6 py-4">
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-4">
+                                    <button 
+                                        onClick={() => window.location.href = 'dashboard-ultimate.html'} 
+                                        className="text-cyan-400 hover:text-white transition-colors"
+                                    >
+                                        ← Back to Dashboard
+                                    </button>
+                                    <h1 className="text-4xl font-bold infinity-text orbitron">
+                                        🔮 Futurecasting Engine
+                                    </h1>
+                                </div>
+                                <div className="text-cyan-400 font-bold text-lg">
+                                    Predictive Intelligence
+                                </div>
+                            </div>
+                        </div>
+                    </header>
+
+                    {/* Main Content */}
+                    <main className="container mx-auto px-6 py-8">
+                        {/* Tab Navigation */}
+                        <div className="glass-morphism rounded-2xl p-6 mb-8">
+                            <div className="flex gap-4">
+                                <button 
+                                    onClick={() => setActiveTab('rookies')} 
+                                    className={`px-6 py-3 rounded-lg transition-all ${
+                                        activeTab === 'rookies' ? 'quantum-btn' : 'cyber-card hover:bg-cyan-400/20'
+                                    }`}
+                                >
+                                    🏀 Rookies
+                                </button>
+                                <button 
+                                    onClick={() => setActiveTab('emerging')} 
+                                    className={`px-6 py-3 rounded-lg transition-all ${
+                                        activeTab === 'emerging' ? 'quantum-btn' : 'cyber-card hover:bg-cyan-400/20'
+                                    }`}
+                                >
+                                    🌟 Emerging
+                                </button>
+                                <button 
+                                    onClick={() => setActiveTab('events')} 
+                                    className={`px-6 py-3 rounded-lg transition-all ${
+                                        activeTab === 'events' ? 'quantum-btn' : 'cyber-card hover:bg-cyan-400/20'
+                                    }`}
+                                >
+                                    🎯 Events
+                                </button>
+                                <button 
+                                    onClick={() => setActiveTab('timeline')} 
+                                    className={`px-6 py-3 rounded-lg transition-all ${
+                                        activeTab === 'timeline' ? 'quantum-btn' : 'cyber-card hover:bg-cyan-400/20'
+                                    }`}
+                                >
+                                    📅 Timeline
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Tab Content */}
+                        {renderTabContent()}
+
+                        {/* Quick Actions */}
+                        <div className="mt-8">
+                            <div className="glass-morphism rounded-2xl p-6">
+                                <h3 className="text-2xl font-bold text-cyan-400 mb-4">Quick Actions</h3>
+                                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                                    <button className="quantum-btn py-3 rounded-lg">
+                                        🔮 Generate Predictions
+                                    </button>
+                                    <button className="quantum-btn py-3 rounded-lg">
+                                        📊 Market Analysis
+                                    </button>
+                                    <button className="quantum-btn py-3 rounded-lg">
+                                        🎯 Set Alerts
+                                    </button>
+                                    <button className="quantum-btn py-3 rounded-lg">
+                                        📈 Track Trends
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+                </div>
+            );
+        }
+
+        // Render the application
+        ReactDOM.render(<FuturecastingEngine />, document.getElementById('root'));
+    </script>
+</body>
+</html>

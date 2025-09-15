@@ -1,1 +1,545 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>AI Oracle Ultimate - Infinity Sports Card Platform</title><!-- CDN Links --><script src="https://cdn.tailwindcss.com"></script><script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script><script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script><script src="https://unpkg.com/@babel/standalone/babel.min.js" crossorigin></script><script src="https://cdn.jsdelivr.net/npm/chart.js"></script><script src="https://cdn.jsdelivr.net/npm/framer-motion@10.16.4/dist/framer-motion.min.js"></script><!-- Auth System --><script src="auth-system.js"></script><script src="ai-learning-system.js"></script><style> @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@400;600;700&display=swap'); body { font-family: 'Inter', sans-serif; background: radial-gradient(circle at 20% 50%, rgba(0, 212, 255, 0.1) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(0, 168, 204, 0.1) 0%, transparent 50%), linear-gradient(135deg, #000000 0%, #0a0a0f 25%, #1a1a2e 50%, #0f3460 75%, #000000 100%); min-height: 100vh; color: white; margin: 0; padding: 0; overflow-x: hidden; } .infinity-text { color: #00d4ff; text-shadow: 0 0 20px rgba(0, 212, 255, 0.5); } .glass-morphism { background: rgba(0, 212, 255, 0.05); backdrop-filter: blur(15px) saturate(150%); border: 1px solid rgba(0, 212, 255, 0.3); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6); } .cyber-card { background: rgba(0, 100, 255, 0.08); border: 1px solid rgba(0, 255, 255, 0.4); transition: all 0.15s ease; position: relative; overflow: hidden; cursor: pointer; } .cyber-card:hover { transform: translateY(-4px) scale(1.02); background: rgba(0, 100, 255, 0.15); box-shadow: 0 20px 60px rgba(0, 255, 255, 0.3); border: 2px solid rgba(0, 255, 255, 0.8); } .quantum-btn { background: #00d4ff; border: none; color: white; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; transition: all 0.1s ease; cursor: pointer; position: relative; overflow: hidden; } .quantum-btn:hover { background: #0099cc; transform: translateY(-2px) scale(1.05); box-shadow: 0 10px 30px rgba(0, 212, 255, 0.5); } .quantum-btn:active { transform: translateY(0) scale(1); transition: all 0.05s ease; } .orbitron { font-family: 'Orbitron', monospace; } .infinity-glow { box-shadow: 0 0 20px rgba(0, 212, 255, 0.3); } .action-feedback { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 255, 136, 0.9); color: #000; padding: 8px 16px; border-radius: 8px; font-size: 14px; font-weight: bold; pointer-events: none; z-index: 1001; animation: feedback 0.6s ease-out; } @keyframes feedback { 0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); } 50% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); } 100% { opacity: 0; transform: translate(-50%, -50%) scale(1); } } .loading-spinner { border: 3px solid rgba(0, 212, 255, 0.3); border-top: 3px solid #00d4ff; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; } @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } } .module-card { background: rgba(0, 100, 255, 0.08); border: 1px solid rgba(0, 255, 255, 0.4); transition: all 0.15s ease; position: relative; overflow: hidden; cursor: pointer; } .module-card:hover { transform: translateY(-4px) scale(1.02); background: rgba(0, 100, 255, 0.15); box-shadow: 0 20px 60px rgba(0, 255, 255, 0.3); border: 2px solid rgba(0, 255, 255, 0.8); } .module-card.active { background: rgba(0, 100, 255, 0.2); border: 2px solid #00d4ff; box-shadow: 0 0 30px rgba(0, 212, 255, 0.5); } .chat-message { margin-bottom: 1rem; padding: 1rem; border-radius: 12px; max-width: 80%; } .chat-message.user { background: rgba(0, 212, 255, 0.1); border: 1px solid rgba(0, 212, 255, 0.3); margin-left: auto; } .chat-message.ai { background: rgba(0, 100, 255, 0.1); border: 1px solid rgba(0, 100, 255, 0.3); margin-right: auto; } .input-field { background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(0, 212, 255, 0.3); border-radius: 8px; padding: 12px 16px; color: white; transition: all 0.3s ease; } .input-field:focus { outline: none; border-color: #00d4ff; box-shadow: 0 0 10px rgba(0, 212, 255, 0.3); } .input-field::placeholder { color: rgba(255, 255, 255, 0.5); } .confidence-bar { height: 8px; background: rgba(0, 0, 0, 0.3); border-radius: 4px; overflow: hidden; margin-top: 8px; } .confidence-fill { height: 100%; background: linear-gradient(90deg, #ff6b6b, #ffd700, #00ff88); transition: width 0.3s ease; } .trend-indicator { display: inline-block; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: bold; } .trend-indicator.up { background: rgba(0, 255, 136, 0.2); color: #00ff88; } .trend-indicator.down { background: rgba(255, 107, 107, 0.2); color: #ff6b6b; } .trend-indicator.neutral { background: rgba(255, 255, 255, 0.2); color: #ffffff; } .floating-particles { position: absolute; width: 100%; height: 100%; overflow: hidden; pointer-events: none; } .particle { position: absolute; width: 4px; height: 4px; background: #00d4ff; border-radius: 50%; animation: float 6s ease-in-out infinite; opacity: 0.7; } .particle:nth-child(2) { animation-delay: -2s; background: #0099cc; } .particle:nth-child(3) { animation-delay: -4s; background: #00a8cc; } @keyframes float { 0%, 100% { transform: translateY(0px) rotate(0deg); } 50% { transform: translateY(-20px) rotate(180deg); } } </style></head><body><div id="root"></div><script type="text/babel"> const { useState, useEffect, useRef } = React; function AIOracleUltimate() { const [isAuthenticated, setIsAuthenticated] = useState(false); const [user, setUser] = useState(null); const [activeModule, setActiveModule] = useState('predictive-gameplay'); const [chatHistory, setChatHistory] = useState([]); const [currentQuestion, setCurrentQuestion] = useState(''); const [isLoading, setIsLoading] = useState(false); const [actionFeedback, setActionFeedback] = useState(null); const [aiInsights, setAiInsights] = useState([]); const [marketData, setMarketData] = useState({}); const [playerData, setPlayerData] = useState({}); const chatRef = useRef(null); const questionRef = useRef(null); useEffect(() => { checkAuthentication(); loadInitialData(); }, []); useEffect(() => { if (chatRef.current) { chatRef.current.scrollTop = chatRef.current.scrollHeight; } }, [chatHistory]); const checkAuthentication = () => { if (window.InfinityAuth && window.InfinityAuth.isUserAuthenticated()) { setIsAuthenticated(true); setUser(window.InfinityAuth.getCurrentUser()); } else { window.location.href = 'login.html'; } }; const loadInitialData = () => { // Load AI insights if (window.InfinityAI) { const insights = window.InfinityAI.getPersonalizedRecommendations(user?.id); setAiInsights(insights.personalizedInsights || []); } // Load market data loadMarketData(); loadPlayerData(); }; const loadMarketData = () => { // Simulate market data loading setMarketData({ totalVolume: 1250000, averagePrice: 450, trendingUp: 12.5, hotPlayers: ['LeBron James', 'Tom Brady', 'Luka Doncic', 'Patrick Mahomes'], marketSentiment: 'bullish' }); }; const loadPlayerData = () => { // Simulate player data loading setPlayerData({ 'LeBron James': { value: 1250, trend: 'up', confidence: 85 }, 'Tom Brady': { value: 890, trend: 'up', confidence: 92 }, 'Luka Doncic': { value: 650, trend: 'up', confidence: 78 }, 'Patrick Mahomes': { value: 1100, trend: 'up', confidence: 88 } }); }; const showActionFeedback = (message) => { setActionFeedback(message); setTimeout(() => setActionFeedback(null), 1500); }; const handleModuleChange = (module) => { setActiveModule(module); showActionFeedback(`Switched to ${module.replace('-', ' ')} module`); }; const handleQuestionSubmit = async (e) => { e.preventDefault(); if (!currentQuestion.trim()) return; const question = currentQuestion.trim(); setCurrentQuestion(''); setIsLoading(true); // Add user question to chat const userMessage = { id: Date.now(), type: 'user', content: question, timestamp: Date.now() }; setChatHistory(prev => [...prev, userMessage]); // Store interaction for AI learning if (window.InfinityAI) { window.InfinityAI.storeInteraction('oracle_question', { question: question, module: activeModule, userId: user.id }, { success: true, timestamp: Date.now() }); } // Generate AI response based on active module const aiResponse = await generateAIResponse(question, activeModule); const aiMessage = { id: Date.now() + 1, type: 'ai', content: aiResponse.content, confidence: aiResponse.confidence, recommendations: aiResponse.recommendations, timestamp: Date.now() }; setChatHistory(prev => [...prev, aiMessage]); // Store AI response for learning if (window.InfinityAI) { window.InfinityAI.storeInteraction('oracle_response', { question: question, response: aiResponse, module: activeModule, userId: user.id }, { success: true, timestamp: Date.now() }); } setIsLoading(false); showActionFeedback('AI response generated'); }; const generateAIResponse = async (question, module) => { // Simulate AI processing delay await new Promise(resolve => setTimeout(resolve, 1000)); const responses = { 'predictive-gameplay': { content: `Based on current market trends and player performance data, I predict significant growth potential for ${question.includes('LeBron') ? 'LeBron James' : 'the mentioned player'}. The market sentiment is bullish with 85% confidence.`, confidence: 85, recommendations: [ 'Consider adding to watchlist', 'Monitor for price dips', 'Set price alerts' ] }, 'player-dna': { content: `Player DNA analysis shows strong fundamentals with excellent long-term potential. Historical performance indicates consistent growth patterns.`, confidence: 92, recommendations: [ 'Strong hold recommendation', 'Consider increasing position', 'Monitor for exit signals' ] }, 'smart-hold-sell': { content: `Based on your portfolio and market conditions, I recommend holding your current position. The risk/reward ratio is favorable.`, confidence: 78, recommendations: [ 'Hold current position', 'Set stop-loss at 10%', 'Consider partial profit-taking' ] }, 'global-radar': { content: `Global market analysis shows emerging opportunities in international markets. Consider diversifying your portfolio.`, confidence: 88, recommendations: [ 'Explore international markets', 'Consider currency hedging', 'Monitor global trends' ] }, 'synergy-alerts': { content: `Synergy analysis reveals potential portfolio optimization opportunities. Your current holdings show strong correlation.`, confidence: 82, recommendations: [ 'Optimize portfolio allocation', 'Consider rebalancing', 'Monitor correlation changes' ] }, 'ai-mentor': { content: `As your AI mentor, I recommend focusing on long-term value creation. Your current strategy shows promise.`, confidence: 90, recommendations: [ 'Continue current strategy', 'Focus on education', 'Monitor market changes' ] }, 'compound-growth': { content: `Compound growth analysis shows strong potential for long-term wealth building. Your portfolio is well-positioned.`, confidence: 87, recommendations: [ 'Maintain long-term focus', 'Consider dollar-cost averaging', 'Monitor growth metrics' ] }, 'predictive-trends': { content: `Trend analysis indicates strong upward momentum. Social media sentiment and news coverage are positive.`, confidence: 83, recommendations: [ 'Monitor trend continuation', 'Consider momentum strategies', 'Watch for trend reversals' ] } }; return responses[module] || responses['predictive-gameplay']; }; const handleQuickAction = (action) => { showActionFeedback(`Executing ${action}...`); // Store interaction for AI learning if (window.InfinityAI) { window.InfinityAI.storeInteraction('oracle_quick_action', { action: action, module: activeModule, userId: user.id }, { success: true, timestamp: Date.now() }); } }; const modules = [ { id: 'predictive-gameplay', name: 'Predictive Gameplay', icon: '🎯', description: 'AI-powered game predictions' }, { id: 'player-dna', name: 'Player DNA Tracker', icon: '🧬', description: 'Deep player analysis' }, { id: 'smart-hold-sell', name: 'Smart Hold/Sell', icon: '💎', description: 'Intelligent trading decisions' }, { id: 'global-radar', name: 'Global Radar', icon: '🌍', description: 'Worldwide market insights' }, { id: 'synergy-alerts', name: 'Synergy Alerts', icon: '⚡', description: 'Portfolio optimization' }, { id: 'ai-mentor', name: 'AI Mentor', icon: '🧠', description: 'Personalized guidance' }, { id: 'compound-growth', name: 'Compound Growth', icon: '📈', description: 'Long-term wealth building' }, { id: 'predictive-trends', name: 'Predictive Trends', icon: '🔮', description: 'Future trend analysis' } ]; if (!isAuthenticated) { return ( <div className="min-h-screen flex items-center justify-center"><div className="text-center"><div className="loading-spinner mx-auto mb-4"></div><div className="text-2xl font-bold infinity-text">Authenticating...</div></div></div> ); } return ( <div className="min-h-screen"> {/* Floating Particles */} <div className="floating-particles"><div className="particle" style={{left: '10%', top: '20%'}}></div><div className="particle" style={{left: '80%', top: '30%'}}></div><div className="particle" style={{left: '60%', top: '70%'}}></div><div className="particle" style={{left: '30%', top: '80%'}}></div><div className="particle" style={{left: '90%', top: '60%'}}></div></div> {/* Action Feedback */} {actionFeedback && ( <div className="action-feedback"> {actionFeedback} </div> )} {/* Header */} <header className="glass-morphism border-b border-cyan-400/20 sticky top-0 z-50"><div className="container mx-auto px-6 py-4"><div className="flex items-center justify-between"><div className="flex items-center gap-4"><button onClick={() => window.location.href = 'dashboard-ultimate.html'} className="text-cyan-400 hover:text-white transition-colors"> ← Back to Dashboard </button><h1 className="text-4xl font-bold infinity-text orbitron"> 🧠 AI Oracle Ultimate </h1></div><div className="flex items-center gap-4"><div className="text-right"><div className="text-sm text-gray-400">Welcome</div><div className="text-xl font-bold text-cyan-400">{user?.username}</div></div><button onClick={() => window.location.href = 'user-portal.html'} className="quantum-btn px-4 py-2 rounded-lg"> Profile </button></div></div></div></header> {/* Main Content */} <main className="container mx-auto px-6 py-8"><div className="grid grid-cols-1 lg:grid-cols-4 gap-8"> {/* Module Selection */} <div className="lg:col-span-1"><div className="glass-morphism rounded-2xl p-6 sticky top-24"><h3 className="text-xl font-bold text-cyan-400 mb-4">AI Modules</h3><div className="space-y-2"> {modules.map((module) => ( <button key={module.id} onClick={() => handleModuleChange(module.id)} className={`module-card w-full p-4 rounded-lg text-left ${ activeModule === module.id ? 'active' : '' }`}><div className="flex items-center gap-3"><span className="text-2xl">{module.icon}</span><div><div className="font-bold text-white">{module.name}</div><div className="text-sm text-gray-400">{module.description}</div></div></div></button> ))} </div></div></div> {/* Chat Interface */} <div className="lg:col-span-3"><div className="glass-morphism rounded-2xl p-6"><div className="flex items-center justify-between mb-6"><h3 className="text-2xl font-bold text-cyan-400"> {modules.find(m => m.id === activeModule)?.name} Chat </h3><div className="flex gap-2"><button onClick={() => handleQuickAction('Clear Chat')} className="quantum-btn px-4 py-2 rounded-lg text-sm"> Clear </button><button onClick={() => handleQuickAction('Export Chat')} className="quantum-btn px-4 py-2 rounded-lg text-sm"> Export </button></div></div> {/* Chat History */} <div ref={chatRef} className="h-96 overflow-y-auto mb-6 space-y-4"> {chatHistory.length === 0 ? ( <div className="text-center py-12"><div className="text-6xl mb-4">🤖</div><div className="text-xl font-bold text-gray-400 mb-4"> Ask me anything about sports cards! </div><div className="text-gray-300"> I can help with predictions, analysis, and investment advice. </div></div> ) : ( chatHistory.map((message) => ( <div key={message.id} className={`chat-message ${message.type}`}><div className="font-bold text-white mb-2"> {message.type === 'user' ? 'You' : 'AI Oracle'} </div><div className="text-gray-300 mb-2">{message.content}</div> {message.confidence && ( <div className="mb-2"><div className="text-sm text-gray-400 mb-1"> Confidence: {message.confidence}% </div><div className="confidence-bar"><div className="confidence-fill" style={{width: `${message.confidence}%`}}></div></div></div> )} {message.recommendations && ( <div className="mt-2"><div className="text-sm text-cyan-400 font-bold mb-1">Recommendations:</div><ul className="text-sm text-gray-300 space-y-1"> {message.recommendations.map((rec, index) => ( <li key={index} className="flex items-center gap-2"><span className="text-cyan-400">•</span> {rec} </li> ))} </ul></div> )} </div> )) )} {isLoading && ( <div className="chat-message ai"><div className="flex items-center gap-2"><div className="loading-spinner"></div><span className="text-gray-300">AI is thinking...</span></div></div> )} </div> {/* Question Input */} <form onSubmit={handleQuestionSubmit} className="flex gap-4"><input ref={questionRef} type="text" value={currentQuestion} onChange={(e) => setCurrentQuestion(e.target.value)} placeholder="Ask me anything about sports cards, investments, or market trends..." className="input-field flex-1" disabled={isLoading} /><button type="submit" disabled={isLoading || !currentQuestion.trim()} className="quantum-btn px-6 py-3 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"> {isLoading ? 'Sending...' : 'Ask'} </button></form></div> {/* Market Insights */} <div className="glass-morphism rounded-2xl p-6 mt-8"><h3 className="text-2xl font-bold text-cyan-400 mb-4">Market Insights</h3><div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"><div className="cyber-card p-4 rounded-lg"><div className="text-center"><div className="text-2xl font-bold text-cyan-400">${marketData.totalVolume?.toLocaleString()}</div><div className="text-sm text-gray-400">Total Volume</div></div></div><div className="cyber-card p-4 rounded-lg"><div className="text-center"><div className="text-2xl font-bold text-green-400">${marketData.averagePrice}</div><div className="text-sm text-gray-400">Average Price</div></div></div><div className="cyber-card p-4 rounded-lg"><div className="text-center"><div className="text-2xl font-bold text-yellow-400">+{marketData.trendingUp}%</div><div className="text-sm text-gray-400">Trending Up</div></div></div><div className="cyber-card p-4 rounded-lg"><div className="text-center"><div className="text-2xl font-bold text-purple-400">{marketData.marketSentiment}</div><div className="text-sm text-gray-400">Sentiment</div></div></div></div></div></div></div></main></div> ); } // Render the application ReactDOM.render(<AIOracleUltimate />, document.getElementById('root')); </script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Oracle Ultimate - Infinity Sports Card Platform</title>
+    
+    <!-- CDN Links -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js" crossorigin></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/framer-motion@10.16.4/dist/framer-motion.min.js"></script>
+    
+    <!-- Auth System -->
+    <script src="auth-system.js"></script>
+    <script src="infinity-ai.js"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@400;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 168, 204, 0.1) 0%, transparent 50%),
+                linear-gradient(135deg, #000000 0%, #0a0a0f 25%, #1a1a2e 50%, #0f3460 75%, #000000 100%);
+            min-height: 100vh;
+            color: white;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        
+        .infinity-text { color: #00d4ff; text-shadow: 0 0 20px rgba(0, 212, 255, 0.5); }
+        .glass-morphism { background: rgba(0, 212, 255, 0.05); backdrop-filter: blur(15px) saturate(150%); border: 1px solid rgba(0, 212, 255, 0.3); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6); }
+        .cyber-card { background: rgba(0, 100, 255, 0.08); border: 1px solid rgba(0, 255, 255, 0.4); transition: all 0.15s ease; position: relative; overflow: hidden; cursor: pointer; }
+        .cyber-card:hover { transform: translateY(-4px) scale(1.02); background: rgba(0, 100, 255, 0.15); box-shadow: 0 20px 60px rgba(0, 255, 255, 0.3); border: 2px solid rgba(0, 255, 255, 0.8); }
+        .quantum-btn { background: #00d4ff; border: none; color: white; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; transition: all 0.1s ease; cursor: pointer; position: relative; overflow: hidden; }
+        .quantum-btn:hover { background: #0099cc; transform: translateY(-2px) scale(1.05); box-shadow: 0 10px 30px rgba(0, 212, 255, 0.5); }
+        .quantum-btn:active { transform: translateY(0) scale(1); transition: all 0.05s ease; }
+        .orbitron { font-family: 'Orbitron', monospace; }
+        .infinity-glow { box-shadow: 0 0 20px rgba(0, 212, 255, 0.3); }
+        .action-feedback { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 255, 136, 0.9); color: #000; padding: 8px 16px; border-radius: 8px; font-size: 14px; font-weight: bold; pointer-events: none; z-index: 1001; animation: feedback 0.6s ease-out; }
+        @keyframes feedback { 0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); } 50% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); } 100% { opacity: 0; transform: translate(-50%, -50%) scale(1); } }
+        .loading-spinner { border: 3px solid rgba(0, 212, 255, 0.3); border-top: 3px solid #00d4ff; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .module-card { background: rgba(0, 100, 255, 0.08); border: 1px solid rgba(0, 255, 255, 0.4); transition: all 0.15s ease; position: relative; overflow: hidden; cursor: pointer; }
+        .module-card:hover { transform: translateY(-4px) scale(1.02); background: rgba(0, 100, 255, 0.15); box-shadow: 0 20px 60px rgba(0, 255, 255, 0.3); border: 2px solid rgba(0, 255, 255, 0.8); }
+        .module-card.active { background: rgba(0, 100, 255, 0.2); border: 2px solid #00d4ff; box-shadow: 0 0 30px rgba(0, 212, 255, 0.5); }
+        .chat-message { margin-bottom: 1rem; padding: 1rem; border-radius: 12px; max-width: 80%; }
+        .chat-message.user { background: rgba(0, 212, 255, 0.1); border: 1px solid rgba(0, 212, 255, 0.3); margin-left: auto; }
+        .chat-message.ai { background: rgba(0, 100, 255, 0.1); border: 1px solid rgba(0, 100, 255, 0.3); margin-right: auto; }
+        .input-field { background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(0, 212, 255, 0.3); border-radius: 8px; padding: 12px 16px; color: white; transition: all 0.3s ease; }
+        .input-field:focus { outline: none; border-color: #00d4ff; box-shadow: 0 0 10px rgba(0, 212, 255, 0.3); }
+        .input-field::placeholder { color: rgba(255, 255, 255, 0.5); }
+        .confidence-bar { height: 8px; background: rgba(0, 0, 0, 0.3); border-radius: 4px; overflow: hidden; margin-top: 8px; }
+        .confidence-fill { height: 100%; background: linear-gradient(90deg, #ff6b6b, #ffd700, #00ff88); transition: width 0.3s ease; }
+        .trend-indicator { display: inline-block; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: bold; }
+        .trend-indicator.up { background: rgba(0, 255, 136, 0.2); color: #00ff88; }
+        .trend-indicator.down { background: rgba(255, 107, 107, 0.2); color: #ff6b6b; }
+        .trend-indicator.neutral { background: rgba(255, 255, 255, 0.2); color: #ffffff; }
+        .floating-particles { position: absolute; width: 100%; height: 100%; overflow: hidden; pointer-events: none; }
+        .particle { position: absolute; width: 4px; height: 4px; background: #00d4ff; border-radius: 50%; animation: float 6s ease-in-out infinite; opacity: 0.7; }
+        .particle:nth-child(2) { animation-delay: -2s; background: #0099cc; }
+        .particle:nth-child(3) { animation-delay: -4s; background: #00a8cc; }
+        @keyframes float { 0%, 100% { transform: translateY(0px) rotate(0deg); } 50% { transform: translateY(-20px) rotate(180deg); } }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        function AIOracleUltimate() {
+            const [isAuthenticated, setIsAuthenticated] = useState(false);
+            const [user, setUser] = useState(null);
+            const [activeModule, setActiveModule] = useState('predictive-gameplay');
+            const [chatHistory, setChatHistory] = useState([]);
+            const [currentQuestion, setCurrentQuestion] = useState('');
+            const [isLoading, setIsLoading] = useState(false);
+            const [actionFeedback, setActionFeedback] = useState(null);
+            const [aiInsights, setAiInsights] = useState([]);
+            const [marketData, setMarketData] = useState({});
+            const [playerData, setPlayerData] = useState({});
+            
+            const chatRef = useRef(null);
+            const questionRef = useRef(null);
+
+            useEffect(() => {
+                checkAuthentication();
+                loadInitialData();
+            }, []);
+
+            useEffect(() => {
+                if (chatRef.current) {
+                    chatRef.current.scrollTop = chatRef.current.scrollHeight;
+                }
+            }, [chatHistory]);
+
+            const checkAuthentication = () => {
+                if (window.InfinityAuth && window.InfinityAuth.isUserAuthenticated()) {
+                    setIsAuthenticated(true);
+                    setUser(window.InfinityAuth.getCurrentUser());
+                } else {
+                    window.location.href = 'login.html';
+                }
+            };
+
+            const loadInitialData = () => {
+                // Load AI insights
+                if (window.InfinityAI) {
+                    const insights = window.InfinityAI.getPersonalizedRecommendations(user?.id);
+                    setAiInsights(insights.personalizedInsights || []);
+                }
+
+                // Load market data
+                loadMarketData();
+                loadPlayerData();
+            };
+
+            const loadMarketData = () => {
+                // Simulate market data loading
+                setMarketData({
+                    totalVolume: 1250000,
+                    averagePrice: 450,
+                    trendingUp: 12.5,
+                    hotPlayers: ['LeBron James', 'Tom Brady', 'Luka Doncic', 'Patrick Mahomes'],
+                    marketSentiment: 'bullish'
+                });
+            };
+
+            const loadPlayerData = () => {
+                // Simulate player data loading
+                setPlayerData({
+                    'LeBron James': { value: 1250, trend: 'up', confidence: 85 },
+                    'Tom Brady': { value: 890, trend: 'up', confidence: 92 },
+                    'Luka Doncic': { value: 650, trend: 'up', confidence: 78 },
+                    'Patrick Mahomes': { value: 1100, trend: 'up', confidence: 88 }
+                });
+            };
+
+            const showActionFeedback = (message) => {
+                setActionFeedback(message);
+                setTimeout(() => setActionFeedback(null), 1500);
+            };
+
+            const handleModuleChange = (module) => {
+                setActiveModule(module);
+                showActionFeedback(`Switched to ${module.replace('-', ' ')} module`);
+            };
+
+            const handleQuestionSubmit = async (e) => {
+                e.preventDefault();
+                if (!currentQuestion.trim()) return;
+
+                const question = currentQuestion.trim();
+                setCurrentQuestion('');
+                setIsLoading(true);
+
+                // Add user question to chat
+                const userMessage = {
+                    id: Date.now(),
+                    type: 'user',
+                    content: question,
+                    timestamp: Date.now()
+                };
+                setChatHistory(prev => [...prev, userMessage]);
+
+                // Store interaction for AI learning
+                if (window.InfinityAI) {
+                    window.InfinityAI.storeInteraction('oracle_question', {
+                        question: question,
+                        module: activeModule,
+                        userId: user.id
+                    }, { success: true, timestamp: Date.now() });
+                }
+
+                // Generate AI response based on active module
+                const aiResponse = await generateAIResponse(question, activeModule);
+                const aiMessage = {
+                    id: Date.now() + 1,
+                    type: 'ai',
+                    content: aiResponse.content,
+                    confidence: aiResponse.confidence,
+                    recommendations: aiResponse.recommendations,
+                    timestamp: Date.now()
+                };
+                setChatHistory(prev => [...prev, aiMessage]);
+
+                // Store AI response for learning
+                if (window.InfinityAI) {
+                    window.InfinityAI.storeInteraction('oracle_response', {
+                        question: question,
+                        response: aiResponse,
+                        module: activeModule,
+                        userId: user.id
+                    }, { success: true, timestamp: Date.now() });
+                }
+
+                setIsLoading(false);
+                showActionFeedback('AI response generated');
+            };
+
+            const generateAIResponse = async (question, module) => {
+                // Simulate AI processing delay
+                await new Promise(resolve => setTimeout(resolve, 1000));
+
+                const responses = {
+                    'predictive-gameplay': {
+                        content: `Based on current market trends and player performance data, I predict significant growth potential for ${question.includes('LeBron') ? 'LeBron James' : 'the mentioned player'}. The market sentiment is bullish with 85% confidence.`,
+                        confidence: 85,
+                        recommendations: [
+                            'Consider adding to watchlist',
+                            'Monitor for price dips',
+                            'Set price alerts'
+                        ]
+                    },
+                    'player-dna': {
+                        content: `Player DNA analysis shows strong fundamentals with excellent long-term potential. Historical performance indicates consistent growth patterns.`,
+                        confidence: 92,
+                        recommendations: [
+                            'Strong hold recommendation',
+                            'Consider increasing position',
+                            'Monitor for exit signals'
+                        ]
+                    },
+                    'smart-hold-sell': {
+                        content: `Based on your portfolio and market conditions, I recommend holding your current position. The risk/reward ratio is favorable.`,
+                        confidence: 78,
+                        recommendations: [
+                            'Hold current position',
+                            'Set stop-loss at 10%',
+                            'Consider partial profit-taking'
+                        ]
+                    },
+                    'global-radar': {
+                        content: `Global market analysis shows emerging opportunities in international markets. Consider diversifying your portfolio.`,
+                        confidence: 88,
+                        recommendations: [
+                            'Explore international markets',
+                            'Consider currency hedging',
+                            'Monitor global trends'
+                        ]
+                    },
+                    'synergy-alerts': {
+                        content: `Synergy analysis reveals potential portfolio optimization opportunities. Your current holdings show strong correlation.`,
+                        confidence: 82,
+                        recommendations: [
+                            'Optimize portfolio allocation',
+                            'Consider rebalancing',
+                            'Monitor correlation changes'
+                        ]
+                    },
+                    'ai-mentor': {
+                        content: `As your AI mentor, I recommend focusing on long-term value creation. Your current strategy shows promise.`,
+                        confidence: 90,
+                        recommendations: [
+                            'Continue current strategy',
+                            'Focus on education',
+                            'Monitor market changes'
+                        ]
+                    },
+                    'compound-growth': {
+                        content: `Compound growth analysis shows strong potential for long-term wealth building. Your portfolio is well-positioned.`,
+                        confidence: 87,
+                        recommendations: [
+                            'Maintain long-term focus',
+                            'Consider dollar-cost averaging',
+                            'Monitor growth metrics'
+                        ]
+                    },
+                    'predictive-trends': {
+                        content: `Trend analysis indicates strong upward momentum. Social media sentiment and news coverage are positive.`,
+                        confidence: 83,
+                        recommendations: [
+                            'Monitor trend continuation',
+                            'Consider momentum strategies',
+                            'Watch for trend reversals'
+                        ]
+                    }
+                };
+
+                return responses[module] || responses['predictive-gameplay'];
+            };
+
+            const handleQuickAction = (action) => {
+                showActionFeedback(`Executing ${action}...`);
+                
+                // Store interaction for AI learning
+                if (window.InfinityAI) {
+                    window.InfinityAI.storeInteraction('oracle_quick_action', {
+                        action: action,
+                        module: activeModule,
+                        userId: user.id
+                    }, { success: true, timestamp: Date.now() });
+                }
+            };
+
+            const modules = [
+                { id: 'predictive-gameplay', name: 'Predictive Gameplay', icon: '🎯', description: 'AI-powered game predictions' },
+                { id: 'player-dna', name: 'Player DNA Tracker', icon: '🧬', description: 'Deep player analysis' },
+                { id: 'smart-hold-sell', name: 'Smart Hold/Sell', icon: '💎', description: 'Intelligent trading decisions' },
+                { id: 'global-radar', name: 'Global Radar', icon: '🌍', description: 'Worldwide market insights' },
+                { id: 'synergy-alerts', name: 'Synergy Alerts', icon: '⚡', description: 'Portfolio optimization' },
+                { id: 'ai-mentor', name: 'AI Mentor', icon: '🧠', description: 'Personalized guidance' },
+                { id: 'compound-growth', name: 'Compound Growth', icon: '📈', description: 'Long-term wealth building' },
+                { id: 'predictive-trends', name: 'Predictive Trends', icon: '🔮', description: 'Future trend analysis' }
+            ];
+
+            if (!isAuthenticated) {
+                return (
+                    <div className="min-h-screen flex items-center justify-center">
+                        <div className="text-center">
+                            <div className="loading-spinner mx-auto mb-4"></div>
+                            <div className="text-2xl font-bold infinity-text">Authenticating...</div>
+                        </div>
+                    </div>
+                );
+            }
+
+            return (
+                <div className="min-h-screen">
+                    {/* Floating Particles */}
+                    <div className="floating-particles">
+                        <div className="particle" style={{left: '10%', top: '20%'}}></div>
+                        <div className="particle" style={{left: '80%', top: '30%'}}></div>
+                        <div className="particle" style={{left: '60%', top: '70%'}}></div>
+                        <div className="particle" style={{left: '30%', top: '80%'}}></div>
+                        <div className="particle" style={{left: '90%', top: '60%'}}></div>
+                    </div>
+
+                    {/* Action Feedback */}
+                    {actionFeedback && (
+                        <div className="action-feedback">
+                            {actionFeedback}
+                        </div>
+                    )}
+
+                    {/* Header */}
+                    <header className="glass-morphism border-b border-cyan-400/20 sticky top-0 z-50">
+                        <div className="container mx-auto px-6 py-4">
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-4">
+                                    <button 
+                                        onClick={() => window.location.href = 'dashboard-ultimate.html'} 
+                                        className="text-cyan-400 hover:text-white transition-colors"
+                                    >
+                                        ← Back to Dashboard
+                                    </button>
+                                    <h1 className="text-4xl font-bold infinity-text orbitron">
+                                        🧠 AI Oracle Ultimate
+                                    </h1>
+                                </div>
+                                <div className="flex items-center gap-4">
+                                    <div className="text-right">
+                                        <div className="text-sm text-gray-400">Welcome</div>
+                                        <div className="text-xl font-bold text-cyan-400">{user?.username}</div>
+                                    </div>
+                                    <button 
+                                        onClick={() => window.location.href = 'user-portal.html'} 
+                                        className="quantum-btn px-4 py-2 rounded-lg"
+                                    >
+                                        Profile
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </header>
+
+                    {/* Main Content */}
+                    <main className="container mx-auto px-6 py-8">
+                        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                            {/* Module Selection */}
+                            <div className="lg:col-span-1">
+                                <div className="glass-morphism rounded-2xl p-6 sticky top-24">
+                                    <h3 className="text-xl font-bold text-cyan-400 mb-4">AI Modules</h3>
+                                    <div className="space-y-2">
+                                        {modules.map((module) => (
+                                            <button
+                                                key={module.id}
+                                                onClick={() => handleModuleChange(module.id)}
+                                                className={`module-card w-full p-4 rounded-lg text-left ${
+                                                    activeModule === module.id ? 'active' : ''
+                                                }`}
+                                            >
+                                                <div className="flex items-center gap-3">
+                                                    <span className="text-2xl">{module.icon}</span>
+                                                    <div>
+                                                        <div className="font-bold text-white">{module.name}</div>
+                                                        <div className="text-sm text-gray-400">{module.description}</div>
+                                                    </div>
+                                                </div>
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Chat Interface */}
+                            <div className="lg:col-span-3">
+                                <div className="glass-morphism rounded-2xl p-6">
+                                    <div className="flex items-center justify-between mb-6">
+                                        <h3 className="text-2xl font-bold text-cyan-400">
+                                            {modules.find(m => m.id === activeModule)?.name} Chat
+                                        </h3>
+                                        <div className="flex gap-2">
+                                            <button 
+                                                onClick={() => handleQuickAction('Clear Chat')} 
+                                                className="quantum-btn px-4 py-2 rounded-lg text-sm"
+                                            >
+                                                Clear
+                                            </button>
+                                            <button 
+                                                onClick={() => handleQuickAction('Export Chat')} 
+                                                className="quantum-btn px-4 py-2 rounded-lg text-sm"
+                                            >
+                                                Export
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    {/* Chat History */}
+                                    <div ref={chatRef} className="h-96 overflow-y-auto mb-6 space-y-4">
+                                        {chatHistory.length === 0 ? (
+                                            <div className="text-center py-12">
+                                                <div className="text-6xl mb-4">🤖</div>
+                                                <div className="text-xl font-bold text-gray-400 mb-4">
+                                                    Ask me anything about sports cards!
+                                                </div>
+                                                <div className="text-gray-300">
+                                                    I can help with predictions, analysis, and investment advice.
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            chatHistory.map((message) => (
+                                                <div key={message.id} className={`chat-message ${message.type}`}>
+                                                    <div className="font-bold text-white mb-2">
+                                                        {message.type === 'user' ? 'You' : 'AI Oracle'}
+                                                    </div>
+                                                    <div className="text-gray-300 mb-2">{message.content}</div>
+                                                    {message.confidence && (
+                                                        <div className="mb-2">
+                                                            <div className="text-sm text-gray-400 mb-1">
+                                                                Confidence: {message.confidence}%
+                                                            </div>
+                                                            <div className="confidence-bar">
+                                                                <div 
+                                                                    className="confidence-fill" 
+                                                                    style={{width: `${message.confidence}%`}}
+                                                                ></div>
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                    {message.recommendations && (
+                                                        <div className="mt-2">
+                                                            <div className="text-sm text-cyan-400 font-bold mb-1">Recommendations:</div>
+                                                            <ul className="text-sm text-gray-300 space-y-1">
+                                                                {message.recommendations.map((rec, index) => (
+                                                                    <li key={index} className="flex items-center gap-2">
+                                                                        <span className="text-cyan-400">•</span>
+                                                                        {rec}
+                                                                    </li>
+                                                                ))}
+                                                            </ul>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            ))
+                                        )}
+                                        {isLoading && (
+                                            <div className="chat-message ai">
+                                                <div className="flex items-center gap-2">
+                                                    <div className="loading-spinner"></div>
+                                                    <span className="text-gray-300">AI is thinking...</span>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    {/* Question Input */}
+                                    <form onSubmit={handleQuestionSubmit} className="flex gap-4">
+                                        <input
+                                            ref={questionRef}
+                                            type="text"
+                                            value={currentQuestion}
+                                            onChange={(e) => setCurrentQuestion(e.target.value)}
+                                            placeholder="Ask me anything about sports cards, investments, or market trends..."
+                                            className="input-field flex-1"
+                                            disabled={isLoading}
+                                        />
+                                        <button
+                                            type="submit"
+                                            disabled={isLoading || !currentQuestion.trim()}
+                                            className="quantum-btn px-6 py-3 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                                        >
+                                            {isLoading ? 'Sending...' : 'Ask'}
+                                        </button>
+                                    </form>
+                                </div>
+
+                                {/* Market Insights */}
+                                <div className="glass-morphism rounded-2xl p-6 mt-8">
+                                    <h3 className="text-2xl font-bold text-cyan-400 mb-4">Market Insights</h3>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                                        <div className="cyber-card p-4 rounded-lg">
+                                            <div className="text-center">
+                                                <div className="text-2xl font-bold text-cyan-400">${marketData.totalVolume?.toLocaleString()}</div>
+                                                <div className="text-sm text-gray-400">Total Volume</div>
+                                            </div>
+                                        </div>
+                                        <div className="cyber-card p-4 rounded-lg">
+                                            <div className="text-center">
+                                                <div className="text-2xl font-bold text-green-400">${marketData.averagePrice}</div>
+                                                <div className="text-sm text-gray-400">Average Price</div>
+                                            </div>
+                                        </div>
+                                        <div className="cyber-card p-4 rounded-lg">
+                                            <div className="text-center">
+                                                <div className="text-2xl font-bold text-yellow-400">+{marketData.trendingUp}%</div>
+                                                <div className="text-sm text-gray-400">Trending Up</div>
+                                            </div>
+                                        </div>
+                                        <div className="cyber-card p-4 rounded-lg">
+                                            <div className="text-center">
+                                                <div className="text-2xl font-bold text-purple-400">{marketData.marketSentiment}</div>
+                                                <div className="text-sm text-gray-400">Sentiment</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+                </div>
+            );
+        }
+
+        // Render the application
+        ReactDOM.render(<AIOracleUltimate />, document.getElementById('root'));
+    </script>
+</body>
+</html>
