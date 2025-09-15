@@ -3,14 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Investment Compass - Infinity Sports Card Platform</title>
+    <title>Investment Compass - Infinity System</title>
     
     <!-- CDN Links -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js" crossorigin></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Auth System -->
+    <script src="auth-system.js"></script>
+    <script src="ai-learning-system.js"></script>
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@400;600;700&display=swap');
@@ -82,62 +85,166 @@
             box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
         }
         
-        .risk-high { background: linear-gradient(45deg, #ff4444, #ff6666); }
-        .risk-medium { background: linear-gradient(45deg, #ffaa00, #ffcc44); }
-        .risk-low { background: linear-gradient(45deg, #00ff88, #44ffaa); }
-        
-        .roi-bar {
-            height: 8px;
-            background: #333;
-            border-radius: 4px;
+        .playbook-card {
+            background: rgba(0, 100, 255, 0.08);
+            border: 1px solid rgba(0, 255, 255, 0.4);
+            transition: all 0.3s ease;
+            position: relative;
             overflow: hidden;
         }
         
-        .roi-fill {
-            height: 100%;
-            border-radius: 4px;
-            transition: width 1s ease;
+        .playbook-card:hover {
+            transform: translateY(-2px) scale(1.01);
+            background: rgba(0, 100, 255, 0.12);
+            box-shadow: 0 15px 40px rgba(0, 255, 255, 0.2);
         }
         
-        .playbook-card {
-            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(0, 168, 204, 0.1));
-            border: 2px solid rgba(0, 212, 255, 0.3);
+        .playbook-card.selected {
+            background: linear-gradient(45deg, rgba(0, 212, 255, 0.3), rgba(255, 0, 255, 0.3));
+            border: 2px solid #00d4ff;
+            box-shadow: 0 0 25px rgba(0, 212, 255, 0.5);
         }
         
-        .loading-spinner {
-            border: 3px solid rgba(0, 212, 255, 0.3);
-            border-top: 3px solid #00d4ff;
+        .filter-active {
+            background: linear-gradient(45deg, rgba(0, 212, 255, 0.3), rgba(255, 0, 255, 0.3));
+            border: 2px solid #00d4ff;
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.4);
+        }
+        
+        .confidence-bar {
+            height: 4px;
+            background: linear-gradient(90deg, #ff4444, #ffaa00, #00ff88);
+            border-radius: 2px;
+            transition: width 0.5s ease;
+        }
+        
+        .risk-indicator {
+            width: 12px;
+            height: 12px;
             border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-right: 8px;
         }
         
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+        .risk-low { background: #00ff88; }
+        .risk-medium { background: #ffaa00; }
+        .risk-high { background: #ff4444; }
     </style>
 </head>
 <body>
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState, useEffect, useRef } = React;
+        const { useState, useEffect } = React;
 
         function InvestmentCompass() {
-            const [activeFilter, setActiveFilter] = useState('all');
-            const [selectedPlaybook, setSelectedPlaybook] = useState('hustler');
+            const [user, setUser] = useState(null);
+            const [topPicks, setTopPicks] = useState([]);
+            const [playbooks, setPlaybooks] = useState([]);
+            const [selectedPlaybook, setSelectedPlaybook] = useState(null);
+            const [filters, setFilters] = useState({
+                sport: 'all',
+                playerTier: 'all',
+                budget: 'all',
+                risk: 'all'
+            });
             const [isLoading, setIsLoading] = useState(false);
-            const [recommendations, setRecommendations] = useState([]);
-            
-            const chartRef = useRef(null);
 
-            const top10Recommendations = [
+            // Investment Playbooks
+            const investmentPlaybooks = [
+                {
+                    id: 'flipping-hustler',
+                    name: 'Flipping Hustler',
+                    description: 'Quick flips for fast profits',
+                    icon: '⚡',
+                    strategy: 'Buy low, sell high within 30 days',
+                    riskLevel: 'high',
+                    expectedROI: '50-200%',
+                    timeframe: '1-30 days',
+                    targetCards: 'Rookie cards, hot prospects',
+                    tips: [
+                        'Focus on rookies with breakout potential',
+                        'Monitor social media for hype spikes',
+                        'Set strict stop-losses',
+                        'Take profits quickly'
+                    ]
+                },
+                {
+                    id: 'collector-grail-hunt',
+                    name: 'Collector Grail Hunt',
+                    description: 'Long-term value appreciation',
+                    icon: '🏆',
+                    strategy: 'Buy and hold generational talents',
+                    riskLevel: 'low',
+                    expectedROI: '200-1000%',
+                    timeframe: '1-5 years',
+                    targetCards: 'PSA 10s of superstars',
+                    tips: [
+                        'Focus on generational talents',
+                        'Only buy PSA 10s',
+                        'Hold for minimum 2 years',
+                        'Diversify across sports'
+                    ]
+                },
+                {
+                    id: 'prospect-gambler',
+                    name: 'Prospect Gambler',
+                    description: 'High-risk, high-reward prospects',
+                    icon: '🎲',
+                    strategy: 'Bet on unproven talent',
+                    riskLevel: 'high',
+                    expectedROI: '100-5000%',
+                    timeframe: '6 months - 3 years',
+                    targetCards: 'Raw prospects, autos',
+                    tips: [
+                        'Research extensively',
+                        'Only invest what you can lose',
+                        'Diversify across many prospects',
+                        'Be patient with development'
+                    ]
+                }
+            ];
+
+            useEffect(() => {
+                // Check authentication
+                if (!window.InfinityAuth.isUserAuthenticated()) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                // Load user data
+                const userData = window.InfinityAuth.getUserData();
+                setUser(userData);
+                
+                // Load investment data
+                loadInvestmentData();
+            }, []);
+
+            const loadInvestmentData = async () => {
+                setIsLoading(true);
+                
+                try {
+                    // Load top picks
+                    const picksData = await fetchTopPicks();
+                    setTopPicks(picksData);
+                    
+                    // Set default playbook
+                    setSelectedPlaybook(investmentPlaybooks[0]);
+                } catch (error) {
+                    console.error('Failed to load investment data:', error);
+                } finally {
+                    setIsLoading(false);
+                }
+            };
+
+            const fetchTopPicks = async () => {
+                return new Promise(resolve => {
+                    setTimeout(() => {
+                        resolve([
                 {
                     id: 1,
                     rank: 1,
-                    player: 'Victor Wembanyama',
+                                player: 'Luka Dončić',
                     card: '2023 Panini Prizm Silver PSA 10',
                     currentPrice: 2400,
                     predictedPrice: 4800,
@@ -145,13 +252,28 @@
                     timeframe: '48 hours',
                     risk: 'low',
                     confidence: 94,
-                    sport: 'NBA',
-                    tier: 'Elite',
-                    reasoning: 'Generational talent, international hype, rookie season breakout'
+                                reasoning: 'Tonight\'s game vs Lakers - Luka expected 35+ points',
+                                action: 'BUY NOW',
+                                urgency: 'high'
                 },
                 {
                     id: 2,
                     rank: 2,
+                                player: 'Victor Wembanyama',
+                                card: '2023 Panini Prizm Rookie PSA 10',
+                                currentPrice: 5000,
+                                predictedPrice: 10000,
+                                roi: 100,
+                                timeframe: '2 weeks',
+                                risk: 'low',
+                                confidence: 98,
+                                reasoning: 'Generational talent, international demand surging',
+                                action: 'BUY NOW',
+                                urgency: 'high'
+                            },
+                            {
+                                id: 3,
+                                rank: 3,
                     player: 'Anthony Richardson',
                     card: '2023 Panini Prizm Base PSA 10',
                     currentPrice: 850,
@@ -160,239 +282,71 @@
                     timeframe: '1 week',
                     risk: 'medium',
                     confidence: 89,
-                    sport: 'NFL',
-                    tier: 'Rising',
-                    reasoning: 'Dual-threat QB, breakout potential, media attention'
-                },
-                {
-                    id: 3,
-                    rank: 3,
-                    player: 'Luka Dončić',
-                    card: '2018 Panini Prizm Silver PSA 10',
+                                reasoning: 'NFL playoff performance, dual-threat QB hype',
+                                action: 'BUY',
+                                urgency: 'medium'
+                            },
+                            {
+                                id: 4,
+                                rank: 4,
+                                player: 'Shohei Ohtani',
+                                card: '2023 Topps Chrome Auto PSA 10',
                     currentPrice: 3200,
                     predictedPrice: 4800,
                     roi: 50,
-                    timeframe: '2 weeks',
-                    risk: 'low',
-                    confidence: 91,
-                    sport: 'NBA',
-                    tier: 'Elite',
-                    reasoning: 'Peak performance, international market surge'
-                },
-                {
-                    id: 4,
-                    rank: 4,
+                                timeframe: '1 month',
+                                risk: 'medium',
+                                confidence: 87,
+                                reasoning: 'Japanese market demand, cultural crossover',
+                                action: 'BUY',
+                                urgency: 'medium'
+                            },
+                            {
+                                id: 5,
+                                rank: 5,
                     player: 'CJ Stroud',
                     card: '2023 Panini Prizm Base PSA 10',
                     currentPrice: 1200,
                     predictedPrice: 1800,
                     roi: 50,
                     timeframe: '2 weeks',
-                    risk: 'medium',
-                    confidence: 87,
-                    sport: 'NFL',
-                    tier: 'Rising',
-                    reasoning: 'Rookie season success, playoff potential'
-                },
-                {
-                    id: 5,
-                    rank: 5,
-                    player: 'LeBron James',
-                    card: '2003 Topps Chrome Refractor PSA 10',
-                    currentPrice: 15000,
-                    predictedPrice: 20000,
-                    roi: 33,
-                    timeframe: '1 month',
-                    risk: 'low',
-                    confidence: 88,
-                    sport: 'NBA',
-                    tier: 'Legend',
-                    reasoning: 'GOAT status, retirement speculation, legacy value'
-                },
-                {
-                    id: 6,
-                    rank: 6,
-                    player: 'Patrick Mahomes',
-                    card: '2017 Panini Prizm Base PSA 10',
-                    currentPrice: 2800,
-                    predictedPrice: 3500,
-                    roi: 25,
-                    timeframe: '3 weeks',
                     risk: 'low',
                     confidence: 85,
-                    sport: 'NFL',
-                    tier: 'Elite',
-                    reasoning: 'Championship window, consistent performance'
-                },
-                {
-                    id: 7,
-                    rank: 7,
-                    player: 'Ja Morant',
-                    card: '2019 Panini Prizm Silver PSA 10',
-                    currentPrice: 1800,
-                    predictedPrice: 2500,
-                    roi: 39,
-                    timeframe: '1 month',
-                    risk: 'high',
-                    confidence: 78,
-                    sport: 'NBA',
-                    tier: 'Rising',
-                    reasoning: 'Comeback narrative, high ceiling, injury concerns'
-                },
-                {
-                    id: 8,
-                    rank: 8,
-                    player: 'Josh Allen',
-                    card: '2018 Panini Prizm Base PSA 10',
-                    currentPrice: 2200,
-                    predictedPrice: 2800,
-                    roi: 27,
-                    timeframe: '2 weeks',
-                    risk: 'medium',
-                    confidence: 82,
-                    sport: 'NFL',
-                    tier: 'Elite',
-                    reasoning: 'Playoff run, MVP conversation'
-                },
-                {
-                    id: 9,
-                    rank: 9,
-                    player: 'Zion Williamson',
-                    card: '2019 Panini Prizm Silver PSA 10',
-                    currentPrice: 3200,
-                    predictedPrice: 4000,
-                    roi: 25,
-                    timeframe: '6 weeks',
-                    risk: 'high',
-                    confidence: 75,
-                    sport: 'NBA',
-                    tier: 'Rising',
-                    reasoning: 'Health improvement, talent ceiling'
-                },
-                {
-                    id: 10,
-                    rank: 10,
-                    player: 'Joe Burrow',
-                    card: '2020 Panini Prizm Base PSA 10',
-                    currentPrice: 1500,
-                    predictedPrice: 1900,
-                    roi: 27,
-                    timeframe: '3 weeks',
-                    risk: 'medium',
-                    confidence: 80,
-                    sport: 'NFL',
-                    tier: 'Rising',
-                    reasoning: 'Playoff potential, market recognition'
-                }
-            ];
-
-            const playbooks = [
-                {
-                    id: 'hustler',
-                    name: 'Flipping Hustler',
-                    icon: '💸',
-                    description: 'Quick flips, high volume, fast profits',
-                    strategy: 'Buy low, sell high within 48-72 hours',
-                    risk: 'High',
-                    timeframe: '1-3 days',
-                    targetROI: '20-50%',
-                    bestFor: 'Active traders, quick profits'
-                },
-                {
-                    id: 'grail',
-                    name: 'Collector Grail Hunt',
-                    icon: '🏆',
-                    description: 'Premium cards, long-term holds',
-                    strategy: 'Elite players, rare cards, 6+ month holds',
-                    risk: 'Medium',
-                    timeframe: '6-12 months',
-                    targetROI: '100-300%',
-                    bestFor: 'Serious collectors, patient investors'
-                },
-                {
-                    id: 'gambler',
-                    name: 'Prospect Gambler',
-                    icon: '🎲',
-                    description: 'Rookie cards, high risk/reward',
-                    strategy: 'Rookie cards, breakout potential, high variance',
-                    risk: 'Very High',
-                    timeframe: '1-6 months',
-                    targetROI: '50-500%',
-                    bestFor: 'Risk takers, rookie enthusiasts'
-                }
-            ];
-
-            const filters = [
-                { id: 'all', name: 'All', count: 10 },
-                { id: 'nba', name: 'NBA', count: 5 },
-                { id: 'nfl', name: 'NFL', count: 5 },
-                { id: 'elite', name: 'Elite', count: 4 },
-                { id: 'rising', name: 'Rising', count: 5 },
-                { id: 'legend', name: 'Legend', count: 1 }
-            ];
-
-            useEffect(() => {
-                setRecommendations(top10Recommendations);
-                initializeChart();
-            }, []);
-
-            const initializeChart = () => {
-                if (chartRef.current) {
-                    const ctx = chartRef.current.getContext('2d');
-                    new Chart(ctx, {
-                        type: 'bar',
-                        data: {
-                            labels: top10Recommendations.slice(0, 5).map(r => r.player),
-                            datasets: [{
-                                label: 'ROI %',
-                                data: top10Recommendations.slice(0, 5).map(r => r.roi),
-                                backgroundColor: 'rgba(0, 212, 255, 0.8)',
-                                borderColor: '#00d4ff',
-                                borderWidth: 2
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                legend: {
-                                    labels: { color: '#ffffff' }
-                                }
-                            },
-                            scales: {
-                                x: { ticks: { color: '#ffffff' } },
-                                y: { 
-                                    ticks: { color: '#ffffff' },
-                                    beginAtZero: true
-                                }
+                                reasoning: 'Consistent performance, pocket passer stability',
+                                action: 'BUY',
+                                urgency: 'low'
                             }
-                        }
-                    });
-                }
+                        ]);
+                    }, 1000);
+                });
             };
 
-            const filterRecommendations = (filter) => {
-                setActiveFilter(filter);
-                setIsLoading(true);
+            const handleFilterChange = (filterType, value) => {
+                setFilters(prev => ({
+                    ...prev,
+                    [filterType]: value
+                }));
+            };
+
+            const handlePlaybookSelect = (playbook) => {
+                setSelectedPlaybook(playbook);
+            };
+
+            const handleAction = (pick, action) => {
+                // Simulate action
+                console.log(`${action} ${pick.player} - ${pick.card}`);
                 
-                setTimeout(() => {
-                    let filtered = top10Recommendations;
-                    
-                    if (filter === 'nba') {
-                        filtered = top10Recommendations.filter(r => r.sport === 'NBA');
-                    } else if (filter === 'nfl') {
-                        filtered = top10Recommendations.filter(r => r.sport === 'NFL');
-                    } else if (filter === 'elite') {
-                        filtered = top10Recommendations.filter(r => r.tier === 'Elite');
-                    } else if (filter === 'rising') {
-                        filtered = top10Recommendations.filter(r => r.tier === 'Rising');
-                    } else if (filter === 'legend') {
-                        filtered = top10Recommendations.filter(r => r.tier === 'Legend');
-                    }
-                    
-                    setRecommendations(filtered);
-                    setIsLoading(false);
-                }, 500);
+                // Store interaction for AI learning
+                if (window.InfinityAI) {
+                    window.InfinityAI.storeInteraction('investment_action', {
+                        pick: pick,
+                        action: action,
+                        userId: user.id
+                    }, {
+                        success: true,
+                        timestamp: Date.now()
+                    });
+                }
             };
 
             const getRiskClass = (risk) => {
@@ -404,14 +358,37 @@
                 }
             };
 
-            const getRiskText = (risk) => {
-                switch(risk) {
-                    case 'low': return 'Low Risk';
-                    case 'medium': return 'Medium Risk';
-                    case 'high': return 'High Risk';
-                    default: return 'Medium Risk';
+            const getUrgencyClass = (urgency) => {
+                switch(urgency) {
+                    case 'high': return 'text-red-400';
+                    case 'medium': return 'text-yellow-400';
+                    case 'low': return 'text-green-400';
+                    default: return 'text-gray-400';
                 }
             };
+
+            const filteredPicks = topPicks.filter(pick => {
+                if (filters.sport !== 'all' && pick.sport !== filters.sport) return false;
+                if (filters.playerTier !== 'all' && pick.tier !== filters.playerTier) return false;
+                if (filters.budget !== 'all') {
+                    const budget = parseInt(filters.budget);
+                    if (pick.currentPrice > budget) return false;
+                }
+                if (filters.risk !== 'all' && pick.risk !== filters.risk) return false;
+                return true;
+            });
+
+            if (!user) {
+                return (
+                    <div className="min-h-screen flex items-center justify-center">
+                        <div className="text-center">
+                            <div className="loading-spinner mx-auto mb-4"></div>
+                            <div className="text-2xl font-bold infinity-text">Loading Compass...</div>
+                            <div className="text-gray-400 mt-2">Preparing investment intelligence</div>
+                        </div>
+                    </div>
+                );
+            }
 
             return (
                 <div className="min-h-screen">
@@ -421,17 +398,17 @@
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-4">
                                     <button 
-                                        onClick={() => window.location.href = 'dashboard.html'}
+                                        onClick={() => window.location.href = 'dashboard-ultimate.html'}
                                         className="text-cyan-400 hover:text-white transition-colors"
                                     >
                                         ← Back to Dashboard
                                     </button>
                                     <h1 className="text-4xl font-bold infinity-text orbitron">
-                                        🧭 Investment Compass
+                                        🧭 INVESTMENT COMPASS
                                     </h1>
                                 </div>
                                 <div className="text-cyan-400 font-bold text-lg">
-                                    Weekly Top 10 Picks
+                                    AI-Curated Top Picks
                                 </div>
                             </div>
                         </div>
@@ -439,117 +416,158 @@
 
                     {/* Main Content */}
                     <main className="container mx-auto px-6 py-8">
-                        {/* Filters */}
-                        <div className="glass-morphism rounded-2xl p-6 mb-8">
-                            <h3 className="text-2xl font-bold text-cyan-400 mb-4">Filter Recommendations</h3>
-                            <div className="flex flex-wrap gap-4">
-                                {filters.map((filter) => (
-                                    <button
-                                        key={filter.id}
-                                        onClick={() => filterRecommendations(filter.id)}
-                                        className={`px-4 py-2 rounded-lg transition-all ${
-                                            activeFilter === filter.id 
-                                                ? 'quantum-btn' 
-                                                : 'cyber-card hover:bg-cyan-400/20'
-                                        }`}
-                                    >
-                                        {filter.name} ({filter.count})
-                                    </button>
-                                ))}
+                        <div className="space-y-8">
+                            {/* Hero Section */}
+                            <div className="text-center">
+                                <h2 className="text-5xl font-bold infinity-text mb-4">🧭 Investment Compass</h2>
+                                <p className="text-gray-300 text-xl">AI-curated top 10 weekly moves with actionable insights</p>
                             </div>
+
+                        {/* Filters */}
+                            <div className="glass-morphism rounded-2xl p-6">
+                                <h3 className="text-2xl font-bold text-cyan-400 mb-4">Filters</h3>
+                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-300 mb-2">Sport</label>
+                                        <select 
+                                            value={filters.sport}
+                                            onChange={(e) => handleFilterChange('sport', e.target.value)}
+                                            className="w-full px-3 py-2 bg-black/30 border border-cyan-400/50 rounded-lg text-white focus:outline-none focus:border-cyan-400"
+                                        >
+                                            <option value="all">All Sports</option>
+                                            <option value="nba">NBA</option>
+                                            <option value="nfl">NFL</option>
+                                            <option value="mlb">MLB</option>
+                                            <option value="nhl">NHL</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-300 mb-2">Player Tier</label>
+                                        <select 
+                                            value={filters.playerTier}
+                                            onChange={(e) => handleFilterChange('playerTier', e.target.value)}
+                                            className="w-full px-3 py-2 bg-black/30 border border-cyan-400/50 rounded-lg text-white focus:outline-none focus:border-cyan-400"
+                                        >
+                                            <option value="all">All Tiers</option>
+                                            <option value="rookie">Rookies</option>
+                                            <option value="star">Stars</option>
+                                            <option value="superstar">Superstars</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-300 mb-2">Budget</label>
+                                        <select 
+                                            value={filters.budget}
+                                            onChange={(e) => handleFilterChange('budget', e.target.value)}
+                                            className="w-full px-3 py-2 bg-black/30 border border-cyan-400/50 rounded-lg text-white focus:outline-none focus:border-cyan-400"
+                                        >
+                                            <option value="all">Any Budget</option>
+                                            <option value="500">Under $500</option>
+                                            <option value="1000">Under $1,000</option>
+                                            <option value="2500">Under $2,500</option>
+                                            <option value="5000">Under $5,000</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-300 mb-2">Risk Level</label>
+                                        <select 
+                                            value={filters.risk}
+                                            onChange={(e) => handleFilterChange('risk', e.target.value)}
+                                            className="w-full px-3 py-2 bg-black/30 border border-cyan-400/50 rounded-lg text-white focus:outline-none focus:border-cyan-400"
+                                        >
+                                            <option value="all">All Risk Levels</option>
+                                            <option value="low">Low Risk</option>
+                                            <option value="medium">Medium Risk</option>
+                                            <option value="high">High Risk</option>
+                                        </select>
+                                    </div>
+                                </div>
                         </div>
 
-                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                            {/* Left Column - Top 10 List */}
-                            <div className="lg:col-span-2 space-y-6">
+                            {/* Top Picks */}
                                 <div className="glass-morphism rounded-2xl p-6">
-                                    <h3 className="text-2xl font-bold text-cyan-400 mb-6">Top 10 Investment Picks</h3>
-                                    
-                                    {isLoading ? (
-                                        <div className="text-center py-12">
-                                            <div className="loading-spinner mx-auto mb-4"></div>
-                                            <div className="text-cyan-400">Analyzing market data...</div>
-                                        </div>
-                                    ) : (
+                                <h3 className="text-2xl font-bold text-cyan-400 mb-6">This Week's Top Picks</h3>
                                         <div className="space-y-4">
-                                            {recommendations.map((rec) => (
-                                                <div key={rec.id} className="cyber-card p-6 rounded-lg">
-                                                    <div className="flex items-center justify-between mb-4">
+                                    {filteredPicks.map((pick) => (
+                                        <div key={pick.id} className="cyber-card p-6 rounded-lg">
+                                            <div className="flex justify-between items-start mb-4">
                                                         <div className="flex items-center gap-4">
-                                                            <div className="text-3xl font-bold text-cyan-400">#{rec.rank}</div>
+                                                    <div className="text-3xl font-bold text-cyan-400">#{pick.rank}</div>
                                                             <div>
-                                                                <div className="font-bold text-white text-lg">{rec.player}</div>
-                                                                <div className="text-sm text-gray-400">{rec.card}</div>
+                                                        <div className="font-bold text-white text-lg">{pick.player}</div>
+                                                        <div className="text-sm text-gray-400">{pick.card}</div>
+                                                        <div className="text-sm text-gray-400 mt-1">{pick.reasoning}</div>
                                                             </div>
                                                         </div>
                                                         <div className="text-right">
-                                                            <div className="text-green-400 font-bold text-lg">+{rec.roi}%</div>
-                                                            <div className="text-sm text-gray-400">ROI</div>
+                                                    <div className="text-green-400 font-bold text-lg">+{pick.roi}%</div>
+                                                    <div className="text-cyan-400 font-bold">${pick.predictedPrice.toLocaleString()}</div>
+                                                    <div className="text-xs text-gray-400">{pick.timeframe}</div>
                                                         </div>
                                                     </div>
                                                     
-                                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
-                                                        <div>
-                                                            <div className="text-sm text-gray-400">Current Price</div>
-                                                            <div className="font-bold text-white">${rec.currentPrice.toLocaleString()}</div>
+                                            <div className="flex justify-between items-center mb-4">
+                                                <div className="flex items-center gap-4">
+                                                    <div className="flex items-center">
+                                                        <span className={`risk-indicator ${getRiskClass(pick.risk)}`}></span>
+                                                        <span className="text-sm text-gray-300">{pick.risk.toUpperCase()} RISK</span>
                                                         </div>
-                                                        <div>
-                                                            <div className="text-sm text-gray-400">Predicted Price</div>
-                                                            <div className="font-bold text-green-400">${rec.predictedPrice.toLocaleString()}</div>
-                                                        </div>
-                                                        <div>
-                                                            <div className="text-sm text-gray-400">Timeframe</div>
-                                                            <div className="font-bold text-cyan-400">{rec.timeframe}</div>
-                                                        </div>
-                                                        <div>
-                                                            <div className="text-sm text-gray-400">Confidence</div>
-                                                            <div className="font-bold text-yellow-400">{rec.confidence}%</div>
-                                                        </div>
+                                                    <div className="text-sm text-gray-300">
+                                                        Confidence: {pick.confidence}%
                                                     </div>
-                                                    
-                                                    <div className="flex items-center justify-between">
-                                                        <div className={`px-3 py-1 rounded-full text-xs font-bold ${getRiskClass(rec.risk)}`}>
-                                                            {getRiskText(rec.risk)}
-                                                        </div>
-                                                        <div className="text-sm text-gray-300 max-w-md">
-                                                            {rec.reasoning}
-                                                        </div>
+                                                    <div className={`text-sm font-bold ${getUrgencyClass(pick.urgency)}`}>
+                                                        {pick.urgency.toUpperCase()} URGENCY
                                                     </div>
                                                 </div>
-                                            ))}
+                                                <div className="text-sm text-gray-400">
+                                                    Current: ${pick.currentPrice.toLocaleString()}
+                                                </div>
                                         </div>
-                                    )}
+                                            
+                                            <div className="mb-4">
+                                                <div className="confidence-bar" style={{width: `${pick.confidence}%`}}></div>
                                 </div>
 
-                                {/* ROI Chart */}
-                                <div className="glass-morphism rounded-2xl p-6">
-                                    <h3 className="text-2xl font-bold text-cyan-400 mb-4">Top 5 ROI Projections</h3>
-                                    <div className="h-64">
-                                        <canvas ref={chartRef}></canvas>
+                                            <div className="flex justify-between items-center">
+                                                <div className="text-sm text-gray-300">
+                                                    Action: <span className="text-cyan-400 font-bold">{pick.action}</span>
+                                                </div>
+                                                <div className="flex gap-2">
+                                                    <button 
+                                                        onClick={() => handleAction(pick, 'BUY')}
+                                                        className="quantum-btn px-4 py-2 rounded-lg text-sm"
+                                                    >
+                                                        Buy Now
+                                                    </button>
+                                                    <button 
+                                                        onClick={() => handleAction(pick, 'WATCHLIST')}
+                                                        className="px-4 py-2 border border-cyan-400 text-cyan-400 rounded-lg text-sm hover:bg-cyan-400/10 transition-colors"
+                                                    >
+                                                        Add to Watchlist
+                                                    </button>
+                                                </div>
+                                            </div>
                                     </div>
+                                    ))}
                                 </div>
                             </div>
 
-                            {/* Right Column - Playbooks */}
-                            <div className="space-y-6">
+                            {/* Investment Playbooks */}
                                 <div className="glass-morphism rounded-2xl p-6">
                                     <h3 className="text-2xl font-bold text-cyan-400 mb-6">Investment Playbooks</h3>
-                                    
-                                    <div className="space-y-4">
-                                        {playbooks.map((playbook) => (
+                                <div className="grid md:grid-cols-3 gap-6">
+                                    {investmentPlaybooks.map((playbook) => (
                                             <div 
                                                 key={playbook.id}
-                                                className={`playbook-card p-4 rounded-lg cursor-pointer transition-all ${
-                                                    selectedPlaybook === playbook.id ? 'ring-2 ring-cyan-400' : ''
-                                                }`}
-                                                onClick={() => setSelectedPlaybook(playbook.id)}
-                                            >
-                                                <div className="flex items-center gap-3 mb-3">
-                                                    <div className="text-2xl">{playbook.icon}</div>
-                                                    <div>
-                                                        <div className="font-bold text-white">{playbook.name}</div>
+                                            onClick={() => handlePlaybookSelect(playbook)}
+                                            className={`playbook-card p-6 rounded-lg cursor-pointer ${
+                                                selectedPlaybook?.id === playbook.id ? 'selected' : ''
+                                            }`}
+                                        >
+                                            <div className="text-center mb-4">
+                                                <div className="text-4xl mb-2">{playbook.icon}</div>
+                                                <div className="font-bold text-white text-lg">{playbook.name}</div>
                                                         <div className="text-sm text-gray-400">{playbook.description}</div>
-                                                    </div>
                                                 </div>
                                                 
                                                 <div className="space-y-2 text-sm">
@@ -559,75 +577,67 @@
                                                     </div>
                                                     <div className="flex justify-between">
                                                         <span className="text-gray-400">Risk:</span>
-                                                        <span className="text-yellow-400">{playbook.risk}</span>
+                                                    <span className={`${getRiskClass(playbook.riskLevel)}`}>
+                                                        {playbook.riskLevel.toUpperCase()}
+                                                    </span>
+                                                </div>
+                                                <div className="flex justify-between">
+                                                    <span className="text-gray-400">ROI:</span>
+                                                    <span className="text-green-400 font-bold">{playbook.expectedROI}</span>
                                                     </div>
                                                     <div className="flex justify-between">
                                                         <span className="text-gray-400">Timeframe:</span>
                                                         <span className="text-cyan-400">{playbook.timeframe}</span>
-                                                    </div>
-                                                    <div className="flex justify-between">
-                                                        <span className="text-gray-400">Target ROI:</span>
-                                                        <span className="text-green-400">{playbook.targetROI}</span>
-                                                    </div>
-                                                    <div className="text-xs text-gray-300 mt-2">
-                                                        Best for: {playbook.bestFor}
-                                                    </div>
+                                                </div>
                                                 </div>
                                             </div>
                                         ))}
-                                    </div>
                                 </div>
 
-                                {/* Market Insights */}
-                                <div className="glass-morphism rounded-2xl p-6">
-                                    <h3 className="text-2xl font-bold text-cyan-400 mb-4">Market Insights</h3>
-                                    
-                                    <div className="space-y-4">
-                                        <div className="cyber-card p-4 rounded-lg">
-                                            <div className="text-green-400 font-bold mb-2">📈 Hot Market</div>
-                                            <div className="text-sm text-gray-300">
-                                                NBA rookie cards surging 40% this week
+                                {/* Selected Playbook Details */}
+                                {selectedPlaybook && (
+                                    <div className="mt-8 p-6 bg-black/30 rounded-lg">
+                                        <h4 className="text-xl font-bold text-cyan-400 mb-4">
+                                            {selectedPlaybook.name} - Detailed Strategy
+                                        </h4>
+                                        <div className="grid md:grid-cols-2 gap-6">
+                                            <div>
+                                                <div className="text-sm text-gray-400 mb-2">Target Cards:</div>
+                                                <div className="text-white mb-4">{selectedPlaybook.targetCards}</div>
+                                                
+                                                <div className="text-sm text-gray-400 mb-2">Key Tips:</div>
+                                                <ul className="space-y-1">
+                                                    {selectedPlaybook.tips.map((tip, index) => (
+                                                        <li key={index} className="text-sm text-gray-300">
+                                                            • {tip}
+                                                        </li>
+                                                    ))}
+                                                </ul>
                                             </div>
+                                            <div className="text-center">
+                                                <div className="text-6xl mb-4">{selectedPlaybook.icon}</div>
+                                                <div className="text-2xl font-bold text-cyan-400 mb-2">
+                                                    {selectedPlaybook.expectedROI}
                                         </div>
-                                        
-                                        <div className="cyber-card p-4 rounded-lg">
-                                            <div className="text-yellow-400 font-bold mb-2">⚠️ Watch List</div>
-                                            <div className="text-sm text-gray-300">
-                                                NFL playoff cards gaining momentum
-                                            </div>
-                                        </div>
-                                        
-                                        <div className="cyber-card p-4 rounded-lg">
-                                            <div className="text-red-400 font-bold mb-2">📉 Cooling Down</div>
-                                            <div className="text-sm text-gray-300">
-                                                Baseball cards stabilizing after spike
+                                                <div className="text-sm text-gray-400">Expected ROI</div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-
-                                {/* Quick Actions */}
-                                <div className="glass-morphism rounded-2xl p-6">
-                                    <h3 className="text-2xl font-bold text-cyan-400 mb-4">Quick Actions</h3>
-                                    
-                                    <div className="space-y-3">
-                                        <button className="quantum-btn w-full py-3 rounded-lg">
-                                            📊 Generate Custom Report
-                                        </button>
-                                        <button className="quantum-btn w-full py-3 rounded-lg">
-                                            🔔 Set Price Alerts
-                                        </button>
-                                        <button className="quantum-btn w-full py-3 rounded-lg">
-                                            📈 Track Portfolio
-                                        </button>
-                                        <button className="quantum-btn w-full py-3 rounded-lg">
-                                            🎯 AI Recommendations
-                                        </button>
-                                    </div>
-                                </div>
+                                )}
                             </div>
                         </div>
                     </main>
+
+                    {/* Loading Overlay */}
+                    {isLoading && (
+                        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
+                            <div className="text-center">
+                                <div className="loading-spinner mx-auto mb-4"></div>
+                                <div className="text-2xl font-bold infinity-text">Loading Compass...</div>
+                                <div className="text-gray-400 mt-2">Preparing investment intelligence</div>
+                            </div>
+                        </div>
+                    )}
                 </div>
             );
         }

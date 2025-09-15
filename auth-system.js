@@ -51,6 +51,7 @@ class InfinityAuthSystem {
             // Create new user
             const userId = this.generateUserId();
             const hashedPassword = await this.hashPassword(password);
+            const twoFactorSecret = this.generate2FASecret();
             
             const newUser = {
                 id: userId,
@@ -65,31 +66,50 @@ class InfinityAuthSystem {
                     location: '',
                     favoriteSports: [],
                     riskTolerance: 'medium',
-                    investmentStyle: 'balanced'
+                    investmentStyle: 'balanced',
+                    experience: 'beginner',
+                    goals: []
                 },
                 portfolio: [],
                 gradingHistory: [],
                 oracleChats: [],
                 achievements: [],
                 watchlist: [],
+                investmentHistory: [],
+                badges: [],
                 preferences: {
                     theme: 'dark',
                     notifications: true,
                     emailAlerts: true,
                     pushNotifications: true,
-                    language: 'en'
+                    language: 'en',
+                    currency: 'USD',
+                    timezone: 'UTC'
                 },
                 subscription: 'free',
+                subscriptionExpiry: null,
                 stats: {
                     totalValue: 0,
                     totalROI: 0,
                     gradingAccuracy: 0,
                     predictionAccuracy: 0,
                     rank: 0,
-                    badges: []
+                    badges: [],
+                    level: 1,
+                    xp: 0,
+                    streak: 0,
+                    totalTrades: 0,
+                    successfulPredictions: 0,
+                    totalPredictions: 0
                 },
                 twoFactorEnabled: false,
-                twoFactorSecret: null
+                twoFactorSecret: twoFactorSecret,
+                securityQuestions: [],
+                loginAttempts: 0,
+                lastFailedLogin: null,
+                accountLocked: false,
+                emailVerified: false,
+                verificationToken: this.generateVerificationToken()
             };
 
             // Save user to localStorage
@@ -539,6 +559,232 @@ class InfinityAuthSystem {
     saveCurrentUser() {
         if (this.currentUser) {
             localStorage.setItem('infinity-current-user', JSON.stringify(this.currentUser));
+        }
+    }
+
+    // 2FA Methods
+    generate2FASecret() {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+        let secret = '';
+        for (let i = 0; i < 32; i++) {
+            secret += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return secret;
+    }
+
+    generate2FAQRCode(secret, email) {
+        const issuer = 'Infinity Sports Cards';
+        const account = email;
+        const otpauth = `otpauth://totp/${issuer}:${account}?secret=${secret}&issuer=${issuer}`;
+        return `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(otpauth)}`;
+    }
+
+    generateTOTPCode(secret) {
+        const epoch = Math.round(new Date().getTime() / 1000.0);
+        const time = Math.floor(epoch / 30);
+        const key = this.base32Decode(secret);
+        const message = this.intToBytes(time);
+        const hmac = this.hmacSHA1(key, message);
+        const offset = hmac[hmac.length - 1] & 0xf;
+        const code = ((hmac[offset] & 0x7f) << 24) |
+                    ((hmac[offset + 1] & 0xff) << 16) |
+                    ((hmac[offset + 2] & 0xff) << 8) |
+                    (hmac[offset + 3] & 0xff);
+        return (code % 1000000).toString().padStart(6, '0');
+    }
+
+    verify2FACode(secret, code) {
+        const expectedCode = this.generateTOTPCode(secret);
+        return code === expectedCode;
+    }
+
+    enable2FA(userId, code) {
+        const user = this.getUserById(userId);
+        if (!user) return { success: false, error: 'User not found' };
+
+        if (this.verify2FACode(user.twoFactorSecret, code)) {
+            user.twoFactorEnabled = true;
+            this.saveUser(user);
+            return { success: true, message: '2FA enabled successfully' };
+        } else {
+            return { success: false, error: 'Invalid 2FA code' };
+        }
+    }
+
+    disable2FA(userId, code) {
+        const user = this.getUserById(userId);
+        if (!user) return { success: false, error: 'User not found' };
+
+        if (this.verify2FACode(user.twoFactorSecret, code)) {
+            user.twoFactorEnabled = false;
+            this.saveUser(user);
+            return { success: true, message: '2FA disabled successfully' };
+        } else {
+            return { success: false, error: 'Invalid 2FA code' };
+        }
+    }
+
+    // Enhanced Security Methods
+    generateVerificationToken() {
+        return 'verify_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    }
+
+    verifyEmail(token) {
+        const users = this.getAllUsers();
+        const user = users.find(u => u.verificationToken === token);
+        if (user) {
+            user.emailVerified = true;
+            user.verificationToken = null;
+            this.saveUser(user);
+            return { success: true, message: 'Email verified successfully' };
+        }
+        return { success: false, error: 'Invalid verification token' };
+    }
+
+    resetPassword(email) {
+        const user = this.getUserByEmail(email);
+        if (!user) return { success: false, error: 'User not found' };
+
+        const resetToken = this.generateVerificationToken();
+        user.resetToken = resetToken;
+        user.resetTokenExpiry = Date.now() + (24 * 60 * 60 * 1000); // 24 hours
+        this.saveUser(user);
+
+        // In production, send email with reset link
+        return { success: true, message: 'Password reset email sent', resetToken };
+    }
+
+    updatePassword(resetToken, newPassword) {
+        const users = this.getAllUsers();
+        const user = users.find(u => u.resetToken === resetToken && u.resetTokenExpiry > Date.now());
+        if (!user) return { success: false, error: 'Invalid or expired reset token' };
+
+        user.password = this.hashPassword(newPassword);
+        user.resetToken = null;
+        user.resetTokenExpiry = null;
+        this.saveUser(user);
+
+        return { success: true, message: 'Password updated successfully' };
+    }
+
+    // Utility Methods for 2FA
+    base32Decode(str) {
+        const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+        const bits = [];
+        for (let i = 0; i < str.length; i++) {
+            const val = alphabet.indexOf(str[i].toUpperCase());
+            if (val === -1) continue;
+            for (let j = 4; j >= 0; j--) {
+                bits.push((val >> j) & 1);
+            }
+        }
+        const bytes = [];
+        for (let i = 0; i < bits.length; i += 8) {
+            let byte = 0;
+            for (let j = 0; j < 8; j++) {
+                if (bits[i + j]) byte |= 1 << (7 - j);
+            }
+            bytes.push(byte);
+        }
+        return new Uint8Array(bytes);
+    }
+
+    intToBytes(num) {
+        const bytes = new Uint8Array(8);
+        for (let i = 7; i >= 0; i--) {
+            bytes[i] = num & 0xff;
+            num >>>= 8;
+        }
+        return bytes;
+    }
+
+    hmacSHA1(key, message) {
+        // Simplified HMAC-SHA1 implementation
+        // In production, use a proper crypto library
+        const blockSize = 64;
+        const opad = new Uint8Array(blockSize);
+        const ipad = new Uint8Array(blockSize);
+        
+        if (key.length > blockSize) {
+            key = this.sha1(key);
+        }
+        
+        for (let i = 0; i < blockSize; i++) {
+            opad[i] = 0x5c;
+            ipad[i] = 0x36;
+        }
+        
+        for (let i = 0; i < key.length; i++) {
+            opad[i] ^= key[i];
+            ipad[i] ^= key[i];
+        }
+        
+        const innerHash = this.sha1(this.concat(ipad, message));
+        return this.sha1(this.concat(opad, innerHash));
+    }
+
+    sha1(data) {
+        // Simplified SHA1 implementation
+        // In production, use a proper crypto library
+        return new Uint8Array(20); // Placeholder
+    }
+
+    concat(a, b) {
+        const result = new Uint8Array(a.length + b.length);
+        result.set(a);
+        result.set(b, a.length);
+        return result;
+    }
+
+    // Additional User Management
+    getUserById(userId) {
+        const users = this.getAllUsers();
+        return users.find(user => user.id === userId);
+    }
+
+    updateUserStats(userId, stats) {
+        const user = this.getUserById(userId);
+        if (!user) return { success: false, error: 'User not found' };
+
+        Object.assign(user.stats, stats);
+        this.saveUser(user);
+        return { success: true, stats: user.stats };
+    }
+
+    addBadge(userId, badge) {
+        const user = this.getUserById(userId);
+        if (!user) return { success: false, error: 'User not found' };
+
+        if (!user.badges.includes(badge)) {
+            user.badges.push(badge);
+            user.stats.badges.push(badge);
+            this.saveUser(user);
+        }
+
+        return { success: true, badges: user.badges };
+    }
+
+    // AI Learning Integration
+    storeUserInteraction(type, data, outcome) {
+        if (!this.isAuthenticated) return;
+
+        const interaction = {
+            type,
+            data,
+            outcome,
+            timestamp: Date.now(),
+            userId: this.currentUser.id
+        };
+
+        if (!this.currentUser.interactions) {
+            this.currentUser.interactions = [];
+        }
+        this.currentUser.interactions.push(interaction);
+        this.saveUser(this.currentUser);
+
+        // Update AI learning system
+        if (window.InfinityAI) {
+            window.InfinityAI.learnFromInteraction(interaction);
         }
     }
 }
