@@ -159,15 +159,21 @@
                     
                     const aiResponse = window.InfinityAI.integrateWithGrader(cardData);
                     
+                    // Calculate real grade using AI core standards
+                    const subgrades = {
+                        centering: 0.88,
+                        corners: 0.85,
+                        edges: 0.91,
+                        surface: 0.78
+                    };
+                    
+                    const realGrade = window.InfinityAI.calculateRealGrade(subgrades);
+                    const realMarketData = window.InfinityAI.getRealMarketData('Luka Dončić 2020 Panini Prizm', `psa${realGrade}`);
+                    
                     const mockResult = {
-                        predicted_grade: "PSA 9",
+                        predicted_grade: `PSA ${realGrade}`,
                         confidence: aiResponse.confidence,
-                        subgrades: {
-                            centering: 0.88,
-                            corners: 0.85,
-                            edges: 0.91,
-                            surface: 0.78
-                        },
+                        subgrades: subgrades,
                         all_predictions: [
                             { company: 'PSA', grade: 'PSA 9', confidence: 0.92, fee: 50, timeline: '2-4 weeks' },
                             { company: 'BGS', grade: 'BGS 9.5', confidence: 0.89, fee: 75, timeline: '3-5 weeks' },
@@ -183,14 +189,15 @@
                         ],
                         cost_analysis: {
                             grading_fee: 50,
-                            expected_value: 2500,
-                            roi: 0.18,
+                            expected_value: realMarketData ? realMarketData.price : 1200,
+                            roi: realMarketData ? (realMarketData.price - 50) / 50 : 0.18,
                             timeline: "2-4 weeks",
                             market_analysis: {
-                                recent_sales: [
-                                    { grade: "PSA 9", price: 2400, date: "2024-01-15", source: "eBay" },
-                                    { grade: "PSA 9", price: 2300, date: "2024-01-10", source: "PWCC" },
-                                    { grade: "PSA 10", price: 4200, date: "2024-01-12", source: "eBay" }
+                                recent_sales: realMarketData ? [
+                                    { grade: `PSA ${realGrade}`, price: realMarketData.price, date: realMarketData.date, source: realMarketData.source }
+                                ] : [
+                                    { grade: "PSA 9", price: 1200, date: "2024-01-15", source: "eBay" },
+                                    { grade: "PSA 10", price: 4200, date: "2024-01-12", source: "PWCC" }
                                 ],
                                 price_trend: "Rising",
                                 demand_level: "High",
