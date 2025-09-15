@@ -8,6 +8,8 @@
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/lottie-web@5.12.2/build/player/lottie.min.js"></script>
     <style>
         body {
             background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
@@ -92,7 +94,11 @@
             const [isAnalyzing, setIsAnalyzing] = useState(false);
             const [analysisResult, setAnalysisResult] = useState(null);
             const [uploadedImage, setUploadedImage] = useState(null);
+            const [analysisProgress, setAnalysisProgress] = useState(0);
+            const [selectedGradingCompany, setSelectedGradingCompany] = useState('PSA');
+            const [gradingHistory, setGradingHistory] = useState([]);
             const fileInputRef = useRef(null);
+            const chartRef = useRef(null);
 
             const handleFileUpload = (event) => {
                 const file = event.target.files[0];
@@ -123,42 +129,90 @@
 
             const analyzeCard = () => {
                 setIsAnalyzing(true);
+                setAnalysisProgress(0);
                 
-                // Simulate AI analysis
+                // Simulate progressive AI analysis
+                const progressInterval = setInterval(() => {
+                    setAnalysisProgress(prev => {
+                        if (prev >= 100) {
+                            clearInterval(progressInterval);
+                            return 100;
+                        }
+                        return prev + Math.random() * 15;
+                    });
+                }, 200);
+                
+                // Simulate AI analysis with more realistic data
                 setTimeout(() => {
                     const mockResult = {
-                        predicted_grade: "PSA 9",
-                        confidence: 0.92,
+                        predicted_grade: selectedGradingCompany === 'PSA' ? "PSA 9" : 
+                                       selectedGradingCompany === 'BGS' ? "BGS 9.5" : 
+                                       selectedGradingCompany === 'SGC' ? "SGC 9" : "TAG 9",
+                        confidence: 0.92 + Math.random() * 0.07,
                         subgrades: {
-                            centering: 0.88,
-                            corners: 0.85,
-                            edges: 0.91,
-                            surface: 0.78
+                            centering: 0.85 + Math.random() * 0.1,
+                            corners: 0.80 + Math.random() * 0.15,
+                            edges: 0.88 + Math.random() * 0.1,
+                            surface: 0.75 + Math.random() * 0.2
                         },
                         all_predictions: [
-                            { company: 'PSA', grade: 'PSA 9', confidence: 0.92 },
-                            { company: 'BGS', grade: 'BGS 9.5', confidence: 0.89 },
-                            { company: 'SGC', grade: 'SGC 9', confidence: 0.91 },
-                            { company: 'TAG', grade: 'TAG 9', confidence: 0.94 }
+                            { company: 'PSA', grade: 'PSA 9', confidence: 0.92, value_estimate: 2500 },
+                            { company: 'BGS', grade: 'BGS 9.5', confidence: 0.89, value_estimate: 2800 },
+                            { company: 'SGC', grade: 'SGC 9', confidence: 0.91, value_estimate: 2200 },
+                            { company: 'TAG', grade: 'TAG 9', confidence: 0.94, value_estimate: 2600 }
                         ],
-                        recommendation: "Submit to PSA; expected uplift to PSA 10 is 18% if recentered + press.",
+                        recommendation: "Submit to PSA; expected uplift to PSA 10 is 18% if recentered + press. Consider BGS for higher value potential.",
                         evidence: [
-                            { type: "surface_analysis", finding: "Minor surface wear detected", confidence: 0.88, location: "Top-right corner" },
-                            { type: "centering_analysis", finding: "Slight left bias detected", confidence: 0.92, measurement: "55/45 centering" },
-                            { type: "corner_analysis", finding: "Sharp corners with minor wear", confidence: 0.85, condition: "Good" },
-                            { type: "edge_analysis", finding: "Clean edges with minimal wear", confidence: 0.91, condition: "Excellent" }
+                            { type: "surface_analysis", finding: "Minor surface wear detected", confidence: 0.88, location: "Top-right corner", severity: "Low" },
+                            { type: "centering_analysis", finding: "Slight left bias detected", confidence: 0.92, measurement: "55/45 centering", impact: "Minimal" },
+                            { type: "corner_analysis", finding: "Sharp corners with minor wear", confidence: 0.85, condition: "Good", notes: "One corner shows slight rounding" },
+                            { type: "edge_analysis", finding: "Clean edges with minimal wear", confidence: 0.91, condition: "Excellent", notes: "No visible edge damage" },
+                            { type: "color_analysis", finding: "Vibrant colors with no fading", confidence: 0.95, condition: "Excellent" },
+                            { type: "print_quality", finding: "Sharp printing with no blur", confidence: 0.93, condition: "Excellent" }
                         ],
                         cost_analysis: {
-                            grading_fee: 50,
-                            expected_value: 2500,
-                            roi: 0.18,
-                            timeline: "2-4 weeks"
+                            grading_fee: selectedGradingCompany === 'PSA' ? 50 : 
+                                       selectedGradingCompany === 'BGS' ? 75 : 
+                                       selectedGradingCompany === 'SGC' ? 25 : 40,
+                            expected_value: 2500 + Math.random() * 1000,
+                            roi: 0.15 + Math.random() * 0.1,
+                            timeline: selectedGradingCompany === 'PSA' ? "2-4 weeks" : 
+                                    selectedGradingCompany === 'BGS' ? "3-5 weeks" : 
+                                    selectedGradingCompany === 'SGC' ? "1-2 weeks" : "2-3 weeks",
+                            insurance_cost: 25,
+                            shipping_cost: 15
+                        },
+                        market_analysis: {
+                            recent_sales: [
+                                { grade: "PSA 9", price: 2400, date: "2024-01-15", source: "eBay" },
+                                { grade: "PSA 9", price: 2600, date: "2024-01-10", source: "PWCC" },
+                                { grade: "PSA 10", price: 4500, date: "2024-01-08", source: "Heritage" }
+                            ],
+                            trend: "Rising",
+                            volatility: "Medium",
+                            liquidity: "High"
+                        },
+                        ai_insights: {
+                            strengths: ["Excellent centering", "Sharp corners", "Clean edges"],
+                            weaknesses: ["Minor surface wear", "Slight centering bias"],
+                            recommendations: ["Consider pressing for PSA 10 potential", "BGS may offer better value"],
+                            risk_factors: ["Market volatility", "Grading subjectivity"]
                         }
                     };
                     
                     setAnalysisResult(mockResult);
                     setIsAnalyzing(false);
-                }, 3000);
+                    setAnalysisProgress(100);
+                    
+                    // Add to grading history
+                    setGradingHistory(prev => [{
+                        id: Date.now(),
+                        image: uploadedImage,
+                        result: mockResult,
+                        timestamp: new Date(),
+                        company: selectedGradingCompany
+                    }, ...prev.slice(0, 9)]); // Keep last 10
+                }, 4000);
             };
 
             const goHome = () => {
@@ -219,6 +273,46 @@
                                         className="hidden"
                                     />
                                     
+                                    {/* Grading Company Selection */}
+                                    <div className="mt-4 mb-4">
+                                        <label className="block text-sm font-bold text-cyan-400 mb-2">
+                                            Select Grading Company
+                                        </label>
+                                        <select
+                                            value={selectedGradingCompany}
+                                            onChange={(e) => setSelectedGradingCompany(e.target.value)}
+                                            className="w-full p-3 bg-gray-800 border border-cyan-400/30 rounded-lg text-white focus:outline-none focus:border-cyan-400"
+                                        >
+                                            <option value="PSA">PSA (Professional Sports Authenticator)</option>
+                                            <option value="BGS">BGS (Beckett Grading Services)</option>
+                                            <option value="SGC">SGC (Sportscard Guaranty)</option>
+                                            <option value="TAG">TAG (Third-party Authentication)</option>
+                                        </select>
+                                    </div>
+
+                                    {/* Analysis Progress */}
+                                    {isAnalyzing && (
+                                        <div className="mb-4">
+                                            <div className="flex justify-between text-sm text-cyan-400 mb-2">
+                                                <span>AI Analysis Progress</span>
+                                                <span>{Math.round(analysisProgress)}%</span>
+                                            </div>
+                                            <div className="w-full bg-gray-700 rounded-full h-3">
+                                                <div 
+                                                    className="bg-gradient-to-r from-cyan-400 to-blue-500 h-3 rounded-full transition-all duration-300"
+                                                    style={{width: `${analysisProgress}%`}}
+                                                ></div>
+                                            </div>
+                                            <div className="text-xs text-gray-400 mt-2">
+                                                {analysisProgress < 25 && "Initializing nanoscopic scan..."}
+                                                {analysisProgress >= 25 && analysisProgress < 50 && "Analyzing surface quality..."}
+                                                {analysisProgress >= 50 && analysisProgress < 75 && "Evaluating centering and corners..."}
+                                                {analysisProgress >= 75 && analysisProgress < 100 && "Processing final grade prediction..."}
+                                                {analysisProgress >= 100 && "Analysis complete!"}
+                                            </div>
+                                        </div>
+                                    )}
+
                                     <div className="mt-4">
                                         <button
                                             onClick={analyzeCard}
@@ -304,37 +398,130 @@
 
                                         {/* Evidence */}
                                         <div className="cyber-card p-4 rounded-lg mb-4">
-                                            <h3 className="text-lg font-bold text-white mb-3">Analysis Evidence</h3>
-                                            <div className="space-y-2">
+                                            <h3 className="text-lg font-bold text-white mb-3">🔍 Detailed Analysis Evidence</h3>
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                                 {analysisResult.evidence.map((evidence, idx) => (
-                                                    <div key={idx} className="text-sm">
-                                                        <span className="text-cyan-400 font-bold capitalize">
-                                                            {evidence.type.replace('_', ' ')}:
-                                                        </span>
-                                                        <span className="text-gray-300 ml-2">{evidence.finding}</span>
-                                                        <span className="text-green-400 ml-2">
-                                                            ({Math.round(evidence.confidence * 100)}%)
-                                                        </span>
+                                                    <div key={idx} className="bg-gray-800/50 p-3 rounded-lg border border-cyan-500/30">
+                                                        <div className="flex items-center justify-between mb-2">
+                                                            <span className="text-cyan-400 font-bold text-sm capitalize">
+                                                                {evidence.type.replace('_', ' ')}
+                                                            </span>
+                                                            <span className="text-green-400 text-xs font-bold">
+                                                                {Math.round(evidence.confidence * 100)}%
+                                                            </span>
+                                                        </div>
+                                                        <div className="text-sm text-gray-300 mb-1">{evidence.finding}</div>
+                                                        {evidence.location && (
+                                                            <div className="text-xs text-gray-400">Location: {evidence.location}</div>
+                                                        )}
+                                                        {evidence.measurement && (
+                                                            <div className="text-xs text-gray-400">Measurement: {evidence.measurement}</div>
+                                                        )}
+                                                        {evidence.condition && (
+                                                            <div className="text-xs text-gray-400">Condition: {evidence.condition}</div>
+                                                        )}
+                                                        {evidence.severity && (
+                                                            <div className="text-xs text-gray-400">Severity: {evidence.severity}</div>
+                                                        )}
                                                     </div>
                                                 ))}
                                             </div>
                                         </div>
 
+                                        {/* Market Analysis */}
+                                        <div className="cyber-card p-4 rounded-lg mb-4">
+                                            <h3 className="text-lg font-bold text-white mb-3">📊 Market Analysis</h3>
+                                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                                                <div className="text-center">
+                                                    <div className="text-2xl font-bold text-green-400">{analysisResult.market_analysis.trend}</div>
+                                                    <div className="text-xs text-gray-400">Price Trend</div>
+                                                </div>
+                                                <div className="text-center">
+                                                    <div className="text-2xl font-bold text-yellow-400">{analysisResult.market_analysis.volatility}</div>
+                                                    <div className="text-xs text-gray-400">Volatility</div>
+                                                </div>
+                                                <div className="text-center">
+                                                    <div className="text-2xl font-bold text-blue-400">{analysisResult.market_analysis.liquidity}</div>
+                                                    <div className="text-xs text-gray-400">Liquidity</div>
+                                                </div>
+                                            </div>
+                                            <div className="space-y-2">
+                                                <div className="text-sm font-bold text-cyan-400 mb-2">Recent Sales:</div>
+                                                {analysisResult.market_analysis.recent_sales.map((sale, idx) => (
+                                                    <div key={idx} className="flex justify-between text-sm">
+                                                        <span className="text-gray-300">{sale.grade} - {sale.source}</span>
+                                                        <span className="text-green-400 font-bold">${sale.price}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+
+                                        {/* AI Insights */}
+                                        <div className="cyber-card p-4 rounded-lg mb-4">
+                                            <h3 className="text-lg font-bold text-white mb-3">🧠 AI Insights</h3>
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                <div>
+                                                    <div className="text-sm font-bold text-green-400 mb-2">Strengths:</div>
+                                                    <ul className="text-xs text-gray-300 space-y-1">
+                                                        {analysisResult.ai_insights.strengths.map((strength, idx) => (
+                                                            <li key={idx}>• {strength}</li>
+                                                        ))}
+                                                    </ul>
+                                                </div>
+                                                <div>
+                                                    <div className="text-sm font-bold text-red-400 mb-2">Weaknesses:</div>
+                                                    <ul className="text-xs text-gray-300 space-y-1">
+                                                        {analysisResult.ai_insights.weaknesses.map((weakness, idx) => (
+                                                            <li key={idx}>• {weakness}</li>
+                                                        ))}
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div className="mt-4">
+                                                <div className="text-sm font-bold text-blue-400 mb-2">Recommendations:</div>
+                                                <ul className="text-xs text-gray-300 space-y-1">
+                                                    {analysisResult.ai_insights.recommendations.map((rec, idx) => (
+                                                        <li key={idx}>• {rec}</li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                        </div>
+
                                         {/* Cost Analysis */}
                                         <div className="cyber-card p-4 rounded-lg">
-                                            <h3 className="text-lg font-bold text-white mb-3">Cost Analysis</h3>
+                                            <h3 className="text-lg font-bold text-white mb-3">💰 Cost Analysis</h3>
+                                            <div className="grid grid-cols-2 gap-4 mb-4">
+                                                <div className="text-center">
+                                                    <div className="text-2xl font-bold text-green-400">
+                                                        ${analysisResult.cost_analysis.expected_value}
+                                                    </div>
+                                                    <div className="text-xs text-gray-400">Expected Value</div>
+                                                </div>
+                                                <div className="text-center">
+                                                    <div className="text-2xl font-bold text-cyan-400">
+                                                        +{Math.round(analysisResult.cost_analysis.roi * 100)}%
+                                                    </div>
+                                                    <div className="text-xs text-gray-400">ROI</div>
+                                                </div>
+                                            </div>
                                             <div className="space-y-2 text-sm">
                                                 <div className="flex justify-between">
                                                     <span className="text-gray-400">Grading Fee:</span>
                                                     <span className="text-white">${analysisResult.cost_analysis.grading_fee}</span>
                                                 </div>
                                                 <div className="flex justify-between">
-                                                    <span className="text-gray-400">Expected Value:</span>
-                                                    <span className="text-green-400">${analysisResult.cost_analysis.expected_value}</span>
+                                                    <span className="text-gray-400">Insurance:</span>
+                                                    <span className="text-white">${analysisResult.cost_analysis.insurance_cost}</span>
                                                 </div>
                                                 <div className="flex justify-between">
-                                                    <span className="text-gray-400">ROI:</span>
-                                                    <span className="text-green-400">+{Math.round(analysisResult.cost_analysis.roi * 100)}%</span>
+                                                    <span className="text-gray-400">Shipping:</span>
+                                                    <span className="text-white">${analysisResult.cost_analysis.shipping_cost}</span>
+                                                </div>
+                                                <div className="flex justify-between border-t border-gray-600 pt-2">
+                                                    <span className="text-gray-400 font-bold">Total Cost:</span>
+                                                    <span className="text-white font-bold">
+                                                        ${analysisResult.cost_analysis.grading_fee + analysisResult.cost_analysis.insurance_cost + analysisResult.cost_analysis.shipping_cost}
+                                                    </span>
                                                 </div>
                                                 <div className="flex justify-between">
                                                     <span className="text-gray-400">Timeline:</span>
@@ -354,6 +541,42 @@
                                 )}
                             </div>
                         </div>
+
+                        {/* Grading History */}
+                        {gradingHistory.length > 0 && (
+                            <div className="mt-8">
+                                <div className="glass-morphism p-6 rounded-lg">
+                                    <h3 className="text-2xl font-bold text-cyan-400 mb-6">📚 Grading History</h3>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                        {gradingHistory.map((item) => (
+                                            <div key={item.id} className="cyber-card p-4 rounded-lg">
+                                                <div className="flex items-center gap-3 mb-3">
+                                                    <img 
+                                                        src={item.image} 
+                                                        alt="Graded card" 
+                                                        className="w-16 h-20 object-cover rounded"
+                                                    />
+                                                    <div className="flex-1">
+                                                        <div className="text-lg font-bold text-white">
+                                                            {item.result.predicted_grade}
+                                                        </div>
+                                                        <div className="text-sm text-cyan-400">
+                                                            {item.company} • {Math.round(item.result.confidence * 100)}%
+                                                        </div>
+                                                        <div className="text-xs text-gray-400">
+                                                            {item.timestamp.toLocaleDateString()}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="text-sm text-gray-300">
+                                                    Expected Value: ${item.result.cost_analysis.expected_value}
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                     </main>
                 </div>
             );
