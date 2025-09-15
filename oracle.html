@@ -8,6 +8,8 @@
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/lottie-web@5.12.2/build/player/lottie.min.js"></script>
     <style>
         body {
             background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
@@ -106,7 +108,11 @@
             const [messages, setMessages] = useState([]);
             const [inputMessage, setInputMessage] = useState('');
             const [isTyping, setIsTyping] = useState(false);
+            const [selectedModule, setSelectedModule] = useState('general');
+            const [conversationHistory, setConversationHistory] = useState([]);
+            const [aiPersonality, setAiPersonality] = useState('oracle');
             const chatEndRef = useRef(null);
+            const chartRef = useRef(null);
 
             const scrollToBottom = () => {
                 chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -116,30 +122,49 @@
                 scrollToBottom();
             }, [messages]);
 
-            const getOracleResponse = (question) => {
+            const getOracleResponse = (question, module = 'general') => {
                 const q = question.toLowerCase();
                 
+                // Enhanced Luka analysis
                 if (q.includes('luka') && q.includes('prizm')) {
                     return {
-                        statement: "Buy Luka Dončić Prizm Silver now",
+                        statement: "Buy Luka Dončić Prizm Silver now - Strong momentum detected",
                         confidence: 0.87,
                         timeframe: "3-6 months",
-                        rationale: "Recent 45% social volume spike + two PSA 10 comps in last 7 days; rookie parallels are trending upward.",
+                        rationale: "Recent 45% social volume spike + two PSA 10 comps in last 7 days; rookie parallels are trending upward with Dallas making playoff push.",
                         evidence: [
-                            { type: "comp", id: "comp_123", price: 1200, date: "2025-09-10", source: "eBay PSA 10" },
-                            { type: "social", source: "tiktok", score: 0.42, delta: "+45%", platform: "TikTok" },
-                            { type: "game", event: "30-pt triple-double", date: "2025-09-09", impact: "High" },
-                            { type: "market", trend: "Rookie parallels up 23%", timeframe: "7 days", confidence: 0.91 }
+                            { type: "comp", id: "comp_123", price: 1200, date: "2025-09-10", source: "eBay PSA 10", grade: "PSA 10" },
+                            { type: "social", source: "tiktok", score: 0.42, delta: "+45%", platform: "TikTok", engagement: "High" },
+                            { type: "game", event: "30-pt triple-double", date: "2025-09-09", impact: "High", team: "Dallas Mavericks" },
+                            { type: "market", trend: "Rookie parallels up 23%", timeframe: "7 days", confidence: 0.91, category: "Basketball" },
+                            { type: "injury", status: "Healthy", risk: "Low", last_injury: "None in 2024" },
+                            { type: "contract", years: "4", value: "$207M", security: "High", team: "Dallas Mavericks" }
                         ],
                         actions: [
                             { type: "add_watchlist", label: "Add to Watchlist", endpoint: "/api/watchlist/add?card=luka_prizm_silver" },
                             { type: "simulate_trade", label: "Simulate Buy $500", endpoint: "/api/simulate" },
-                            { type: "grade_card", label: "Grade This Card", endpoint: "/api/grader/scan" }
+                            { type: "grade_card", label: "Grade This Card", endpoint: "/api/grader/scan" },
+                            { type: "set_alert", label: "Set Price Alert", endpoint: "/api/alerts/set" }
                         ],
                         risk_assessment: {
                             worst_case: "15% downside if injury occurs",
                             best_case: "200% upside in 6 months",
-                            probability_distribution: "70% chance of 50%+ gains"
+                            probability_distribution: "70% chance of 50%+ gains",
+                            volatility: "Medium",
+                            liquidity: "High"
+                        },
+                        market_analysis: {
+                            current_price: 1200,
+                            price_target: 1800,
+                            support_level: 1000,
+                            resistance_level: 1500,
+                            volume_trend: "Increasing",
+                            sentiment: "Bullish"
+                        },
+                        ai_insights: {
+                            key_drivers: ["Playoff performance", "Social media buzz", "Rookie card scarcity"],
+                            catalysts: ["Dallas playoff run", "All-Star selection", "Contract extension"],
+                            risks: ["Injury risk", "Market correction", "Grading standards"]
                         }
                     };
                 }
@@ -252,12 +277,23 @@
                 window.location.href = 'home.html';
             };
 
+            const aiModules = [
+                { id: 'general', name: 'General Oracle', icon: '🌌', description: 'Ask anything about cards' },
+                { id: 'predictive', name: 'Predictive Engine', icon: '🔮', description: 'Future price predictions' },
+                { id: 'market', name: 'Market Analysis', icon: '📊', description: 'Market trends and data' },
+                { id: 'coach', name: 'AI Coach', icon: '🎓', description: 'Learn investment strategies' },
+                { id: 'synergy', name: 'Synergy Alerts', icon: '⚡', description: 'Find related opportunities' }
+            ];
+
             const quickQuestions = [
                 "Should I buy Luka Prizm Silver?",
                 "What about Wembanyama rookie cards?",
                 "Is Mahomes a good investment?",
                 "What are the top trends right now?",
-                "Which cards should I avoid?"
+                "Which cards should I avoid?",
+                "Show me market analysis",
+                "Teach me about grading",
+                "Find synergy opportunities"
             ];
 
             return (
@@ -281,10 +317,37 @@
 
                     <main className="container mx-auto px-6 py-8">
                         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-                            {/* Quick Questions */}
-                            <div className="lg:col-span-1">
+                            {/* AI Modules & Quick Questions */}
+                            <div className="lg:col-span-1 space-y-6">
+                                {/* AI Modules */}
                                 <div className="glass-morphism p-6 rounded-lg sticky top-24">
-                                    <h3 className="text-lg font-bold text-purple-400 mb-4">Quick Questions</h3>
+                                    <h3 className="text-lg font-bold text-purple-400 mb-4">🧠 AI Modules</h3>
+                                    <div className="space-y-2">
+                                        {aiModules.map((module) => (
+                                            <button
+                                                key={module.id}
+                                                onClick={() => setSelectedModule(module.id)}
+                                                className={`cyber-card w-full p-3 text-left text-sm transition-all ${
+                                                    selectedModule === module.id 
+                                                        ? 'border-purple-400 bg-purple-500/20' 
+                                                        : 'hover:scale-105'
+                                                }`}
+                                            >
+                                                <div className="flex items-center gap-2">
+                                                    <span className="text-lg">{module.icon}</span>
+                                                    <div>
+                                                        <div className="font-bold text-white">{module.name}</div>
+                                                        <div className="text-xs text-gray-400">{module.description}</div>
+                                                    </div>
+                                                </div>
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Quick Questions */}
+                                <div className="glass-morphism p-6 rounded-lg">
+                                    <h3 className="text-lg font-bold text-purple-400 mb-4">⚡ Quick Questions</h3>
                                     <div className="space-y-2">
                                         {quickQuestions.map((question, idx) => (
                                             <button
@@ -305,6 +368,9 @@
                                     <div className="text-center mb-6">
                                         <h2 className="text-3xl font-bold oracle-glow mb-2">🌌 Infinity Oracle Chat</h2>
                                         <p className="text-gray-300">Ask me anything about the sports card universe</p>
+                                        <div className="mt-2 text-sm text-purple-400">
+                                            Active Module: {aiModules.find(m => m.id === selectedModule)?.name}
+                                        </div>
                                     </div>
                                     
                                     <div className="h-96 overflow-y-auto mb-4 p-4 bg-black/30 rounded-lg">
@@ -354,13 +420,13 @@
                                                                     
                                                                     {msg.message.evidence && msg.message.evidence.length > 0 && (
                                                                         <div className="space-y-2">
-                                                                            <div className="font-bold text-purple-400">Evidence:</div>
-                                                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                                                            <div className="font-bold text-purple-400">🔍 Evidence:</div>
+                                                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                                                                 {msg.message.evidence.map((evidence, idx) => (
-                                                                                    <div key={idx} className="bg-gray-800/50 p-3 rounded-lg border border-purple-500/30">
-                                                                                        <div className="flex items-center gap-2 mb-1">
+                                                                                    <div key={idx} className="bg-gray-800/50 p-4 rounded-lg border border-purple-500/30">
+                                                                                        <div className="flex items-center gap-2 mb-2">
                                                                                             <span className="text-xs font-bold text-purple-400 uppercase">
-                                                                                                {evidence.type}
+                                                                                                {evidence.type.replace('_', ' ')}
                                                                                             </span>
                                                                                             {evidence.confidence && (
                                                                                                 <span className="text-xs text-green-400">
@@ -368,16 +434,104 @@
                                                                                                 </span>
                                                                                             )}
                                                                                         </div>
-                                                                                        <div className="text-sm text-gray-300">
-                                                                                            {evidence.type === 'comp' && `${evidence.source}: $${evidence.price} (${evidence.date})`}
-                                                                                            {evidence.type === 'social' && `${evidence.platform}: ${evidence.delta} (${evidence.score})`}
-                                                                                            {evidence.type === 'game' && `${evidence.event} (${evidence.date}) - ${evidence.impact} impact`}
-                                                                                            {evidence.type === 'market' && `${evidence.trend} (${evidence.timeframe})`}
-                                                                                            {evidence.type === 'international' && `${evidence.region}: ${evidence.demand} (${evidence.reason})`}
-                                                                                            {evidence.type === 'contract' && `${evidence.status} (${evidence.years} years) - ${evidence.security} security`}
+                                                                                        <div className="text-sm text-gray-300 space-y-1">
+                                                                                            {evidence.type === 'comp' && (
+                                                                                                <div>
+                                                                                                    <div>{evidence.source}: ${evidence.price} ({evidence.date})</div>
+                                                                                                    {evidence.grade && <div className="text-xs text-cyan-400">Grade: {evidence.grade}</div>}
+                                                                                                </div>
+                                                                                            )}
+                                                                                            {evidence.type === 'social' && (
+                                                                                                <div>
+                                                                                                    <div>{evidence.platform}: {evidence.delta} (Score: {evidence.score})</div>
+                                                                                                    {evidence.engagement && <div className="text-xs text-cyan-400">Engagement: {evidence.engagement}</div>}
+                                                                                                </div>
+                                                                                            )}
+                                                                                            {evidence.type === 'game' && (
+                                                                                                <div>
+                                                                                                    <div>{evidence.event} ({evidence.date})</div>
+                                                                                                    <div className="text-xs text-cyan-400">Impact: {evidence.impact} • Team: {evidence.team}</div>
+                                                                                                </div>
+                                                                                            )}
+                                                                                            {evidence.type === 'market' && (
+                                                                                                <div>
+                                                                                                    <div>{evidence.trend} ({evidence.timeframe})</div>
+                                                                                                    <div className="text-xs text-cyan-400">Category: {evidence.category} • Confidence: {Math.round(evidence.confidence * 100)}%</div>
+                                                                                                </div>
+                                                                                            )}
+                                                                                            {evidence.type === 'injury' && (
+                                                                                                <div>
+                                                                                                    <div>Status: {evidence.status}</div>
+                                                                                                    <div className="text-xs text-cyan-400">Risk: {evidence.risk} • Last Injury: {evidence.last_injury}</div>
+                                                                                                </div>
+                                                                                            )}
+                                                                                            {evidence.type === 'contract' && (
+                                                                                                <div>
+                                                                                                    <div>{evidence.status} ({evidence.years} years)</div>
+                                                                                                    <div className="text-xs text-cyan-400">Value: {evidence.value} • Security: {evidence.security} • Team: {evidence.team}</div>
+                                                                                                </div>
+                                                                                            )}
                                                                                         </div>
                                                                                     </div>
                                                                                 ))}
+                                                                            </div>
+                                                                        </div>
+                                                                    )}
+
+                                                                    {/* Market Analysis */}
+                                                                    {msg.message.market_analysis && (
+                                                                        <div className="cyber-card p-4 rounded-lg mb-4">
+                                                                            <div className="font-bold text-purple-400 mb-3">📊 Market Analysis</div>
+                                                                            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                                                                                <div className="text-center">
+                                                                                    <div className="text-lg font-bold text-green-400">${msg.message.market_analysis.current_price}</div>
+                                                                                    <div className="text-xs text-gray-400">Current Price</div>
+                                                                                </div>
+                                                                                <div className="text-center">
+                                                                                    <div className="text-lg font-bold text-cyan-400">${msg.message.market_analysis.price_target}</div>
+                                                                                    <div className="text-xs text-gray-400">Price Target</div>
+                                                                                </div>
+                                                                                <div className="text-center">
+                                                                                    <div className="text-lg font-bold text-yellow-400">{msg.message.market_analysis.sentiment}</div>
+                                                                                    <div className="text-xs text-gray-400">Sentiment</div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="mt-3 text-sm text-gray-300">
+                                                                                <div>Support: ${msg.message.market_analysis.support_level} | Resistance: ${msg.message.market_analysis.resistance_level}</div>
+                                                                                <div>Volume Trend: {msg.message.market_analysis.volume_trend}</div>
+                                                                            </div>
+                                                                        </div>
+                                                                    )}
+
+                                                                    {/* AI Insights */}
+                                                                    {msg.message.ai_insights && (
+                                                                        <div className="cyber-card p-4 rounded-lg mb-4">
+                                                                            <div className="font-bold text-purple-400 mb-3">🧠 AI Insights</div>
+                                                                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                                                                <div>
+                                                                                    <div className="text-sm font-bold text-green-400 mb-2">Key Drivers:</div>
+                                                                                    <ul className="text-xs text-gray-300 space-y-1">
+                                                                                        {msg.message.ai_insights.key_drivers.map((driver, idx) => (
+                                                                                            <li key={idx}>• {driver}</li>
+                                                                                        ))}
+                                                                                    </ul>
+                                                                                </div>
+                                                                                <div>
+                                                                                    <div className="text-sm font-bold text-blue-400 mb-2">Catalysts:</div>
+                                                                                    <ul className="text-xs text-gray-300 space-y-1">
+                                                                                        {msg.message.ai_insights.catalysts.map((catalyst, idx) => (
+                                                                                            <li key={idx}>• {catalyst}</li>
+                                                                                        ))}
+                                                                                    </ul>
+                                                                                </div>
+                                                                                <div>
+                                                                                    <div className="text-sm font-bold text-red-400 mb-2">Risks:</div>
+                                                                                    <ul className="text-xs text-gray-300 space-y-1">
+                                                                                        {msg.message.ai_insights.risks.map((risk, idx) => (
+                                                                                            <li key={idx}>• {risk}</li>
+                                                                                        ))}
+                                                                                    </ul>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     )}
