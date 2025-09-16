@@ -1,5 +1,6 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 export default function NavBar() {
   const navigate = useNavigate();
@@ -13,71 +14,72 @@ export default function NavBar() {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 glass-card border-b border-cyan-400/20 m-4">
-      <div className="flex items-center justify-between px-6 py-4">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-[#0a0f1c] to-[#121826] border-b border-white/10">
+      <div className="flex items-center justify-between px-10 py-6">
         {/* Logo */}
-        <div className="flex items-center gap-4">
-          <button
+        <div className="flex items-center gap-6">
+          <motion.button
             onClick={handleLogoClick}
-            className="text-4xl font-bold text-cyan-400 hover:text-white transition-colors"
+            className="text-2xl font-extrabold bg-gradient-to-r from-cyan-400 to-emerald-400 bg-clip-text text-transparent hover:scale-105 transition-all duration-300"
             aria-label="Go to Home"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
-            ∞ INFINITY
-          </button>
-          <div className="hidden md:block text-lg text-gray-300">
-            THE SINGULARITY OF SPORTS CARD INTELLIGENCE
-          </div>
+            ∞ Infinity Pro
+          </motion.button>
         </div>
 
         {/* Navigation Links */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-6">
           <NavLink 
             to="/" 
-            className={({ isActive }) => isActive ? 'nav-active' : 'nav'}
+            className={({ isActive }) => 
+              `hover:text-cyan-400 transition-colors ${isActive ? 'text-cyan-400' : 'text-white'}`
+            }
             aria-label="Home"
           >
             Home
           </NavLink>
           
           <NavLink 
-            to="/grader" 
-            className={({ isActive }) => isActive ? 'nav-active' : 'nav'}
-            aria-label="AI Grader"
+            to="/market" 
+            className={({ isActive }) => 
+              `hover:text-cyan-400 transition-colors ${isActive ? 'text-cyan-400' : 'text-white'}`
+            }
+            aria-label="Market Brain"
           >
-            🔬 AI Grader
+            Market Brain
           </NavLink>
           
           <NavLink 
-            to="/market" 
-            className={({ isActive }) => isActive ? 'nav-active' : 'nav'}
-            aria-label="Market Scanner"
+            to="/grader" 
+            className={({ isActive }) => 
+              `hover:text-cyan-400 transition-colors ${isActive ? 'text-cyan-400' : 'text-white'}`
+            }
+            aria-label="AI Grader"
           >
-            📈 Market Scan
+            AI Grader
           </NavLink>
           
           <NavLink 
             to="/oracle" 
-            className={({ isActive }) => isActive ? 'nav-active' : 'nav'}
+            className={({ isActive }) => 
+              `hover:text-cyan-400 transition-colors ${isActive ? 'text-cyan-400' : 'text-white'}`
+            }
             aria-label="AI Oracle"
           >
-            🌌 Oracle
+            Oracle
           </NavLink>
           
           <NavLink 
             to="/portfolio" 
-            className={({ isActive }) => isActive ? 'nav-active' : 'nav'}
+            className={({ isActive }) => 
+              `hover:text-cyan-400 transition-colors ${isActive ? 'text-cyan-400' : 'text-white'}`
+            }
             aria-label="Portfolio"
           >
-            💼 Portfolio
+            Portfolio
           </NavLink>
-          
-          <button 
-            onClick={handleCompassClick} 
-            className="btn"
-            aria-label="Investment Compass"
-          >
-            🧭 Compass
-          </button>
         </div>
       </div>
     </nav>

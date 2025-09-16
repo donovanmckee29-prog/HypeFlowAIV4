@@ -125,51 +125,91 @@ export default function MarketPage() {
   }
 
   return (
-    <div className="market-root min-h-screen container mx-auto px-6 py-12">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-      >
-        <h1 className="text-4xl font-bold text-cyan-400 mb-8 text-center">
-          📈 Market Scanner
-        </h1>
-
-        {/* Market Overview */}
-        <motion.div 
-          className="glass-card neon-orange mb-8"
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
+    <div className="market-root min-h-screen">
+      <div className="container mx-auto px-6 py-12">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
         >
-          <h2 className="text-2xl font-bold text-orange-400 mb-6">Market Overview</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <div className="text-center">
-              <div className="text-3xl font-bold text-white mb-1">
-                {formatCurrency(liveData.marketCap)}
-              </div>
-              <div className="text-sm text-gray-400">Market Cap</div>
+          <motion.div 
+            className="glass-card text-center mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <h1 className="hero-title mb-4">📈 Market Brain</h1>
+            <p className="subtitle">
+              AI-powered market scanning with real-time picks and trend analysis
+            </p>
+          </motion.div>
+
+          {/* Market Overview */}
+          <motion.div 
+            className="stats-grid mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
+            <div className="stat-item">
+              <div className="stat-value text-orange-400">{formatCurrency(liveData.marketCap)}</div>
+              <div className="stat-label">Market Cap</div>
             </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-white mb-1">
-                {formatNumber(liveData.activeListings)}
-              </div>
-              <div className="text-sm text-gray-400">Active Listings</div>
+            <div className="stat-item">
+              <div className="stat-value text-white">{formatNumber(liveData.activeListings)}</div>
+              <div className="stat-label">Active Listings</div>
             </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-green-400 mb-1">
-                {liveData.avgROI}%
-              </div>
-              <div className="text-sm text-gray-400">Avg ROI</div>
+            <div className="stat-item">
+              <div className="stat-value text-green-400">{liveData.avgROI}%</div>
+              <div className="stat-label">Avg ROI</div>
             </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-orange-400 mb-1">
-                {liveData.hotStreak}
-              </div>
-              <div className="text-sm text-gray-400">Hot Streak</div>
+            <div className="stat-item">
+              <div className="stat-value text-cyan-400">{liveData.hotStreak}</div>
+              <div className="stat-label">Hot Streak</div>
             </div>
-          </div>
-        </motion.div>
+          </motion.div>
+
+          {/* Search & Filter Bar */}
+          <motion.div 
+            className="investment-card mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <h2 className="text-2xl font-bold text-cyan-400 mb-6">Smart Scanner</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+              <input
+                type="text"
+                placeholder="Search player, set, or year..."
+                className="bg-black/50 border border-cyan-400/30 rounded-lg px-4 py-3 text-white placeholder-gray-400"
+              />
+              <select className="bg-black/50 border border-cyan-400/30 rounded-lg px-4 py-3 text-white">
+                <option value="">All Sports</option>
+                <option value="basketball">Basketball</option>
+                <option value="football">Football</option>
+                <option value="baseball">Baseball</option>
+                <option value="hockey">Hockey</option>
+              </select>
+              <select className="bg-black/50 border border-cyan-400/30 rounded-lg px-4 py-3 text-white">
+                <option value="">All Graders</option>
+                <option value="psa">PSA</option>
+                <option value="bgs">BGS</option>
+                <option value="sgc">SGC</option>
+              </select>
+              <select className="bg-black/50 border border-cyan-400/30 rounded-lg px-4 py-3 text-white">
+                <option value="">Price Range</option>
+                <option value="0-100">$0 - $100</option>
+                <option value="100-500">$100 - $500</option>
+                <option value="500-1000">$500 - $1,000</option>
+                <option value="1000+">$1,000+</option>
+              </select>
+            </div>
+            <div className="flex gap-4">
+              <button className="btn">Scan Market</button>
+              <button className="btn btn-secondary">AI Picks Only</button>
+              <button className="btn btn-secondary">Trending Up</button>
+            </div>
+          </motion.div>
 
         {/* Filters and Sorting */}
         <div className="glass-card mb-8">
@@ -223,84 +263,94 @@ export default function MarketPage() {
           </div>
         </div>
 
-        {/* Market Data */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-          {sortedData.map((card, index) => (
-            <motion.div
-              key={card.id}
-              className={`glass-card cyber-card p-6 rounded-xl cursor-pointer hover:scale-105 transition-all duration-300 ai-pick ${
-                selectedCard?.id === card.id ? 'ring-2 ring-cyan-400' : ''
-              }`}
-              onClick={() => handleCardClick(card)}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              whileHover={{ scale: 1.05 }}
-            >
-              <div className="flex items-center justify-between mb-4">
-                <div className="text-4xl">{card.sport}</div>
-                <div className="flex items-center gap-2">
-                  <div className={`px-2 py-1 rounded-full text-xs font-bold ${getRiskColor(card.risk)}`}>
-                    {card.risk} Risk
+          {/* Market Data */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+            {sortedData.map((card, index) => (
+              <motion.div
+                key={card.id}
+                className={`investment-card interactive-element ${
+                  selectedCard?.id === card.id ? 'ring-2 ring-cyan-400' : ''
+                }`}
+                onClick={() => handleCardClick(card)}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <div className="flex items-center justify-between mb-6">
+                  <div className="text-5xl">{card.sport}</div>
+                  <div className="flex items-center gap-3">
+                    <div className={`px-3 py-1 rounded-full text-xs font-bold ${
+                      card.risk === 'Low' ? 'bg-green-500/30 text-green-400 border border-green-500/50' :
+                      card.risk === 'Medium' ? 'bg-yellow-500/30 text-yellow-400 border border-yellow-500/50' :
+                      'bg-red-500/30 text-red-400 border border-red-500/50'
+                    }`}>
+                      {card.risk} Risk
+                    </div>
+                    <div className="text-3xl font-bold text-orange-400">
+                      {card.aiScore}
+                    </div>
                   </div>
-                  <div className="text-2xl font-bold text-orange-400">
-                    {card.aiScore}
+                </div>
+                
+                <h3 className="text-xl font-bold text-white mb-4">{card.name}</h3>
+                
+                <div className="grid grid-cols-2 gap-4 mb-6">
+                  <div>
+                    <div className="text-2xl font-bold text-cyan-400">
+                      {formatCurrency(card.price)}
+                    </div>
+                    <div className="text-sm text-gray-400">Current Price</div>
+                  </div>
+                  <div>
+                    <div className={`text-2xl font-bold ${card.change >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                      {card.change >= 0 ? '+' : ''}{card.change}%
+                    </div>
+                    <div className="text-sm text-gray-400">24h Change</div>
                   </div>
                 </div>
-              </div>
-              
-              <h3 className="text-xl font-bold text-white mb-2">{card.name}</h3>
-              
-              <div className="grid grid-cols-2 gap-4 mb-4">
-                <div>
-                  <div className="text-2xl font-bold text-cyan-400">
-                    {formatCurrency(card.price)}
+                
+                <div className="flex items-center justify-between mb-6">
+                  <div className={`text-sm font-bold px-3 py-1 rounded-lg ${
+                    card.roi === 'Very High' ? 'bg-green-500/20 text-green-400' :
+                    card.roi === 'High' ? 'bg-green-500/10 text-green-300' :
+                    card.roi === 'Medium' ? 'bg-yellow-500/20 text-yellow-400' :
+                    'bg-red-500/20 text-red-400'
+                  }`}>
+                    {card.roi} ROI
                   </div>
-                  <div className="text-sm text-gray-400">Current Price</div>
-                </div>
-                <div>
-                  <div className={`text-2xl font-bold ${card.change >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                    {card.change >= 0 ? '+' : ''}{card.change}%
+                  <div className="text-sm text-gray-400">
+                    {card.timeframe}
                   </div>
-                  <div className="text-sm text-gray-400">24h Change</div>
                 </div>
-              </div>
-              
-              <div className="flex items-center justify-between mb-4">
-                <div className={`text-sm font-bold ${getROIColor(card.roi)}`}>
-                  {card.roi} ROI
+                
+                <div className="flex gap-2">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      addToWatchlist(card.id);
+                    }}
+                    className={`btn flex-1 py-3 px-4 rounded-lg text-sm ${
+                      watchlist.includes(card.id) ? 'btn-secondary' : ''
+                    }`}
+                  >
+                    {watchlist.includes(card.id) ? '✓ Watchlist' : '+ Watchlist'}
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      // Navigate to Oracle with card context
+                      window.location.href = `/oracle?card=${encodeURIComponent(card.name)}`;
+                    }}
+                    className="btn btn-secondary py-3 px-4 rounded-lg text-sm"
+                  >
+                    AI Analysis
+                  </button>
                 </div>
-                <div className="text-sm text-gray-400">
-                  {card.timeframe}
-                </div>
-              </div>
-              
-              <div className="flex gap-2">
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    addToWatchlist(card.id);
-                  }}
-                  className={`btn flex-1 py-2 px-4 rounded-lg text-sm ${
-                    watchlist.includes(card.id) ? 'btn-secondary' : ''
-                  }`}
-                >
-                  {watchlist.includes(card.id) ? 'Remove from Watchlist' : 'Add to Watchlist'}
-                </button>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    // Navigate to Oracle with card context
-                    window.location.href = `/oracle?card=${encodeURIComponent(card.name)}`;
-                  }}
-                  className="btn btn-secondary py-2 px-4 rounded-lg text-sm"
-                >
-                  AI Analysis
-                </button>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+              </motion.div>
+            ))}
+          </div>
 
         {/* Selected Card Details */}
         {selectedCard && (
@@ -355,8 +405,9 @@ export default function MarketPage() {
               </div>
             </div>
           </motion.div>
-        )}
-      </motion.div>
+          )}
+        </motion.div>
+      </div>
     </div>
   );
 }

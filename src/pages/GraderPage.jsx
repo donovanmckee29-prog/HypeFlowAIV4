@@ -76,69 +76,90 @@ export default function GraderPage() {
   };
 
   return (
-    <div className="grader-root min-h-screen container mx-auto px-6 py-12">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-      >
-        <h1 className="text-4xl font-bold text-cyan-400 mb-8 text-center">
-          🔬 Quantum AI Grader
-        </h1>
+    <div className="grader-root min-h-screen">
+      <div className="container mx-auto px-6 py-12">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <motion.div 
+            className="glass-card text-center mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <h1 className="hero-title mb-4">🔬 Quantum AI Grader</h1>
+            <p className="subtitle">
+              Upload card images for instant grade predictions with subgrade analysis
+            </p>
+          </motion.div>
 
-        {/* Upload Section */}
-        <div className="glass-card neon-cyan mb-8">
-          <h2 className="text-2xl font-bold text-cyan-400 mb-6">Upload Card Image</h2>
-          
-          <div className="text-center">
-            {uploadedImage ? (
-              <div className="mb-6">
-                <img 
-                  src={uploadedImage} 
-                  alt="Uploaded card" 
-                  className="max-w-xs mx-auto rounded-lg shadow-lg"
-                />
-                <p className="text-sm text-gray-400 mt-2">Image uploaded successfully</p>
-              </div>
-            ) : (
-              <div 
-                className="border-2 border-dashed border-cyan-400 rounded-lg p-12 cursor-pointer hover:bg-cyan-400/10 transition-colors"
-                onClick={() => fileInputRef.current?.click()}
-              >
-                <div className="text-6xl mb-4">📷</div>
-                <p className="text-lg text-gray-300 mb-2">Click to upload card image</p>
-                <p className="text-sm text-gray-400">Supports JPG, PNG, WebP formats</p>
-              </div>
-            )}
+          {/* Upload Section */}
+          <motion.div 
+            className="investment-card mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
+            <h2 className="text-2xl font-bold text-cyan-400 mb-8">Upload Card Image</h2>
             
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              onChange={handleImageUpload}
-              className="hidden"
-              aria-label="Upload card image"
-            />
-            
-            <div className="flex gap-4 justify-center mt-6">
-              <button
-                onClick={() => fileInputRef.current?.click()}
-                className="btn btn-secondary"
-                disabled={isAnalyzing}
-              >
-                {uploadedImage ? 'Change Image' : 'Select Image'}
-              </button>
+            <div className="text-center">
+              {uploadedImage ? (
+                <motion.div 
+                  className="mb-8"
+                  initial={{ scale: 0.8 }}
+                  animate={{ scale: 1 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <img 
+                    src={uploadedImage} 
+                    alt="Uploaded card" 
+                    className="max-w-sm mx-auto rounded-xl shadow-2xl border-2 border-cyan-400/30"
+                  />
+                  <p className="text-sm text-cyan-400 mt-3 font-bold">✓ Image uploaded successfully</p>
+                </motion.div>
+              ) : (
+                <motion.div 
+                  className="border-2 border-dashed border-cyan-400/50 rounded-2xl p-16 cursor-pointer hover:bg-cyan-400/10 transition-all duration-300 interactive-element"
+                  onClick={() => fileInputRef.current?.click()}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <div className="text-8xl mb-6">📷</div>
+                  <p className="text-xl text-white mb-3 font-bold">Click to upload card image</p>
+                  <p className="text-sm text-gray-400">Supports JPG, PNG, WebP formats • Max 10MB</p>
+                </motion.div>
+              )}
               
-              <button
-                onClick={analyzeCard}
-                disabled={!uploadedImage || isAnalyzing}
-                className="btn"
-              >
-                {isAnalyzing ? '🔬 Analyzing...' : '🚀 Analyze Card'}
-              </button>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+                className="hidden"
+                aria-label="Upload card image"
+              />
+              
+              <div className="flex gap-6 justify-center mt-8">
+                <button
+                  onClick={() => fileInputRef.current?.click()}
+                  className="btn btn-secondary px-8 py-4"
+                  disabled={isAnalyzing}
+                >
+                  {uploadedImage ? 'Change Image' : 'Select Image'}
+                </button>
+                
+                <button
+                  onClick={analyzeCard}
+                  disabled={!uploadedImage || isAnalyzing}
+                  className="btn px-8 py-4"
+                >
+                  {isAnalyzing ? '🔬 Analyzing...' : '🚀 Analyze Card'}
+                </button>
+              </div>
             </div>
-          </div>
-        </div>
+          </motion.div>
 
         {/* Analysis Progress */}
         {isAnalyzing && (
@@ -185,74 +206,98 @@ export default function GraderPage() {
           </motion.div>
         )}
 
-        {/* Results Section */}
-        {analysisResult && (
-          <motion.div 
-            className="glass-card neon-cyan mb-8"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <h2 className="text-2xl font-bold text-cyan-400 mb-6">Analysis Results</h2>
-            
-            {/* Predicted Grade */}
-            <div className="text-center mb-8">
-              <div className="text-6xl font-bold text-white mb-2">
-                {analysisResult.predicted_grade}
-              </div>
-              <div className="text-lg text-cyan-400 mb-2">
-                Confidence: {analysisResult.confidence}%
-              </div>
-              <div className="text-sm text-gray-400">
-                AI-Predicted Grade
-              </div>
-            </div>
-
-            {/* Subgrade Breakdown */}
-            <div className="mb-8">
-              <h3 className="text-xl font-bold text-white mb-4">Subgrade Analysis</h3>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {Object.entries(analysisResult.subgrades || {}).map(([key, value]) => (
-                  <div key={key} className="text-center">
-                    <div className="text-2xl font-bold text-cyan-400 mb-1">
-                      {Math.round(value * 10)}
-                    </div>
-                    <div className="text-sm text-gray-400 capitalize">
-                      {key.replace(/([A-Z])/g, ' $1').trim()}
-                    </div>
-                    <div className="w-full bg-gray-700 rounded-full h-2 mt-2">
-                      <div 
-                        className="h-2 rounded-full bg-gradient-to-r from-cyan-400 to-blue-500"
-                        style={{ width: `${value * 100}%` }}
-                      ></div>
-                    </div>
+          {/* Results Section */}
+          {analysisResult && (
+            <motion.div 
+              className="investment-card mb-12"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <h2 className="text-2xl font-bold text-cyan-400 mb-8">Analysis Results</h2>
+              
+              {/* Predicted Grade */}
+              <div className="text-center mb-12">
+                <motion.div 
+                  className="inline-block p-8 rounded-2xl bg-gradient-to-br from-cyan-400/20 to-blue-500/20 border-2 border-cyan-400/50"
+                  initial={{ scale: 0.5 }}
+                  animate={{ scale: 1 }}
+                  transition={{ duration: 0.8, type: "spring" }}
+                >
+                  <div className="text-8xl font-bold text-white mb-4 glow-text">
+                    {analysisResult.predicted_grade}
                   </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Company Predictions */}
-            <div className="mb-8">
-              <h3 className="text-xl font-bold text-white mb-4">All Company Predictions</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                {analysisResult.all_predictions?.map((prediction, index) => (
-                  <div key={index} className="glass-card p-4">
-                    <div className="text-lg font-bold text-white mb-2">
-                      {prediction.company}
-                    </div>
-                    <div className="text-2xl font-bold text-cyan-400 mb-1">
-                      {prediction.grade}
-                    </div>
-                    <div className="text-sm text-gray-400 mb-2">
-                      Confidence: {Math.round(prediction.confidence * 100)}%
-                    </div>
-                    <div className="text-xs text-gray-500">
-                      Fee: {formatCurrency(prediction.fee)} • {prediction.timeline}
-                    </div>
+                  <div className="text-xl text-cyan-400 mb-2 font-bold">
+                    Confidence: {analysisResult.confidence}%
                   </div>
-                ))}
+                  <div className="text-sm text-gray-400">
+                    AI-Predicted Grade
+                  </div>
+                </motion.div>
               </div>
-            </div>
+
+              {/* Subgrade Breakdown */}
+              <div className="mb-12">
+                <h3 className="text-2xl font-bold text-white mb-8 text-center">Subgrade Analysis</h3>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                  {Object.entries(analysisResult.subgrades || {}).map(([key, value], index) => (
+                    <motion.div 
+                      key={key} 
+                      className="stat-item text-center"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.6, delay: index * 0.1 }}
+                    >
+                      <div className="text-3xl font-bold text-cyan-400 mb-2">
+                        {Math.round(value * 10)}
+                      </div>
+                      <div className="text-sm text-gray-400 capitalize mb-4">
+                        {key.replace(/([A-Z])/g, ' $1').trim()}
+                      </div>
+                      <div className="w-full bg-gray-700 rounded-full h-3">
+                        <motion.div 
+                          className="h-3 rounded-full bg-gradient-to-r from-cyan-400 to-blue-500"
+                          initial={{ width: 0 }}
+                          animate={{ width: `${value * 100}%` }}
+                          transition={{ duration: 1, delay: index * 0.1 + 0.5 }}
+                        ></motion.div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Company Predictions */}
+              <div className="mb-12">
+                <h3 className="text-2xl font-bold text-white mb-8 text-center">All Company Predictions</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {analysisResult.all_predictions?.map((prediction, index) => (
+                    <motion.div 
+                      key={index} 
+                      className="investment-card"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.6, delay: index * 0.1 }}
+                    >
+                      <div className="text-center">
+                        <div className="text-xl font-bold text-white mb-3">
+                          {prediction.company}
+                        </div>
+                        <div className="text-4xl font-bold text-cyan-400 mb-3">
+                          {prediction.grade}
+                        </div>
+                        <div className="text-sm text-gray-400 mb-4">
+                          Confidence: {Math.round(prediction.confidence * 100)}%
+                        </div>
+                        <div className="text-xs text-gray-500 space-y-1">
+                          <div>Fee: {formatCurrency(prediction.fee)}</div>
+                          <div>{prediction.timeline}</div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
 
             {/* Market Analysis */}
             {analysisResult.market_analysis && (
@@ -325,8 +370,9 @@ export default function GraderPage() {
               ))}
             </div>
           </motion.div>
-        )}
-      </motion.div>
+          )}
+        </motion.div>
+      </div>
     </div>
   );
 }

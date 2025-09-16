@@ -128,63 +128,64 @@ export default function PortfolioPage() {
   }
 
   return (
-    <div className="portfolio-root min-h-screen container mx-auto px-6 py-12">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-      >
-        <h1 className="text-4xl font-bold text-cyan-400 mb-8 text-center">
-          💼 Portfolio Center
-        </h1>
-
-        {/* Portfolio Overview */}
-        <motion.div 
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"
+    <div className="portfolio-root min-h-screen">
+      <div className="container mx-auto px-6 py-12">
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
+          transition={{ duration: 0.6 }}
         >
-          <div className="glass-card neon-green">
-            <h3 className="text-lg font-bold text-green-400 mb-2">Total Value</h3>
-            <div className="text-3xl font-bold text-white mb-1">
-              {formatCurrency(portfolioData.totalValue)}
+          <motion.div 
+            className="glass-card text-center mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <h1 className="hero-title mb-4">💼 Portfolio Center</h1>
+            <p className="subtitle">
+              Track your holdings with live ROI and AI recommendations
+            </p>
+          </motion.div>
+
+          {/* Portfolio Overview */}
+          <motion.div 
+            className="stats-grid mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
+            <div className="stat-item">
+              <div className="stat-value text-green-400">{formatCurrency(portfolioData.totalValue)}</div>
+              <div className="stat-label">Total Value</div>
+              <div className="text-xs text-gray-400 mt-1">
+                {formatPercent(portfolioData.monthlyChange)} this month
+              </div>
             </div>
-            <div className="text-sm text-gray-400">
-              {formatPercent(portfolioData.monthlyChange)} this month
+            
+            <div className="stat-item">
+              <div className="stat-value text-cyan-400">{formatPercent(portfolioData.roi)}</div>
+              <div className="stat-label">Total ROI</div>
+              <div className="text-xs text-gray-400 mt-1">
+                All time return
+              </div>
             </div>
-          </div>
-          
-          <div className="glass-card neon-green">
-            <h3 className="text-lg font-bold text-green-400 mb-2">Total ROI</h3>
-            <div className="text-3xl font-bold text-green-400 mb-1">
-              {formatPercent(portfolioData.roi)}
+            
+            <div className="stat-item">
+              <div className="stat-value text-white">{formatCurrency(portfolioData.totalCost)}</div>
+              <div className="stat-label">Total Cost</div>
+              <div className="text-xs text-gray-400 mt-1">
+                Initial investment
+              </div>
             </div>
-            <div className="text-sm text-gray-400">
-              All time return
+            
+            <div className="stat-item">
+              <div className="stat-value text-purple-400">{portfolioData.holdings.length}</div>
+              <div className="stat-label">Holdings</div>
+              <div className="text-xs text-gray-400 mt-1">
+                Total cards
+              </div>
             </div>
-          </div>
-          
-          <div className="glass-card neon-green">
-            <h3 className="text-lg font-bold text-green-400 mb-2">Total Cost</h3>
-            <div className="text-3xl font-bold text-white mb-1">
-              {formatCurrency(portfolioData.totalCost)}
-            </div>
-            <div className="text-sm text-gray-400">
-              Initial investment
-            </div>
-          </div>
-          
-          <div className="glass-card neon-green">
-            <h3 className="text-lg font-bold text-green-400 mb-2">Holdings</h3>
-            <div className="text-3xl font-bold text-purple-400 mb-1">
-              {portfolioData.holdings.length}
-            </div>
-            <div className="text-sm text-gray-400">
-              Total cards
-            </div>
-          </div>
-        </motion.div>
+          </motion.div>
 
         {/* Performance Chart */}
         <motion.div 
@@ -239,38 +240,38 @@ export default function PortfolioPage() {
           </div>
         </motion.div>
 
-        {/* Holdings Table */}
-        <motion.div 
-          className="glass-card neon-green mb-8"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-        >
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-green-400">Holdings</h2>
-            <div className="flex gap-2">
-              <button
-                onClick={() => setSelectedView('overview')}
-                className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${
-                  selectedView === 'overview'
-                    ? 'btn'
-                    : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                }`}
-              >
-                Overview
-              </button>
-              <button
-                onClick={() => setSelectedView('detailed')}
-                className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${
-                  selectedView === 'detailed'
-                    ? 'btn'
-                    : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                }`}
-              >
-                Detailed
-              </button>
+          {/* Holdings Table */}
+          <motion.div 
+            className="glass-card mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
+            <div className="flex items-center justify-between mb-8">
+              <h2 className="text-2xl font-bold text-cyan-400">Holdings</h2>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setSelectedView('overview')}
+                  className={`px-6 py-3 rounded-lg text-sm font-bold transition-all ${
+                    selectedView === 'overview'
+                      ? 'btn'
+                      : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                  }`}
+                >
+                  Overview
+                </button>
+                <button
+                  onClick={() => setSelectedView('detailed')}
+                  className={`px-6 py-3 rounded-lg text-sm font-bold transition-all ${
+                    selectedView === 'detailed'
+                      ? 'btn'
+                      : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                  }`}
+                >
+                  Detailed
+                </button>
+              </div>
             </div>
-          </div>
 
           {portfolioData.holdings.length === 0 ? (
             <div className="text-center py-12">
@@ -282,73 +283,76 @@ export default function PortfolioPage() {
               </button>
             </div>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-gray-700">
-                    <th className="text-left py-3 px-4 text-gray-400">Card</th>
-                    <th className="text-left py-3 px-4 text-gray-400">Qty</th>
-                    <th className="text-left py-3 px-4 text-gray-400">Cost</th>
-                    <th className="text-left py-3 px-4 text-gray-400">Value</th>
-                    <th className="text-left py-3 px-4 text-gray-400">Change</th>
-                    <th className="text-left py-3 px-4 text-gray-400">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {portfolioData.holdings.map((holding) => (
-                    <tr 
-                      key={holding.id} 
-                      className="border-b border-gray-700/30 hover:bg-gray-800/30 transition-colors cursor-pointer"
-                      onClick={() => setSelectedHolding(holding)}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {portfolioData.holdings.map((holding) => (
+                <motion.div
+                  key={holding.id}
+                  className="investment-card interactive-element"
+                  onClick={() => setSelectedHolding(holding)}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6 }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="text-4xl">{holding.sport || '🏀'}</div>
+                    <div className={`px-3 py-1 rounded-full text-xs font-bold ${
+                      holding.change >= 0 
+                        ? 'bg-green-500/30 text-green-400 border border-green-500/50' 
+                        : 'bg-red-500/30 text-red-400 border border-red-500/50'
+                    }`}>
+                      {formatPercent(holding.change)}
+                    </div>
+                  </div>
+                  
+                  <h3 className="text-lg font-bold text-white mb-2">{holding.name}</h3>
+                  <p className="text-sm text-gray-400 mb-4">{holding.grade}</p>
+                  
+                  <div className="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                      <div className="text-xs text-gray-400">Quantity</div>
+                      <div className="text-lg font-bold text-white">{holding.quantity}</div>
+                    </div>
+                    <div>
+                      <div className="text-xs text-gray-400">Cost Basis</div>
+                      <div className="text-lg font-bold text-white">{formatCurrency(holding.cost)}</div>
+                    </div>
+                    <div>
+                      <div className="text-xs text-gray-400">Current Value</div>
+                      <div className="text-lg font-bold text-cyan-400">{formatCurrency(holding.currentValue)}</div>
+                    </div>
+                    <div>
+                      <div className="text-xs text-gray-400">Total Value</div>
+                      <div className="text-lg font-bold text-cyan-400">
+                        {formatCurrency(holding.currentValue * holding.quantity)}
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="flex gap-2">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        // Navigate to grader
+                        window.location.href = `/grader?card=${encodeURIComponent(holding.name)}`;
+                      }}
+                      className="btn btn-secondary flex-1 py-2 px-3 text-xs"
                     >
-                      <td className="py-4 px-4">
-                        <div className="flex items-center gap-3">
-                          <div className="text-2xl">{holding.sport || '🏀'}</div>
-                          <div>
-                            <div className="font-bold text-white">{holding.name}</div>
-                            <div className="text-sm text-gray-400">
-                              {holding.grade} • {holding.trend === 'up' ? '📈' : '📉'} Trending
-                            </div>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="py-4 px-4 text-white font-bold">{holding.quantity}</td>
-                      <td className="py-4 px-4 text-white">{formatCurrency(holding.cost)}</td>
-                      <td className="py-4 px-4 text-cyan-400 font-bold">
-                        {formatCurrency(holding.currentValue)}
-                      </td>
-                      <td className="py-4 px-4">
-                        <span className={`font-bold ${holding.change >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                          {formatPercent(holding.change)}
-                        </span>
-                      </td>
-                      <td className="py-4 px-4">
-                        <div className="flex gap-2">
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              // Navigate to grader
-                              window.location.href = `/grader?card=${encodeURIComponent(holding.name)}`;
-                            }}
-                            className="btn btn-secondary py-1 px-3 text-xs"
-                          >
-                            Grade
-                          </button>
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              deleteHolding(holding.id);
-                            }}
-                            className="btn btn-danger py-1 px-3 text-xs"
-                          >
-                            Sell
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                      Grade
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        deleteHolding(holding.id);
+                      }}
+                      className="btn btn-danger flex-1 py-2 px-3 text-xs"
+                    >
+                      Sell
+                    </button>
+                  </div>
+                </motion.div>
+              ))}
             </div>
           )}
         </motion.div>
@@ -441,7 +445,8 @@ export default function PortfolioPage() {
             </div>
           </motion.div>
         )}
-      </motion.div>
+        </motion.div>
+      </div>
     </div>
   );
 }

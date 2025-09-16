@@ -134,59 +134,75 @@ export default function OraclePage() {
   ];
 
   return (
-    <div className="oracle-root min-h-screen container mx-auto px-6 py-12">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-      >
-        <h1 className="text-4xl font-bold text-cyan-400 mb-8 text-center">
-          🌌 AI Oracle
-        </h1>
+    <div className="oracle-root min-h-screen">
+      <div className="container mx-auto px-6 py-12">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <motion.div 
+            className="glass-card text-center mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <h1 className="hero-title mb-4">🌌 AI Oracle</h1>
+            <p className="subtitle">
+              Ask anything about cards, trends, or history with contextual AI
+            </p>
+          </motion.div>
 
-        {/* AI Modules */}
-        <div className="glass-card mb-8">
-          <h2 className="text-2xl font-bold text-purple-400 mb-6">AI Modules & Quick Questions</h2>
-          
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
-            {aiModules.map((module) => (
-              <button
-                key={module.id}
-                onClick={() => setSelectedModule(module.id)}
-                className={`p-4 rounded-lg text-center transition-all ${
-                  selectedModule === module.id
-                    ? 'bg-purple-500/20 border-2 border-purple-400'
-                    : 'bg-gray-700/50 hover:bg-gray-600/50'
-                }`}
-              >
-                <div className="text-3xl mb-2">{module.icon}</div>
-                <div className="text-sm font-bold text-white">{module.name}</div>
-                <div className="text-xs text-gray-400">{module.description}</div>
-              </button>
-            ))}
-          </div>
-
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <button
-                onClick={() => setShowMemory(!showMemory)}
-                className="btn btn-secondary"
-              >
-                {showMemory ? 'Hide' : 'Show'} AI Memory
-              </button>
-              <button
-                onClick={clearConversation}
-                className="btn btn-danger"
-              >
-                Clear Chat
-              </button>
-            </div>
+          {/* AI Modules */}
+          <motion.div 
+            className="investment-card mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
+            <h2 className="text-2xl font-bold text-purple-400 mb-8 text-center">AI Modules</h2>
             
-            <div className="text-sm text-gray-400">
-              Module: {aiModules.find(m => m.id === selectedModule)?.name}
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-6 mb-8">
+              {aiModules.map((module) => (
+                <motion.button
+                  key={module.id}
+                  onClick={() => setSelectedModule(module.id)}
+                  className={`p-6 rounded-xl text-center transition-all interactive-element ${
+                    selectedModule === module.id
+                      ? 'bg-purple-500/20 border-2 border-purple-400'
+                      : 'bg-gray-700/50 hover:bg-gray-600/50'
+                  }`}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <div className="text-4xl mb-3">{module.icon}</div>
+                  <div className="text-sm font-bold text-white mb-2">{module.name}</div>
+                  <div className="text-xs text-gray-400">{module.description}</div>
+                </motion.button>
+              ))}
             </div>
-          </div>
-        </div>
+
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <button
+                  onClick={() => setShowMemory(!showMemory)}
+                  className="btn btn-secondary"
+                >
+                  {showMemory ? 'Hide' : 'Show'} AI Memory
+                </button>
+                <button
+                  onClick={clearConversation}
+                  className="btn btn-danger"
+                >
+                  Clear Chat
+                </button>
+              </div>
+              
+              <div className="text-sm text-gray-400">
+                Module: {aiModules.find(m => m.id === selectedModule)?.name}
+              </div>
+            </div>
+          </motion.div>
 
         {/* AI Memory Panel */}
         {showMemory && (
@@ -218,25 +234,37 @@ export default function OraclePage() {
           </motion.div>
         )}
 
-        {/* Quick Questions */}
-        <div className="glass-card mb-8">
-          <h3 className="text-lg font-bold text-white mb-4">Quick Questions</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-            {quickQuestions.map((question, index) => (
-              <button
-                key={index}
-                onClick={() => setInputMessage(question)}
-                className="p-3 text-sm bg-gray-700/50 hover:bg-gray-600/50 rounded-lg text-left transition-colors"
-              >
-                {question}
-              </button>
-            ))}
-          </div>
-        </div>
+          {/* Quick Questions */}
+          <motion.div 
+            className="investment-card mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <h3 className="text-xl font-bold text-cyan-400 mb-6 text-center">Quick Questions</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {quickQuestions.map((question, index) => (
+                <motion.button
+                  key={index}
+                  onClick={() => setInputMessage(question)}
+                  className="p-4 text-sm bg-gray-700/50 hover:bg-gray-600/50 rounded-xl text-left transition-all interactive-element"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  {question}
+                </motion.button>
+              ))}
+            </div>
+          </motion.div>
 
-        {/* Chat Interface */}
-        <div className="glass-card neon-purple">
-          <h2 className="text-2xl font-bold text-purple-400 mb-6">Chat with AI Oracle</h2>
+          {/* Chat Interface */}
+          <motion.div 
+            className="investment-card"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
+            <h2 className="text-2xl font-bold text-purple-400 mb-8 text-center">Chat with AI Oracle</h2>
           
           {/* Messages */}
           <div className="h-96 overflow-y-auto mb-6 space-y-4">
@@ -343,8 +371,9 @@ export default function OraclePage() {
               {isTyping ? 'Sending...' : 'Send'}
             </button>
           </div>
-        </div>
-      </motion.div>
+          </motion.div>
+        </motion.div>
+      </div>
     </div>
   );
 }
