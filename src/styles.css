@@ -378,3 +378,14 @@ body {
 .bg-purple-400 { background-color: #c084fc; }
 .blur-lg { filter: blur(16px); }
 .animate-ping { animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite; }
+
+
+/* Webkit prefixes for better browser support */
+.bg-clip-text { 
+  background-clip: text; 
+  -webkit-background-clip: text;
+}
+.text-transparent { 
+  color: transparent; 
+  -webkit-text-fill-color: transparent;
+}
