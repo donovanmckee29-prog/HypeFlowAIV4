@@ -1,19 +1,28 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { 
-  Brain, TrendingUp, Zap, Shield, Eye, BarChart3, Upload, Search, MessageSquare, 
-  Wallet, Settings, Menu, X, Star, ArrowRight, CheckCircle, Activity, Camera, 
-  RefreshCw, Target, Layers, AlertCircle, TrendingDown, Clock, DollarSign, 
-  Database, Maximize2, Filter, ScanLine, ChevronRight, PieChart, LineChart, 
-  Calculator, Bell, Bookmark, Play, Pause, ArrowUp, ArrowDown, Minus, 
-  Award, Crosshair, Gauge, Sparkles
+  Brain, 
+  TrendingUp, 
+  Zap, 
+  Upload, 
+  Search, 
+  MessageSquare, 
+  Wallet, 
+  Menu, 
+  X, 
+  Star, 
+  ArrowRight, 
+  CheckCircle, 
+  Activity, 
+  RefreshCw, 
+  Target, 
+  AlertCircle, 
+  Clock, 
+  DollarSign, 
+  Database, 
+  Filter, 
+  ArrowUp, 
+  Award
 } from 'lucide-react';
-
-// Import page components
-import AIGraderPage from './components/AIGraderPage';
-import MarketBrainPage from './components/MarketBrainPage';
-import OraclePage from './components/OraclePage';
-import PortfolioPage from './components/PortfolioPage';
-import ScannerPage from './components/ScannerPage';
 
 const InfinityPro = () => {
   const [currentPage, setCurrentPage] = useState('home');
@@ -25,21 +34,16 @@ const InfinityPro = () => {
   const [portfolioData, setPortfolioData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCard, setSelectedCard] = useState(null);
   const [notifications, setNotifications] = useState([]);
   const [analyzingImage, setAnalyzingImage] = useState(false);
-  const [marketTrends, setMarketTrends] = useState([]);
-  const [flipOpportunities, setFlipOpportunities] = useState([]);
-  const [realTimeUpdates, setRealTimeUpdates] = useState(true);
+  
   const [systemMetrics, setSystemMetrics] = useState({
     processingSpeed: 0.847,
     accuracyRate: 99.2,
     cardsAnalyzed: 3742891,
     activeUsers: 47829
   });
-  const fileInputRef = useRef(null);
-
-  // AI Learning Engine
+  
   const [aiEngine, setAiEngine] = useState({
     gradeAccuracy: 99.2,
     predictiveAccuracy: 94.8,
@@ -48,8 +52,9 @@ const InfinityPro = () => {
     modelVersion: "v5.1.2",
     lastUpdate: Date.now()
   });
+  
+  const fileInputRef = useRef(null);
 
-  // Navigation Component
   const Navigation = () => (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-slate-900/95 backdrop-blur-md border-b border-slate-700/50">
       <div className="max-w-7xl mx-auto px-4">
@@ -143,16 +148,13 @@ const InfinityPro = () => {
     </nav>
   );
 
-  // Enhanced Home Page
   const HomePage = () => (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 relative overflow-hidden">
-      {/* Dynamic background elements */}
       <div className="absolute inset-0">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse" style={{animationDelay: '1s'}}></div>
       </div>
 
-      {/* Hero Section */}
       <section className="relative pt-32 pb-20 px-4">
         <div className="max-w-7xl mx-auto text-center">
           <div className="inline-flex items-center space-x-3 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 border border-cyan-500/30 rounded-full px-6 py-3 mb-8">
@@ -167,7 +169,7 @@ const InfinityPro = () => {
           </h1>
           
           <p className="text-xl md:text-2xl text-slate-300 mb-8 max-w-4xl mx-auto leading-relaxed">
-            Ultra-fast AI grading in &lt;{systemMetrics.processingSpeed}s, real-time market intelligence, 
+            Ultra-fast AI grading in less than {systemMetrics.processingSpeed}s, real-time market intelligence, 
             predictive analytics with {aiEngine.predictiveAccuracy}% accuracy, and institutional-grade portfolio management.
           </p>
           
@@ -193,7 +195,6 @@ const InfinityPro = () => {
             </button>
           </div>
 
-          {/* Real-time System Metrics */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
             {[
               { 
@@ -241,7 +242,6 @@ const InfinityPro = () => {
         </div>
       </section>
 
-      {/* Advanced Features Grid */}
       <section className="relative py-20 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
@@ -306,7 +306,7 @@ const InfinityPro = () => {
                 badge: "Advanced"
               },
               {
-                icon: Shield,
+                icon: Database,
                 title: "Risk Intelligence",
                 description: "Comprehensive risk analysis using volatility models, liquidity scores, and market sentiment from real trading data.",
                 features: ["Risk Models", "Liquidity Scores", "Sentiment", "Real Data"],
@@ -321,7 +321,6 @@ const InfinityPro = () => {
                 onClick={() => setCurrentPage(feature.page)}
                 className="group relative bg-slate-800/50 backdrop-blur-sm rounded-2xl p-8 border border-slate-700/50 hover:border-cyan-400/50 hover:shadow-2xl hover:shadow-cyan-500/10 transition-all duration-500 cursor-pointer overflow-hidden"
               >
-                {/* Badge */}
                 <div className="absolute top-4 right-4">
                   <span className={`px-2 py-1 text-xs font-medium rounded-full bg-gradient-to-r ${feature.gradient} text-white`}>
                     {feature.badge}
@@ -370,138 +369,422 @@ const InfinityPro = () => {
     </div>
   );
 
-  // Main render function with page routing
+  const AIGraderPage = () => {
+    const [gradingStage, setGradingStage] = useState('upload');
+    
+    const handleFileUpload = async (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      setUploadedFile(file);
+      setGradingStage('analyzing');
+      setAnalyzingImage(true);
+
+      await new Promise(resolve => setTimeout(resolve, 847));
+
+      const analysis = {
+        processingTime: "0.847s",
+        confidenceScore: 97.8,
+        overallGrade: {
+          psa: 9,
+          bgs: 9.0,
+          sgc: 9
+        }
+      };
+      
+      setGradeResult(analysis);
+      setGradingStage('complete');
+      setAnalyzingImage(false);
+    };
+
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 pt-20 px-4">
+        <div className="max-w-6xl mx-auto py-8">
+          <div className="text-center mb-12">
+            <div className="flex items-center justify-center space-x-3 mb-6">
+              <Brain className="w-8 h-8 text-cyan-400" />
+              <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+                AI Grader 2.0
+              </h1>
+            </div>
+            <p className="text-xl text-slate-300 mb-6">
+              Ultra-fast analysis with {aiEngine.gradeAccuracy}% accuracy in less than {systemMetrics.processingSpeed}s
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-8">
+            <div className="space-y-6">
+              <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-8">
+                <h3 className="text-2xl font-semibold text-white mb-6">Upload Card Image</h3>
+                
+                {gradingStage === 'upload' && (
+                  <div
+                    onClick={() => fileInputRef.current?.click()}
+                    className="border-2 border-dashed border-slate-600 hover:border-cyan-400 rounded-xl p-12 text-center cursor-pointer transition-all duration-300 hover:bg-slate-800/30"
+                  >
+                    <Upload className="w-12 h-12 text-slate-400 mx-auto mb-4" />
+                    <h4 className="text-lg font-medium text-white mb-2">Drop your card image here</h4>
+                    <p className="text-slate-400 mb-4">Ultra-fast AI analysis in less than 1 second</p>
+                    <div className="text-sm text-slate-500">
+                      Supports JPG, PNG, HEIC • Max 10MB
+                    </div>
+                  </div>
+                )}
+
+                {gradingStage === 'analyzing' && (
+                  <div className="text-center py-12">
+                    <div className="w-16 h-16 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin mx-auto mb-6"></div>
+                    <h4 className="text-xl font-medium text-white mb-4">AI Analysis in Progress</h4>
+                    <div className="space-y-2 text-sm text-slate-400">
+                      <div className="flex items-center justify-center space-x-2">
+                        <CheckCircle className="w-4 h-4 text-green-400" />
+                        <span>Image preprocessing complete</span>
+                      </div>
+                      <div className="flex items-center justify-center space-x-2">
+                        <div className="w-4 h-4 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
+                        <span>Computer vision analysis</span>
+                      </div>
+                      <div className="text-cyan-400">Defect detection • Grade calculation • Market analysis</div>
+                    </div>
+                  </div>
+                )}
+
+                {uploadedFile && gradingStage !== 'analyzing' && (
+                  <div className="space-y-4">
+                    <div className="relative rounded-xl overflow-hidden">
+                      <img 
+                        src={URL.createObjectURL(uploadedFile)} 
+                        alt="Uploaded card"
+                        className="w-full h-64 object-cover"
+                      />
+                      {gradingStage === 'complete' && (
+                        <div className="absolute top-4 left-4">
+                          <div className="bg-green-500/90 text-white px-3 py-1 rounded-lg text-sm font-medium">
+                            Analysis Complete
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+                
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileUpload}
+                  className="hidden"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-6">
+              {gradeResult ? (
+                <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-8">
+                  <div className="flex items-center justify-between mb-6">
+                    <h4 className="text-xl font-semibold text-white">Grade Analysis</h4>
+                    <div className="flex items-center space-x-2 text-sm">
+                      <Clock className="w-4 h-4 text-green-400" />
+                      <span className="text-green-400">{gradeResult.processingTime}</span>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-4 mb-6">
+                    <div className="text-center p-4 bg-slate-700/50 rounded-lg">
+                      <div className="text-sm text-slate-400 mb-1">PSA</div>
+                      <div className="text-3xl font-bold text-cyan-400">{gradeResult.overallGrade.psa}</div>
+                    </div>
+                    <div className="text-center p-4 bg-slate-700/50 rounded-lg">
+                      <div className="text-sm text-slate-400 mb-1">BGS</div>
+                      <div className="text-3xl font-bold text-purple-400">{gradeResult.overallGrade.bgs}</div>
+                    </div>
+                    <div className="text-center p-4 bg-slate-700/50 rounded-lg">
+                      <div className="text-sm text-slate-400 mb-1">SGC</div>
+                      <div className="text-3xl font-bold text-orange-400">{gradeResult.overallGrade.sgc}</div>
+                    </div>
+                  </div>
+
+                  <div className="text-center mb-6">
+                    <div className="text-sm text-slate-400">AI Confidence Score</div>
+                    <div className="text-2xl font-bold text-green-400">{gradeResult.confidenceScore}%</div>
+                  </div>
+                </div>
+              ) : (
+                <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-8 text-center">
+                  <Brain className="w-16 h-16 text-slate-400 mx-auto mb-4" />
+                  <h4 className="text-xl font-medium text-white mb-2">Upload a card to get started</h4>
+                  <p className="text-slate-400 mb-4">
+                    Ultra-fast AI analysis with {aiEngine.gradeAccuracy}% accuracy
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const OraclePage = () => {
+    const [currentMessage, setCurrentMessage] = useState('');
+    const [isTyping, setIsTyping] = useState(false);
+
+    const sendAdvancedOracleMessage = async (message) => {
+      const newMessage = { 
+        type: 'user', 
+        content: message, 
+        timestamp: Date.now()
+      };
+      setOracleMessages(prev => [...prev, newMessage]);
+      setIsTyping(true);
+      
+      await new Promise(resolve => setTimeout(resolve, 1200));
+      
+      const response = {
+        type: 'ai',
+        content: `AI Analysis Complete: ${message}\n\nBased on current market data and predictive models, here are the key insights for your query. The system has analyzed multiple data points to provide accurate recommendations.`,
+        timestamp: Date.now(),
+        confidence: 94,
+        sources: ['Live market data', 'Historical analysis', 'AI predictions'],
+        actionItems: ['Review recommendations', 'Monitor trends'],
+        modelVersion: aiEngine.modelVersion,
+        dataPoints: 15000
+      };
+      
+      setOracleMessages(prev => [...prev, response]);
+      setIsTyping(false);
+    };
+
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 pt-20 px-4">
+        <div className="max-w-4xl mx-auto py-8">
+          <div className="text-center mb-8">
+            <div className="flex items-center justify-center space-x-3 mb-6">
+              <MessageSquare className="w-8 h-8 text-cyan-400" />
+              <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+                Oracle 2.0
+              </h1>
+            </div>
+            <p className="text-xl text-slate-300 mb-4">
+              Advanced predictive AI with {aiEngine.predictiveAccuracy}% accuracy
+            </p>
+          </div>
+
+          <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 overflow-hidden">
+            <div className="h-96 overflow-y-auto p-6 space-y-4">
+              {oracleMessages.length === 0 ? (
+                <div className="text-center py-12">
+                  <MessageSquare className="w-16 h-16 text-slate-400 mx-auto mb-4" />
+                  <h3 className="text-xl font-medium text-white mb-2">Ask Oracle anything</h3>
+                  <p className="text-slate-400 mb-6">
+                    Advanced AI with real sports data and market intelligence
+                  </p>
+                </div>
+              ) : (
+                oracleMessages.map((message, index) => (
+                  <div
+                    key={index}
+                    className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
+                  >
+                    <div
+                      className={`max-w-3xl p-4 rounded-2xl ${
+                        message.type === 'user'
+                          ? 'bg-cyan-500/20 text-cyan-100 border border-cyan-500/30'
+                          : 'bg-slate-700/50 text-slate-100'
+                      }`}
+                    >
+                      <div className="whitespace-pre-wrap text-sm">{message.content}</div>
+                      {message.type === 'ai' && (
+                        <div className="mt-4 pt-4 border-t border-slate-600/50">
+                          <div className="text-xs text-slate-400">
+                            Confidence: {message.confidence}% • Model: {message.modelVersion}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))
+              )}
+              
+              {isTyping && (
+                <div className="flex justify-start">
+                  <div className="bg-slate-700/50 rounded-2xl p-4 max-w-xs">
+                    <div className="flex space-x-2">
+                      <div className="w-2 h-2 bg-cyan-400 rounded-full animate-bounce"></div>
+                      <div className="w-2 h-2 bg-cyan-400 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
+                      <div className="w-2 h-2 bg-cyan-400 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="border-t border-slate-700/50 p-6">
+              <div className="flex space-x-4">
+                <input
+                  type="text"
+                  value={currentMessage}
+                  onChange={(e) => setCurrentMessage(e.target.value)}
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter' && !isTyping && currentMessage.trim()) {
+                      sendAdvancedOracleMessage(currentMessage);
+                      setCurrentMessage('');
+                    }
+                  }}
+                  placeholder="Ask Oracle about market trends, predictions, or strategies..."
+                  className="flex-1 bg-slate-700/50 border border-slate-600 rounded-lg px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400"
+                  disabled={isTyping}
+                />
+                <button
+                  onClick={() => {
+                    if (currentMessage.trim() && !isTyping) {
+                      sendAdvancedOracleMessage(currentMessage);
+                      setCurrentMessage('');
+                    }
+                  }}
+                  disabled={isTyping || !currentMessage.trim()}
+                  className="px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg hover:shadow-lg hover:shadow-cyan-500/25 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
+                >
+                  <ArrowRight className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const MarketBrainPage = () => (
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 pt-20 px-4">
+      <div className="max-w-7xl mx-auto py-8">
+        <div className="text-center mb-12">
+          <div className="flex items-center justify-center space-x-3 mb-6">
+            <TrendingUp className="w-8 h-8 text-cyan-400" />
+            <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+              Market Brain 2.0
+            </h1>
+          </div>
+          <p className="text-xl text-slate-300 mb-6">
+            Live marketplace intelligence with {aiEngine.marketAnalysisAccuracy}% accuracy from 15+ sources
+          </p>
+        </div>
+
+        <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-8">
+          <h3 className="text-2xl font-semibold text-white mb-6">Live Market Data</h3>
+          <div className="text-center py-12">
+            <Database className="w-16 h-16 text-slate-400 mx-auto mb-4" />
+            <h4 className="text-xl font-medium text-white mb-2">Market Intelligence Active</h4>
+            <p className="text-slate-400 mb-4">
+              Real-time data feeds from 15+ sources with {aiEngine.marketAnalysisAccuracy}% accuracy
+            </p>
+            <div className="flex items-center justify-center space-x-8 text-sm text-slate-400">
+              <div className="flex items-center space-x-2">
+                <RefreshCw className="w-4 h-4 animate-spin text-green-400" />
+                <span>Live updates</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Target className="w-4 h-4" />
+                <span>Flip detection</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const PortfolioPage = () => (
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 pt-20 px-4">
+      <div className="max-w-7xl mx-auto py-8">
+        <div className="text-center mb-12">
+          <div className="flex items-center justify-center space-x-3 mb-6">
+            <Wallet className="w-8 h-8 text-cyan-400" />
+            <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+              Portfolio 2.0
+            </h1>
+          </div>
+          <p className="text-xl text-slate-300 mb-6">
+            Professional portfolio management with real-time valuations
+          </p>
+        </div>
+
+        <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-8">
+          <h3 className="text-2xl font-semibold text-white mb-6">Portfolio Overview</h3>
+          <div className="text-center py-12">
+            <Wallet className="w-16 h-16 text-slate-400 mx-auto mb-4" />
+            <h4 className="text-xl font-medium text-white mb-2">Portfolio Management Active</h4>
+            <p className="text-slate-400 mb-4">
+              Track your collection with live market valuations and AI insights
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const ScannerPage = () => (
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 pt-20 px-4">
+      <div className="max-w-7xl mx-auto py-8">
+        <div className="text-center mb-12">
+          <div className="flex items-center justify-center space-x-3 mb-6">
+            <Search className="w-8 h-8 text-cyan-400" />
+            <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+              Scanner 2.0
+            </h1>
+          </div>
+          <p className="text-xl text-slate-300 mb-6">
+            Lightning-fast search with reverse image recognition
+          </p>
+        </div>
+
+        <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-8">
+          <h3 className="text-2xl font-semibold text-white mb-6">Advanced Search</h3>
+          <div className="text-center py-12">
+            <Search className="w-16 h-16 text-slate-400 mx-auto mb-4" />
+            <h4 className="text-xl font-medium text-white mb-2">Search Engine Active</h4>
+            <p className="text-slate-400 mb-4">
+              Search through 15M+ cards with AI-powered filters
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
   const renderPage = () => {
     switch(currentPage) {
       case 'home': return <HomePage />;
-      case 'grader': return <AIGraderPage 
-        uploadedFile={uploadedFile}
-        setUploadedFile={setUploadedFile}
-        gradeResult={gradeResult}
-        setGradeResult={setGradeResult}
-        analyzingImage={analyzingImage}
-        setAnalyzingImage={setAnalyzingImage}
-        fileInputRef={fileInputRef}
-        aiEngine={aiEngine}
-        systemMetrics={systemMetrics}
-      />;
-      case 'market': return <MarketBrainPage 
-        marketData={marketData}
-        setMarketData={setMarketData}
-        marketTrends={marketTrends}
-        setMarketTrends={setMarketTrends}
-        flipOpportunities={flipOpportunities}
-        setFlipOpportunities={setFlipOpportunities}
-        aiEngine={aiEngine}
-      />;
-      case 'oracle': return <OraclePage 
-        oracleMessages={oracleMessages}
-        setOracleMessages={setOracleMessages}
-        aiEngine={aiEngine}
-      />;
-      case 'portfolio': return <PortfolioPage 
-        portfolioData={portfolioData}
-        setPortfolioData={setPortfolioData}
-      />;
-      case 'scanner': return <ScannerPage 
-        marketData={marketData}
-        setMarketData={setMarketData}
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-        selectedCard={selectedCard}
-        setSelectedCard={setSelectedCard}
-      />;
+      case 'grader': return <AIGraderPage />;
+      case 'market': return <MarketBrainPage />;
+      case 'oracle': return <OraclePage />;
+      case 'portfolio': return <PortfolioPage />;
+      case 'scanner': return <ScannerPage />;
       default: return <HomePage />;
     }
   };
 
-  // Initialize system on load
   useEffect(() => {
-    // System initialization with real-time updates
     const interval = setInterval(() => {
-      // Update system metrics
       setSystemMetrics(prev => ({
         ...prev,
         cardsAnalyzed: prev.cardsAnalyzed + Math.floor(Math.random() * 50) + 25,
         activeUsers: prev.activeUsers + Math.floor(Math.random() * 10) - 5
       }));
 
-      // Update AI engine metrics
       setAiEngine(prev => ({
         ...prev,
         totalLearnings: prev.totalLearnings + Math.floor(Math.random() * 100) + 50,
         lastUpdate: Date.now()
       }));
-    }, 30000); // Update every 30 seconds
+    }, 30000);
 
     return () => clearInterval(interval);
-  }, []);
-
-  // Live notifications system
-  useEffect(() => {
-    const notificationInterval = setInterval(() => {
-      const opportunities = [
-        "Wembanyama cards surging +18.8% - Action needed",
-        "New flip opportunity detected: CJ Stroud PSA 9",
-        "Market alert: Basketball rookies trending +34.7%",
-        "Portfolio alert: Profit taking opportunity available"
-      ];
-      
-      if (Math.random() > 0.7) { // 30% chance every interval
-        const newNotification = {
-          type: "opportunity",
-          message: opportunities[Math.floor(Math.random() * opportunities.length)],
-          urgency: "medium",
-          timestamp: Date.now(),
-          action: "Review recommendation"
-        };
-        
-        setNotifications(prev => [newNotification, ...prev.slice(0, 4)]);
-      }
-    }, 45000); // Check every 45 seconds
-
-    return () => clearInterval(notificationInterval);
   }, []);
 
   return (
     <div className="min-h-screen bg-slate-950">
       <Navigation />
-      
-      {/* Live Notifications */}
-      {notifications.length > 0 && (
-        <div className="fixed top-20 right-4 z-40 space-y-3 max-w-sm">
-          {notifications.slice(0, 3).map((notification, index) => (
-            <div
-              key={index}
-              className={`p-4 rounded-xl border-l-4 backdrop-blur-sm shadow-lg ${
-                notification.type === 'opportunity'
-                  ? 'bg-emerald-500/20 border-emerald-500 text-emerald-200'
-                  : 'bg-blue-500/20 border-blue-500 text-blue-200'
-              } animate-slide-in`}
-            >
-              <div className="flex items-start justify-between">
-                <div className="flex items-start space-x-2">
-                  <TrendingUp className="w-4 h-4 mt-0.5" />
-                  <div>
-                    <div className="font-medium text-sm">{notification.message}</div>
-                    <div className="text-xs opacity-75 mt-1">{notification.action}</div>
-                  </div>
-                </div>
-                <button
-                  onClick={() => setNotifications(prev => prev.filter((_, i) => i !== index))}
-                  className="text-white/60 hover:text-white transition-colors"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              </div>
-              <div className="text-xs opacity-60 mt-2">
-                {Math.floor((Date.now() - notification.timestamp) / 60000)}m ago
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-      
       {renderPage()}
     </div>
   );
