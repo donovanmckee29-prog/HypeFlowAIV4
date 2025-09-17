@@ -180,6 +180,12 @@ body {
 .duration-300 { transition-duration: 300ms; }
 .text-white { color: #ffffff; }
 .text-4xl { font-size: 2.25rem; line-height: 2.5rem; }
+.text-6xl { font-size: 3.75rem; line-height: 1; }
+.text-7xl { font-size: 4.5rem; line-height: 1; }
+.text-8xl { font-size: 6rem; line-height: 1; }
+.text-9xl { font-size: 8rem; line-height: 1; }
+.md\:text-8xl { font-size: 6rem; line-height: 1; }
+.md\:text-9xl { font-size: 8rem; line-height: 1; }
 .font-black { font-weight: 900; }
 .mb-2 { margin-bottom: 0.5rem; }
 .text-slate-400 { color: #94a3b8; }
@@ -352,3 +358,23 @@ body {
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
+
+/* Additional styles for large text and effects */
+.tracking-tight { letter-spacing: -0.025em; }
+.leading-none { line-height: 1; }
+.bg-clip-text { background-clip: text; }
+.text-transparent { color: transparent; }
+.via-pink-500 { --tw-gradient-stops: var(--tw-gradient-from), #ec4899 var(--tw-gradient-via), var(--tw-gradient-to, rgba(236, 72, 153, 0)); }
+.to-orange-400 { --tw-gradient-to: #fb923c; }
+.-top-4 { top: -1rem; }
+.-left-4 { left: -1rem; }
+.-bottom-4 { bottom: -1rem; }
+.-right-4 { right: -1rem; }
+.w-8 { width: 2rem; }
+.h-8 { height: 2rem; }
+.w-12 { width: 3rem; }
+.h-12 { height: 3rem; }
+.bg-cyan-400 { background-color: #22d3ee; }
+.bg-purple-400 { background-color: #c084fc; }
+.blur-lg { filter: blur(16px); }
+.animate-ping { animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite; }

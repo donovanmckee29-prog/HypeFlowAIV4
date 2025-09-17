@@ -432,6 +432,20 @@ const InfinityPro = () => {
             <div className="absolute -bottom-4 -right-4 w-12 h-12 bg-purple-400/20 rounded-full blur-lg animate-ping"></div>
           </div>
           
+          <div className="relative mb-12">
+            <h1 className="text-7xl md:text-9xl font-black mb-8 leading-none tracking-tight">
+              <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent">
+                INFINITY
+              </span>
+              <br />
+              <span className="bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400 bg-clip-text text-transparent text-6xl md:text-8xl">
+                PRO 2.0
+              </span>
+            </h1>
+            <div className="absolute -top-4 -left-4 w-8 h-8 bg-cyan-400/20 rounded-full blur-lg animate-ping"></div>
+            <div className="absolute -bottom-4 -right-4 w-12 h-12 bg-purple-400/20 rounded-full blur-lg animate-ping"></div>
+          </div>
+          
           <p className="text-2xl md:text-3xl text-slate-200 mb-12 max-w-6xl mx-auto leading-relaxed font-medium">
             Ultra-fast AI grading in <span className="text-cyan-400 font-black">{systemMetrics.processingSpeed}s</span>, 
             real-time market intelligence with <span className="text-purple-400 font-black">{aiEngine.marketAnalysisAccuracy}%</span> accuracy, 
