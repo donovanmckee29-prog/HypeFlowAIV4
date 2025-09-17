@@ -1,7 +1,6 @@
 const express = require('express');
-const cors = require('cors');
 const path = require('path');
-const multer = require('multer');
+const cors = require('cors');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -9,113 +8,106 @@ const PORT = process.env.PORT || 3001;
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// Serve static files from the React app build directory
 app.use(express.static(path.join(__dirname, 'build')));
 
-// Multer for file uploads
-const upload = multer({ storage: multer.memoryStorage() });
-
-// Mock data generators
-const generateMockMarketData = () => [
-  {
-    id: 1,
-    name: "Luka Dončić Prizm Silver PSA 9",
-    sport: "🏀",
-    change: 12.5,
-    price: 1200,
-    roi: "Medium",
-    ai: "Strong buy signal",
-    volume: "High",
-    trend: "up",
-    category: "basketball",
-    aiScore: 87,
-    risk: "Medium",
-    timeframe: "3-6 months",
-    recentSales: [
-      { grade: "PSA 10", price: 4200, date: "2024-01-12", source: "PWCC" },
-      { grade: "PSA 9", price: 1200, date: "2024-01-15", source: "eBay" }
-    ],
-    priceTarget: 1350,
-    support: 1000,
-    resistance: 1400,
-    volatility: "Medium",
-    marketCap: 2400000
-  }
-];
-
 // API Routes
-app.get('/api/grader/schema', (req, res) => {
-  res.json({
-    companies: ['PSA', 'BGS', 'SGC', 'TAG'],
-    subgrades: ['centering', 'corners', 'edges', 'surface']
+app.get('/api/health', (req, res) => {
+  res.json({ 
+    status: 'online', 
+    timestamp: new Date().toISOString(),
+    version: '2.0.0'
   });
 });
 
-app.post('/api/grader/predict', upload.single('image'), (req, res) => {
-  const subgrades = {
-    centering: Math.random() * 0.4 + 0.6,
-    corners: Math.random() * 0.4 + 0.6,
-    edges: Math.random() * 0.4 + 0.6,
-    surface: Math.random() * 0.4 + 0.6
-  };
-  
-  const avgGrade = Object.values(subgrades).reduce((a, b) => a + b, 0) / 4;
-  let predictedGrade = avgGrade >= 0.95 ? "10" : avgGrade >= 0.9 ? "9" : "8";
-  
-  res.json({
-    predicted_grade: `PSA ${predictedGrade}`,
-    confidence: Math.round(avgGrade * 100),
-    subgrades: subgrades,
-    all_predictions: [
-      { company: 'PSA', grade: `PSA ${predictedGrade}`, confidence: avgGrade, fee: 50, timeline: '2-4 weeks' }
-    ]
-  });
-});
-
-app.get('/api/market/top-picks', (req, res) => {
-  res.json(generateMockMarketData());
-});
-
-app.get('/api/portfolio/value', (req, res) => {
-  res.json({
-    totalValue: 47250,
-    totalCost: 35200,
-    roi: 34.2,
-    monthlyChange: 8.5
-  });
-});
-
-app.get('/api/portfolio/items', (req, res) => {
-  res.json([
+app.get('/api/market-data', (req, res) => {
+  // Mock market data - in production, this would connect to real APIs
+  const marketData = [
     {
       id: 1,
-      name: "Luka Prizm Silver",
-      sport: "🏀",
-      quantity: 2,
-      cost: 2000,
-      currentValue: 1200,
-      change: 20,
-      grade: "PSA 9",
-      trend: "up"
+      name: "Victor Wembanyama 2023-24 Panini Prizm RC",
+      player: "Victor Wembanyama",
+      sport: "Basketball",
+      currentPrice: 285,
+      change: 45,
+      changePercent: 18.8,
+      volume24h: 847,
+      aiScore: 98,
+      confidence: 97,
+      momentum: "STRONG BUY"
+    },
+    {
+      id: 2,
+      name: "Luka Dončić 2018-19 Panini Prizm Silver RC PSA 10",
+      player: "Luka Dončić",
+      sport: "Basketball",
+      currentPrice: 4250,
+      change: 125,
+      changePercent: 3.0,
+      volume24h: 47,
+      aiScore: 89,
+      confidence: 92,
+      momentum: "BUY"
     }
-  ]);
+  ];
+  
+  res.json(marketData);
 });
 
-app.post('/api/oracle/query', (req, res) => {
-  res.json({
-    statement: "AI analysis based on your question",
-    confidence: 0.85,
-    timeframe: "3-6 months",
-    rationale: "Based on current market data",
-    evidence: [],
-    actions: []
-  });
+app.post('/api/grade-card', (req, res) => {
+  // Mock AI grading - in production, this would use actual AI/ML models
+  const { imageData } = req.body;
+  
+  const gradeResult = {
+    processingTime: "0.247s",
+    confidenceScore: 97.8,
+    overallGrade: {
+      psa: 9,
+      bgs: 9.0,
+      sgc: 9
+    },
+    subgrades: {
+      corners: 9.0,
+      edges: 8.5,
+      surface: 9.2,
+      centering: 8.5
+    },
+    marketAnalysis: {
+      rawValue: 125,
+      gradedValues: {
+        psa8: 245,
+        psa9: 485,
+        psa10: 950
+      },
+      bestGradingOption: "PSA",
+      profitPotential: 360
+    }
+  };
+  
+  res.json(gradeResult);
 });
 
-// Serve React app
+app.get('/api/portfolio/:userId', (req, res) => {
+  // Mock portfolio data
+  const portfolio = {
+    totalValue: 89447,
+    totalCost: 52150,
+    totalGain: 37297,
+    totalGainPercent: 71.5,
+    cards: []
+  };
+  
+  res.json(portfolio);
+});
+
+// Catch all handler: send back React's index.html file for any non-API routes
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`🚀 Infinity Pro 2.0 server running on port ${PORT}`);
+  console.log(`📊 API endpoints available at http://localhost:${PORT}/api/`);
+  console.log(`🌐 React app served at http://localhost:${PORT}`);
 });
