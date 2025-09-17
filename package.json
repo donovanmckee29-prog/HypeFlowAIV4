@@ -8,7 +8,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "server": "node server.js"
+    "server": "node server.js",
+    "deploy-static": "npm run build && node deploy-static.js"
   },
   "dependencies": {
     "react": "^18.2.0",
